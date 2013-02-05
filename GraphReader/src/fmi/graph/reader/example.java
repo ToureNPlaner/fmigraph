@@ -12,7 +12,9 @@ import fmi.graph.reader.maxspeed.*;
 public class example {
 	public static void main(String[] args) {
 		Reader r = new Reader();
+		@SuppressWarnings("unused")
 		Node n;
+		@SuppressWarnings("unused")
 		Edge e;
 		int nodes=0;
 		int edges =0;
