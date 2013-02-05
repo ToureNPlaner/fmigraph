@@ -1,4 +1,4 @@
-package fmi.graph.reader.definition;
+package fmi.graph.definition;
 
 public interface Edge extends Comparable<Edge>{
 

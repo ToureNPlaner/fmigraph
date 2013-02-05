@@ -1,4 +1,4 @@
-package fmi.graph.reader.exceptions;
+package fmi.graph.exceptions;
 
 public class NoSuchElementException extends Exception{
 

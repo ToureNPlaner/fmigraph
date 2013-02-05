@@ -1,6 +1,6 @@
-package fmi.graph.reader.maxspeed;
+package fmi.graph.maxspeed.reader;
 
-public class Node extends fmi.graph.reader.standard.Node {
+public class Node extends fmi.graph.standard.reader.Node {
 
 	public Node(int id, long osm, Double lat, Double lon, int elevation) {
 		super(id, osm, lat, lon, elevation);

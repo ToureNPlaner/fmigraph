@@ -1,7 +1,7 @@
-package fmi.graph.reader.standard;
+package fmi.graph.standard.reader;
 
 
-public class Edge implements fmi.graph.reader.definition.Edge{
+public class Edge implements fmi.graph.definition.Edge{
 
 	private int source;
 	private int target;
@@ -23,7 +23,7 @@ public class Edge implements fmi.graph.reader.definition.Edge{
 	}
 	
 	
-	public int compareTo (fmi.graph.reader.definition.Edge e) {
+	public int compareTo (fmi.graph.definition.Edge e) {
 		if(source < e.getSource())
 			return -1;
 		if (source > e.getSource())

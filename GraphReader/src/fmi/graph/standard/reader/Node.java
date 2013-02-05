@@ -1,6 +1,6 @@
-package fmi.graph.reader.standard;
+package fmi.graph.standard.reader;
 
-public class Node implements fmi.graph.reader.definition.Node{
+public class Node implements fmi.graph.definition.Node{
 
 	int id;
 	long osm;
@@ -25,7 +25,7 @@ public class Node implements fmi.graph.reader.definition.Node{
 	}
 	
 	
-	public int compareTo(fmi.graph.reader.definition.Node o) {
+	public int compareTo(fmi.graph.definition.Node o) {
 		
 		if(id<o.getId())
 			return -1;

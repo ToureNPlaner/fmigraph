@@ -1,11 +1,11 @@
-package fmi.graph.reader.definition;
+package fmi.graph.definition;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import fmi.graph.reader.exceptions.NoGraphOpenException;
-import fmi.graph.reader.exceptions.NoSuchElementException;
+import fmi.graph.exceptions.NoGraphOpenException;
+import fmi.graph.exceptions.NoSuchElementException;
 
 
 public interface Reader {

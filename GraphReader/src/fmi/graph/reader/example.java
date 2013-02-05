@@ -3,9 +3,9 @@ import java.io.File;
 
 import java.io.IOException;
 
-import fmi.graph.reader.exceptions.NoGraphOpenException;
-import fmi.graph.reader.exceptions.NoSuchElementException;
-import fmi.graph.reader.maxspeed.*;
+import fmi.graph.exceptions.NoGraphOpenException;
+import fmi.graph.exceptions.NoSuchElementException;
+import fmi.graph.maxspeed.reader.*;
 
 
 

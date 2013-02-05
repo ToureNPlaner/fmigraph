@@ -8,16 +8,16 @@ import java.io.IOException;
 import java.util.Comparator;
 import java.util.TreeSet;
 
-import fmi.graph.reader.definition.Edge;
-import fmi.graph.reader.definition.Node;
-import fmi.graph.reader.definition.Reader;
-import fmi.graph.reader.exceptions.NoGraphOpenException;
-import fmi.graph.reader.exceptions.NoSuchElementException;
+import fmi.graph.definition.Edge;
+import fmi.graph.definition.Node;
+import fmi.graph.definition.Reader;
+import fmi.graph.exceptions.NoGraphOpenException;
+import fmi.graph.exceptions.NoSuchElementException;
 
 public class Reverse {
 
 	TreeSet<Edge> ts;
-	Reader r = new fmi.graph.reader.standard.Reader();
+	Reader r = new fmi.graph.standard.reader.Reader();
 
 	public void reverseGraph(File input, File output) {
 		ts = new TreeSet<Edge>(new ReverseEdgeComparator());
