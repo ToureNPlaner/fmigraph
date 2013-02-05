@@ -1,4 +1,4 @@
-package fmi.graph.reader;
+package fmi.graph;
 import java.io.File;
 
 import java.io.IOException;
