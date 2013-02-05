@@ -126,6 +126,16 @@ public class Reader implements fmi.graph.definition.Reader{
 		}
 	}
 	
+	public void close()
+	{
+		try {
+			br.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	private void readHead() throws IOException
 	{
 		String line;
@@ -153,6 +163,8 @@ public class Reader implements fmi.graph.definition.Reader{
 		}
 		
 	}
+	
+	
 	
 	
 

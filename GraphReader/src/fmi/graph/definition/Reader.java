@@ -12,7 +12,7 @@ public interface Reader {
 	
 	public void open(File graph) throws IOException;
 	
-	void read(InputStream in) throws IOException;
+	public void read(InputStream in) throws IOException;
 	
 	public int getNodeCount() throws NoGraphOpenException;
 	
@@ -25,5 +25,7 @@ public interface Reader {
 	public Node nextNode() throws NoGraphOpenException, NoSuchElementException;
 	
 	public Edge nextEdge() throws NoGraphOpenException, NoSuchElementException;
+	
+	public void close();
 
 }
