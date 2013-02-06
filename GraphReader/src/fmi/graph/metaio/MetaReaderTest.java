@@ -1,6 +1,5 @@
 package fmi.graph.metaio;
 
-import fmi.graph.exceptions.BrokenMetaHeaderException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -51,30 +50,21 @@ public class MetaReaderTest {
 
     @Before
     public void AddTestData(){
-        t1Normal = "## Comment in first line\n"+
+        t1Normal = "# Comment in first line\n"+
                 "# timestamp : 1360159954\n"+
-                "## First Comment for version\n"+
-                "## Second Comment for version\n"+
-                "# version : 1337\n"+
-                "## End comment\n"+
-                "#\n"+
-                "1337\n"+
-                "23\n";
-        t2MissingEnd = "## Comment in first line\n"+
-                "# timestamp : 1360159954\n"+
-                "## First Comment for version\n"+
-                "## Second Comment for version\n"+
-                "# version : 1337\n"+
-                "## End comment\n"+
-                "1337\n"+
-                "23\n";
-        t3WrongSyntaxComment = "## Comment in first line\n"+
-                "# timestamp : 1360159954\n"+
-                "## First Comment for version\n"+
-                "## Second Comment for version\n"+
+                "# First Comment for version\n"+
+                "# Second Comment for version\n"+
                 "# version : 1337\n"+
                 "# End comment\n"+
-                "#\n"+
+                "\n"+
+                "1337\n"+
+                "23\n";
+        t2MissingEnd = "# Comment in first line\n"+
+                "# timestamp : 1360159954\n"+
+                "# First Comment for version\n"+
+                "# Second Comment for version\n"+
+                "# version : 1337\n"+
+                "# End comment\n"+
                 "1337\n"+
                 "23\n";
     }
@@ -107,17 +97,14 @@ public class MetaReaderTest {
 
     }
 
-    @Test(expected = BrokenMetaHeaderException.class)
+    @Test
     public void testReadMetaDataMissingEnd() throws Exception{
         BufferedReader br = sbfr(t2MissingEnd);
         MetaReader r = new MetaReader();
         MetaData m = r.readMetaData(br);
+        checkT1MetaData(m);
+        // Test whether we read too far
+        assertEquals("1337", br.readLine());
     }
 
-    @Test(expected = BrokenMetaHeaderException.class)
-    public void testReadMetaWrongSyntaxComment() throws Exception{
-        BufferedReader br = sbfr(t3WrongSyntaxComment);
-        MetaReader r = new MetaReader();
-        MetaData m = r.readMetaData(br);
-    }
 }
