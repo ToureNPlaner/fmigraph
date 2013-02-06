@@ -1,4 +1,4 @@
-package fmi.graph.standard.reader;
+package fmi.graph.standard;
 
 
 public class Edge implements fmi.graph.definition.Edge{

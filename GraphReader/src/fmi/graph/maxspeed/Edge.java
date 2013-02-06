@@ -1,6 +1,6 @@
-package fmi.graph.maxspeed.reader;
+package fmi.graph.maxspeed;
 
-public class Edge extends fmi.graph.standard.reader.Edge {
+public class Edge extends fmi.graph.standard.Edge {
 
 	int maxspeed;
 	

@@ -1,4 +1,4 @@
-package fmi.graph.standard.reader;
+package fmi.graph.standard;
 
 public class Node implements fmi.graph.definition.Node{
 

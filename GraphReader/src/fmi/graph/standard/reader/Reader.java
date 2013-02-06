@@ -9,6 +9,8 @@ import java.io.InputStreamReader;
 
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
+import fmi.graph.standard.Edge;
+import fmi.graph.standard.Node;
 
 public class Reader implements fmi.graph.definition.Reader{
 
@@ -89,7 +91,7 @@ public class Reader implements fmi.graph.definition.Reader{
 			}
 			nodesRead++;
 			split = line.split(" ");
-			return new fmi.graph.standard.reader.Node(Integer.parseInt(split[0]), Long.parseLong(split[1]), Double.parseDouble(split[2]), Double.parseDouble(split[3]), Integer.parseInt(split[4]));
+			return new fmi.graph.standard.Node(Integer.parseInt(split[0]), Long.parseLong(split[1]), Double.parseDouble(split[2]), Double.parseDouble(split[3]), Integer.parseInt(split[4]));
 
 		} catch (IOException e) {
 			System.out.println(line);
@@ -118,7 +120,7 @@ public class Reader implements fmi.graph.definition.Reader{
 			}
 			edgesRead++;
 			split = line.split(" ");
-			return new fmi.graph.standard.reader.Edge(Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3]));
+			return new fmi.graph.standard.Edge(Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3]));
 
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -5,6 +5,8 @@ import java.io.IOException;
 
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
+import fmi.graph.maxspeed.Edge;
+import fmi.graph.maxspeed.Node;
 import fmi.graph.maxspeed.reader.*;
 
 
@@ -33,6 +35,7 @@ public class example {
 				edges++;
 			}
 			System.out.println("Edges gelesen: "+edges+" Edges vorhanden: "+r.getEdgeCount());
+			r.close();
 		} catch (IOException ex) {
 			// TODO Auto-generated catch block
 			ex.printStackTrace();
