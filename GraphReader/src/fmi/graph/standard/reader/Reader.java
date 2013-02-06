@@ -1,14 +1,9 @@
 package fmi.graph.standard.reader;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
+
+import java.io.*;
 
 public class Reader implements fmi.graph.definition.Reader{
 
@@ -22,7 +17,7 @@ public class Reader implements fmi.graph.definition.Reader{
 	@Override
 	public void open(File graph) throws IOException {
 		br = new BufferedReader(new FileReader(graph));
-		readHead();		
+		readHead();
 	}
 	
 	@Override
