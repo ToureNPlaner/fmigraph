@@ -1,4 +1,4 @@
-package fmi.graph.standard.reader;
+package fmi.graph.standard;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,8 +9,6 @@ import java.io.InputStreamReader;
 
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
-import fmi.graph.standard.Edge;
-import fmi.graph.standard.Node;
 
 public class Reader implements fmi.graph.definition.Reader{
 

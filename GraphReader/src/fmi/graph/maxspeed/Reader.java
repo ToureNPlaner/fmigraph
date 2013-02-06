@@ -1,14 +1,12 @@
-package fmi.graph.maxspeed.reader;
+package fmi.graph.maxspeed;
 
 import java.io.IOException;
 
 
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
-import fmi.graph.maxspeed.Edge;
-import fmi.graph.maxspeed.Node;
 
-public class Reader extends fmi.graph.standard.reader.Reader {
+public class Reader extends fmi.graph.standard.Reader {
 
 	
 	public Node nextNode() throws NoGraphOpenException, NoSuchElementException {

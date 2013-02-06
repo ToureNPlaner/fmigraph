@@ -7,7 +7,7 @@ import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
 import fmi.graph.maxspeed.Edge;
 import fmi.graph.maxspeed.Node;
-import fmi.graph.maxspeed.reader.*;
+import fmi.graph.maxspeed.Reader;
 
 
 
