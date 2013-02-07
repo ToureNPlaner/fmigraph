@@ -46,7 +46,7 @@ public class MetaReaderTest {
 
     public String t1Normal;
     public String t2MissingEnd;
-    public String t3WrongSyntaxComment;
+    public String t3EmptyHeader;
 
     @Before
     public void AddTestData(){
@@ -67,6 +67,9 @@ public class MetaReaderTest {
                 "# End comment\n"+
                 "1337\n"+
                 "23\n";
+        t3EmptyHeader = "1337\n"+
+                        "23\n";
+
     }
 
     private BufferedReader sbfr(String s){
@@ -106,5 +109,15 @@ public class MetaReaderTest {
         // Test whether we read too far
         assertEquals("1337", br.readLine());
     }
+
+    @Test
+    public void testEmptyHeader() throws Exception{
+        BufferedReader br = sbfr(t3EmptyHeader);
+        MetaReader r = new MetaReader();
+        MetaData m = r.readMetaData(br);
+        // Test whether we read too far
+        assertEquals("1337", br.readLine());
+    }
+
 
 }
