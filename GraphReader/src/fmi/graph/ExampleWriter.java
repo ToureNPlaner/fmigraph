@@ -1,10 +1,12 @@
 package fmi.graph;
 
+import fmi.graph.exceptions.InvalidFunctionException;
+import fmi.graph.standard.Edge;
+import fmi.graph.standard.Node;
+import fmi.graph.standard.Writer;
+
 import java.io.File;
 import java.io.IOException;
-
-import fmi.graph.exceptions.InvalidFunctionException;
-import fmi.graph.standard.*;
 
 public class ExampleWriter {
 
@@ -31,9 +33,11 @@ public class ExampleWriter {
 			
 			
 			
-		} catch (IOException | InvalidFunctionException e) {
+		} catch (IOException e){
 			e.printStackTrace();
-		}
+		} catch (InvalidFunctionException e){
+            e.printStackTrace();
+        }
 
 	}
 
