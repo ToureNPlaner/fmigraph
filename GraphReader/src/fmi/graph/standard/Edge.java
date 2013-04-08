@@ -1,5 +1,8 @@
 package fmi.graph.standard;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 
 public class Edge implements fmi.graph.definition.Edge{
 
@@ -8,7 +11,6 @@ public class Edge implements fmi.graph.definition.Edge{
 	int weight;
 	int type;
 	String carryover;
-	
 	
 	
 	@SuppressWarnings("unused")
@@ -71,9 +73,25 @@ public class Edge implements fmi.graph.definition.Edge{
 		return type;
 	}
 
-	public String toString()
+	public String toBaseString()
 	{
 		return source+" "+target+" "+weight+" "+type;
+	}
+	
+	public String toString()
+	{
+		if(carryover != null)
+			return toBaseString()+" "+carryover;
+		else
+			return toBaseString();
+	}
+
+	@Override
+	public void writeBin(DataOutputStream dos) throws IOException {
+		dos.writeInt(source);
+		dos.writeInt(target);
+		dos.writeInt(weight);
+		dos.write(type);
 	}
 	
 }

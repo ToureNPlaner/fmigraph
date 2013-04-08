@@ -1,5 +1,8 @@
 package fmi.graph.definition;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 public interface Node extends Comparable<Node>{
 
 	public int getId();
@@ -14,6 +17,10 @@ public interface Node extends Comparable<Node>{
 	
 	public String getCarryover();
 	
+	public String toBaseString();
+	
 	public String toString();
+	
+	public void writeBin(DataOutputStream dos) throws IOException;
 	
 }

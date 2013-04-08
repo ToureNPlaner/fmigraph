@@ -9,7 +9,7 @@ public class Edge extends fmi.graph.standard.Edge {
 		this.maxspeed = maxspeed;
 	}
 
-	public Edge(int source, int target, int weight, int type, String carryover, int maxspeed) {
+	public Edge(int source, int target, int weight, int type, int maxspeed, String carryover) {
 		super(source, target, weight, type, carryover);
 		this.maxspeed = maxspeed;
 	}
@@ -19,9 +19,9 @@ public class Edge extends fmi.graph.standard.Edge {
 		return maxspeed;
 	}
 	
-	public String toString()
+	public String toBaseString()
 	{
-		return super.toString()+" "+maxspeed;
+		return super.toBaseString()+" "+maxspeed;
 	}
 
 }

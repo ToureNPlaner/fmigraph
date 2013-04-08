@@ -56,10 +56,8 @@ public class Reverse {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} catch (NoGraphOpenException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (NoSuchElementException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 

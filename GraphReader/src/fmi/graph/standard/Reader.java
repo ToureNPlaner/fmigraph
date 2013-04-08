@@ -173,7 +173,10 @@ public class Reader implements fmi.graph.definition.Reader {
 
 	public void close() {
 		try {
-			br.close();
+			if(br!=null)
+				br.close();
+			else
+				dis.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

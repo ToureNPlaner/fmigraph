@@ -1,5 +1,8 @@
 package fmi.graph.standard;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 public class Node implements fmi.graph.definition.Node{
 
 	int id;
@@ -76,9 +79,27 @@ public class Node implements fmi.graph.definition.Node{
 		return carryover;
 	}
 
+	@Override
+	public String toBaseString() {
+		return id+ " "+osm+" "+lat+" "+lon+" "+elevation; 
+	}
+	
 	public String toString()
 	{
-		return id+ " "+osm+" "+lat+" "+lon+" "+elevation; 
+		if(carryover != null)
+			return toBaseString()+" "+carryover;
+		else
+			return toBaseString();
+	}
+
+	@Override
+	public void writeBin(DataOutputStream dos) throws IOException {
+		dos.writeInt(id);
+		dos.writeLong(osm);
+		dos.writeDouble(lat);
+		dos.writeDouble(lon);
+		dos.writeInt(elevation);
+		
 	}
 
 }

@@ -3,19 +3,23 @@ package fmi.graph.definition;
 import java.io.File;
 import java.io.IOException;
 
+import fmi.graph.exceptions.InvalidFunctionException;
+
 public interface Writer {
 
-	public void open(File graph) throws IOException;
+	public void create(File graph) throws IOException;
 	
-	public void openBin(File graph) throws IOException;
+	public void createBin(File graph) throws IOException;
 	
-	public void setNodeCount();
+	public void setNodeCount(int n);
 	
-	public void setEdgeCount();
+	public void setEdgeCount(int m);
 	
-	public void writeNode(Node n);
+	public void writeMetaData() throws IOException;
 	
-	public void writeEdge (Edge e);
+	public void writeNode(Node n) throws IOException, InvalidFunctionException;
+	
+	public void writeEdge (Edge e) throws IOException, InvalidFunctionException;
 	
 	public void close();
 	

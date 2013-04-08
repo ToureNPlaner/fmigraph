@@ -11,7 +11,7 @@ import fmi.graph.maxspeed.Reader;
 
 
 
-public class example {
+public class exampleReader {
 	public static void main(String[] args) {
 		Reader r = new Reader();
 		@SuppressWarnings("unused")
@@ -37,13 +37,10 @@ public class example {
 			System.out.println("Edges gelesen: "+edges+" Edges vorhanden: "+r.getEdgeCount());
 			r.close();
 		} catch (IOException ex) {
-			// TODO Auto-generated catch block
 			ex.printStackTrace();
 		} catch (NoGraphOpenException ex) {
-			// TODO Auto-generated catch block
 			ex.printStackTrace();
 		} catch (NoSuchElementException ex) {
-			// TODO Auto-generated catch block
 			ex.printStackTrace();
 		}
 		start = System.currentTimeMillis()-start;
