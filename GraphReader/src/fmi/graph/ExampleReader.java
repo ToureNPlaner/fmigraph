@@ -11,7 +11,7 @@ import fmi.graph.maxspeed.Reader;
 
 
 
-public class exampleReader {
+public class ExampleReader {
 	public static void main(String[] args) {
 		Reader r = new Reader();
 		@SuppressWarnings("unused")
