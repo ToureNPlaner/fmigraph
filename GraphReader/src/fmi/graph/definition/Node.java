@@ -12,6 +12,8 @@ public interface Node extends Comparable<Node>{
 	
 	public int getElevation();
 	
+	public String getCarryover();
+	
 	public String toString();
 	
 }

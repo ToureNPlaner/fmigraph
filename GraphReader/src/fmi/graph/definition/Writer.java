@@ -7,6 +7,8 @@ public interface Writer {
 
 	public void open(File graph) throws IOException;
 	
+	public void openBin(File graph) throws IOException;
+	
 	public void setNodeCount();
 	
 	public void setEdgeCount();

@@ -3,10 +3,11 @@ package fmi.graph.standard;
 
 public class Edge implements fmi.graph.definition.Edge{
 
-	private int source;
-	private int target;
-	private int weight;
-	private int type;
+	int source;
+	int target;
+	int weight;
+	int type;
+	String carryover;
 	
 	
 	
@@ -20,8 +21,17 @@ public class Edge implements fmi.graph.definition.Edge{
 		this.target=target;
 		this.weight=weight;
 		this.type=type;
+		this.carryover=null;
 	}
 	
+	public Edge(int source, int target, int weight, int type, String carryover)
+	{
+		this.source = source;
+		this.target=target;
+		this.weight=weight;
+		this.type=type;
+		this.carryover=carryover;
+	}
 	
 	public int compareTo (fmi.graph.definition.Edge e) {
 		if(source < e.getSource())

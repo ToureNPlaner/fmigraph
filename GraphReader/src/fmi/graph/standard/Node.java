@@ -7,6 +7,7 @@ public class Node implements fmi.graph.definition.Node{
 	double lat;
 	double lon;
 	int elevation;
+	String carryover;
 	
 	
 	@SuppressWarnings("unused")
@@ -21,7 +22,18 @@ public class Node implements fmi.graph.definition.Node{
 		this.osm=osm;
 		this.lat=lat;
 		this.lon=lon;
-		this.elevation=elevation;
+		this.elevation = elevation;
+		this.carryover = null;
+	}
+	
+	public Node(int id, long osm, double lat, double lon, int elevation, String carryover)
+	{
+		this.id=id;
+		this.osm=osm;
+		this.lat=lat;
+		this.lon=lon;
+		this.elevation = elevation;
+		this.carryover = carryover;
 	}
 	
 	
@@ -57,6 +69,11 @@ public class Node implements fmi.graph.definition.Node{
 	@Override
 	public int getElevation() {
 		return elevation;
+	}
+	
+	public String getCarryover()
+	{
+		return carryover;
 	}
 
 	public String toString()
