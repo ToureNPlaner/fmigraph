@@ -32,6 +32,13 @@ public interface Reader {
 	public void openBin(File graph) throws IOException;
 	
 	/**
+	 * Opens a zipped binary graph of the format defined at: 
+	 * @param graph
+	 * @throws IOException
+	 */
+	public void openGZip(File graph) throws IOException;
+	
+	/**
 	 * Opens a binary graph of the format defined at: 
 	 * @param graph
 	 * @throws IOException

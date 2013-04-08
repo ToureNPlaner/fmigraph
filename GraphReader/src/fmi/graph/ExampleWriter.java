@@ -1,6 +1,7 @@
 package fmi.graph;
 
 import fmi.graph.exceptions.InvalidFunctionException;
+import fmi.graph.metaio.MetaData;
 import fmi.graph.standard.Edge;
 import fmi.graph.standard.Node;
 import fmi.graph.standard.Writer;
@@ -16,18 +17,18 @@ public class ExampleWriter {
 		Writer w = new Writer();
 		
 		try {
-			//w.createBin(new File("test.bin"));
-            w.create(new File("test.txt"));
+			w.createBin(new File("test.bin"));
+            //w.create(new File("test.txt"));
 			w.setNodeCount(1000);
 			w.setEdgeCount(2000);
 
-            /*MetaData data = new MetaData();
+            MetaData data = new MetaData();
             data.AddComment("This is a totally awesome comment");
             data.AddComment("and here comes another comment that tells you how great this format is!");
             data.AddComment("We can even handle embedded : isn't that unbelievable");
             data.Add("Timestamp", "1337");
             data.Add("Origin", "CHConstructor");
-            w.writeMetaData(data);*/
+            w.writeMetaData(data);
 			
 			for(int n=0;n<1000;n++)
 			{

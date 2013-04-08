@@ -1,7 +1,16 @@
 package fmi.graph.standard;
 
-import fmi.graph.definition.Edge;
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.zip.GZIPOutputStream;
+
 import fmi.graph.definition.Node;
+import fmi.graph.definition.Edge;
 import fmi.graph.exceptions.InvalidFunctionException;
 import fmi.graph.metaio.MetaData;
 import fmi.graph.metaio.MetaWriter;
@@ -52,6 +61,20 @@ public class Writer implements fmi.graph.definition.Writer {
 		headWritten = false;
 
 	}
+	
+	@Override
+	public void createGZip(File graph) throws IOException {
+		if (graph.exists())
+			graph.delete();
+		graph.createNewFile();
+
+		bin = true;
+		dos = new DataOutputStream(new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(graph))));
+		nodesWritten = 0;
+		edgesWritten = 0;
+		headWritten = false;
+
+	}
 
 	@Override
 	public void setNodeCount(int n) {
@@ -89,10 +112,11 @@ public class Writer implements fmi.graph.definition.Writer {
 			n.writeBin(dos);
 		} else {
 			if (!headWritten) {
-				bw.write(nodes);
+				bw.write(Integer.toString(nodes));
 				bw.newLine();
-				bw.write(edges);
+				bw.write(Integer.toString(edges));
 				bw.newLine();
+				headWritten = true;
 			}
 			bw.write(n.toString());
 			bw.newLine();

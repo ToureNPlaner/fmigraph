@@ -5,9 +5,7 @@ import java.io.IOException;
 
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
-import fmi.graph.maxspeed.Edge;
-import fmi.graph.maxspeed.Node;
-import fmi.graph.maxspeed.Reader;
+import fmi.graph.standard.*;
 
 
 
@@ -22,19 +20,28 @@ public class ExampleReader {
 		int edges =0;
 		long start = System.currentTimeMillis();
 		try {
-			r.open(new File("D:/graph/germany.txt"));
+			//r.openBin(new File("test.bin"));
+			//r.open(new File("test.txt"));
+			r.openGZip(new File("test.gz"));
 			while(r.hasNextNode())
 			{
 				n = r.nextNode();
+				//System.out.println(n);
 				nodes++;
 			}
 			System.out.println("Nodes gelesen: "+nodes+" Nodes vorhanden: "+r.getNodeCount());
+			start = System.currentTimeMillis()-start;
+			System.out.println(start+" Millisekunden Ladezeit");
+			start = System.currentTimeMillis();
 			while(r.hasNextEdge())
 			{
 				e = r.nextEdge();
+				//System.out.println(e);
 				edges++;
 			}
 			System.out.println("Edges gelesen: "+edges+" Edges vorhanden: "+r.getEdgeCount());
+			start = System.currentTimeMillis()-start;
+			System.out.println(start+" Millisekunden Ladezeit");
 			r.close();
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -43,8 +50,6 @@ public class ExampleReader {
 		} catch (NoSuchElementException ex) {
 			ex.printStackTrace();
 		}
-		start = System.currentTimeMillis()-start;
-		System.out.println(start+"Millisekunden ladezeit");
 		
 
 	}
