@@ -17,7 +17,7 @@ import fmi.graph.exceptions.NoSuchElementException;
 public class Reverse {
 
 	TreeSet<Edge> ts;
-	Reader r = new fmi.graph.standard.reader.Reader();
+	Reader r = new fmi.graph.standard.Reader();
 
 	public void reverseGraph(File input, File output) {
 		ts = new TreeSet<Edge>(new ReverseEdgeComparator());
@@ -56,10 +56,8 @@ public class Reverse {
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} catch (NoGraphOpenException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (NoSuchElementException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 

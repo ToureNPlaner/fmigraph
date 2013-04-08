@@ -1,13 +1,16 @@
-package fmi.graph.standard.reader;
+package fmi.graph.standard;
+
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 
 public class Edge implements fmi.graph.definition.Edge{
 
-	private int source;
-	private int target;
-	private int weight;
-	private int type;
-	
+	int source;
+	int target;
+	int weight;
+	int type;
+	String carryover;
 	
 	
 	@SuppressWarnings("unused")
@@ -20,8 +23,17 @@ public class Edge implements fmi.graph.definition.Edge{
 		this.target=target;
 		this.weight=weight;
 		this.type=type;
+		this.carryover=null;
 	}
 	
+	public Edge(int source, int target, int weight, int type, String carryover)
+	{
+		this.source = source;
+		this.target=target;
+		this.weight=weight;
+		this.type=type;
+		this.carryover=carryover;
+	}
 	
 	public int compareTo (fmi.graph.definition.Edge e) {
 		if(source < e.getSource())
@@ -61,9 +73,25 @@ public class Edge implements fmi.graph.definition.Edge{
 		return type;
 	}
 
-	public String toString()
+	public String toBaseString()
 	{
 		return source+" "+target+" "+weight+" "+type;
+	}
+	
+	public String toString()
+	{
+		if(carryover != null)
+			return toBaseString()+" "+carryover;
+		else
+			return toBaseString();
+	}
+
+	@Override
+	public void writeBin(DataOutputStream dos) throws IOException {
+		dos.writeInt(source);
+		dos.writeInt(target);
+		dos.writeInt(weight);
+		dos.write(type);
 	}
 	
 }

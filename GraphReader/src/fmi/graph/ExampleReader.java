@@ -5,11 +5,13 @@ import java.io.IOException;
 
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
-import fmi.graph.maxspeed.reader.*;
+import fmi.graph.maxspeed.Edge;
+import fmi.graph.maxspeed.Node;
+import fmi.graph.maxspeed.Reader;
 
 
 
-public class example {
+public class ExampleReader {
 	public static void main(String[] args) {
 		Reader r = new Reader();
 		@SuppressWarnings("unused")
@@ -33,14 +35,12 @@ public class example {
 				edges++;
 			}
 			System.out.println("Edges gelesen: "+edges+" Edges vorhanden: "+r.getEdgeCount());
+			r.close();
 		} catch (IOException ex) {
-			// TODO Auto-generated catch block
 			ex.printStackTrace();
 		} catch (NoGraphOpenException ex) {
-			// TODO Auto-generated catch block
 			ex.printStackTrace();
 		} catch (NoSuchElementException ex) {
-			// TODO Auto-generated catch block
 			ex.printStackTrace();
 		}
 		start = System.currentTimeMillis()-start;
