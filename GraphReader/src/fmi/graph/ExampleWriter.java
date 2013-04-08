@@ -30,7 +30,7 @@ public class ExampleWriter {
 				w.writeEdge(new Edge(m,m+1,(int)(Math.random()*100),(int)(Math.random()*100),"Teststring 2"));
 			}
 			w.close();
-			
+		
 			
 			
 		} catch (Exception e) {
