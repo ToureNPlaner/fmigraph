@@ -14,7 +14,7 @@ public class ExampleWriter {
 		Writer w = new Writer();
 		
 		try {
-			w.create(new File("test.txt"));
+			w.createBin(new File("test.bin"));
 			w.setNodeCount(1000);
 			w.setEdgeCount(2000);
 			

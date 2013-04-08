@@ -21,6 +21,6 @@ public interface Writer {
 	
 	public void writeEdge (Edge e) throws IOException, InvalidFunctionException;
 	
-	public void close();
+	public void close() throws InvalidFunctionException;
 	
 }
