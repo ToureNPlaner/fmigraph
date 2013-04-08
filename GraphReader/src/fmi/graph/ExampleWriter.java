@@ -14,16 +14,18 @@ public class ExampleWriter {
 		Writer w = new Writer();
 		
 		try {
-			w.createBin(new File("test.bin"));
-			w.setNodeCount(1000);
-			w.setEdgeCount(2000);
+			//w.create(new File("test.txt"));
+			//w.createBin(new File("test.bin"));
+			w.createGZip(new File("test.gz"));
+			w.setNodeCount(10000000);
+			w.setEdgeCount(20000000);
 			
-			for(int n=0;n<1000;n++)
+			for(int n=0;n<10000000;n++)
 			{
 				w.writeNode(new Node(n, n, Math.random(), Math.random(), (int)(Math.random()*100), "Teststring 1"));
 			}
 			
-			for(int m=0;m<2000;m++)
+			for(int m=0;m<20000000;m++)
 			{
 				w.writeEdge(new Edge(m,m+1,(int)(Math.random()*100),(int)(Math.random()*100),"Teststring 2"));
 			}
@@ -31,7 +33,7 @@ public class ExampleWriter {
 			
 			
 			
-		} catch (IOException | InvalidFunctionException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

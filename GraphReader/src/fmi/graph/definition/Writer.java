@@ -11,6 +11,8 @@ public interface Writer {
 	
 	public void createBin(File graph) throws IOException;
 	
+	public void createGZip(File graph) throws IOException;
+	
 	public void setNodeCount(int n);
 	
 	public void setEdgeCount(int m);

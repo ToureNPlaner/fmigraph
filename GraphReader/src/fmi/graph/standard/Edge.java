@@ -91,7 +91,7 @@ public class Edge implements fmi.graph.definition.Edge{
 		dos.writeInt(source);
 		dos.writeInt(target);
 		dos.writeInt(weight);
-		dos.write(type);
+		dos.writeInt(type);
 	}
 	
 }
