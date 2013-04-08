@@ -1,9 +1,10 @@
 package fmi.graph.definition;
 
+import fmi.graph.exceptions.InvalidFunctionException;
+import fmi.graph.metaio.MetaData;
+
 import java.io.File;
 import java.io.IOException;
-
-import fmi.graph.exceptions.InvalidFunctionException;
 
 public interface Writer {
 
@@ -15,7 +16,7 @@ public interface Writer {
 	
 	public void setEdgeCount(int m);
 	
-	public void writeMetaData() throws IOException;
+	public void writeMetaData(MetaData data) throws IOException, InvalidFunctionException;
 	
 	public void writeNode(Node n) throws IOException, InvalidFunctionException;
 	

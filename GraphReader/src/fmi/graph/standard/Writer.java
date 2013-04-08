@@ -1,16 +1,12 @@
 package fmi.graph.standard;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-
-import fmi.graph.definition.Node;
 import fmi.graph.definition.Edge;
+import fmi.graph.definition.Node;
 import fmi.graph.exceptions.InvalidFunctionException;
+import fmi.graph.metaio.MetaData;
+import fmi.graph.metaio.MetaWriter;
+
+import java.io.*;
 
 public class Writer implements fmi.graph.definition.Writer {
 
@@ -68,9 +64,15 @@ public class Writer implements fmi.graph.definition.Writer {
 	}
 
 	@Override
-	public void writeMetaData() {
-		// TODO Add Metadatawriter here
-
+	public void writeMetaData(MetaData data) throws IOException, InvalidFunctionException {
+        if (headWritten)
+            throw new InvalidFunctionException("Need to write Metadata before head/nodes/edges");
+        MetaWriter w = new MetaWriter();
+        if (bin){
+            w.writeMetaDataRaw(dos, data);
+        } else {
+            w.writeMetaDataWriter(bw, data);
+        }
 	}
 
 	@Override
