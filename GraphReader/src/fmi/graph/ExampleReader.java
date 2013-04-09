@@ -20,9 +20,9 @@ public class ExampleReader {
 		int edges =0;
 		long start = System.currentTimeMillis();
 		try {
-			//r.openBin(new File("test.bin"));
+			r.openBin(new File("test.bin"));
 			//r.open(new File("test.txt"));
-			r.openGZip(new File("test.gz"));
+			//r.openGZip(new File("test.gz"));
 			while(r.hasNextNode())
 			{
 				n = r.nextNode();

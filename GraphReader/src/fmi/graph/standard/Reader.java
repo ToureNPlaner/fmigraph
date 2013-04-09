@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.zip.GZIPInputStream;
 
+import com.ning.compress.lzf.util.LZFFileInputStream;
+
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
 
@@ -44,8 +46,7 @@ public class Reader implements fmi.graph.definition.Reader {
 	@Override
 	public void openGZip(File graph) throws IOException {
 		bin = true;
-		dis = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new FileInputStream(
-				graph))));
+		dis = new DataInputStream(new BufferedInputStream(new LZFFileInputStream(graph)));
 		readHead();
 	}
 

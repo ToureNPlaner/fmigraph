@@ -9,6 +9,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.zip.GZIPOutputStream;
 
+import com.ning.compress.lzf.util.LZFFileOutputStream;
+
 import fmi.graph.definition.Node;
 import fmi.graph.definition.Edge;
 import fmi.graph.exceptions.InvalidFunctionException;
@@ -65,7 +67,7 @@ public class Writer implements fmi.graph.definition.Writer {
 		graph.createNewFile();
 
 		bin = true;
-		dos = new DataOutputStream(new BufferedOutputStream(new GZIPOutputStream(new FileOutputStream(graph))));
+		dos = new DataOutputStream(new BufferedOutputStream(new LZFFileOutputStream(graph)));
 		nodesWritten = 0;
 		edgesWritten = 0;
 		headWritten = false;
