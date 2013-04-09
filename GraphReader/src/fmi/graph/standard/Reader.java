@@ -1,18 +1,13 @@
 package fmi.graph.standard;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.zip.GZIPInputStream;
-
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
+import fmi.graph.metaio.MetaData;
+import fmi.graph.metaio.MetaReader;
+import fmi.graph.tools.SaneBufferedInputStream;
+
+import java.io.*;
+import java.util.zip.GZIPInputStream;
 
 public class Reader implements fmi.graph.definition.Reader {
 
@@ -24,45 +19,42 @@ public class Reader implements fmi.graph.definition.Reader {
 	protected int edgesRead = 0;
 
 	protected DataInputStream dis = null;
+    protected SaneBufferedInputStream bis = null;
 	protected BufferedReader br = null;
 
 	@Override
-	public void open(File graph) throws IOException {
+	public MetaData open(File graph) throws IOException {
 		bin = false;
 		br = new BufferedReader(new FileReader(graph));
-		readHead();
+		return readHead();
 	}
 
 	@Override
-	public void openBin(File graph) throws IOException {
+	public MetaData openBin(File graph) throws IOException {
 		bin = true;
-		dis = new DataInputStream(new BufferedInputStream(new FileInputStream(
-				graph)));
-		readHead();
+        bis = new SaneBufferedInputStream(new FileInputStream(graph));
+		return readHead();
 	}
 	
 	@Override
-	public void openGZip(File graph) throws IOException {
+	public MetaData openGZip(File graph) throws IOException {
 		bin = true;
-		dis = new DataInputStream(new BufferedInputStream(new GZIPInputStream(new FileInputStream(
-				graph))));
-		readHead();
+        bis = new SaneBufferedInputStream(new GZIPInputStream(new FileInputStream(graph)));
+		return readHead();
 	}
 
 	@Override
-	public void read(InputStream in) throws IOException {
+	public MetaData read(InputStream in) throws IOException {
 		bin = false;
 		br = new BufferedReader(new InputStreamReader(in));
-		readHead();
-
+		return readHead();
 	}
 
 	@Override
-	public void readBin(InputStream in) throws IOException {
+	public MetaData readBin(InputStream in) throws IOException {
 		bin = true;
-		dis = new DataInputStream(new BufferedInputStream(in));
-		readHead();
-
+		dis = new DataInputStream(new SaneBufferedInputStream(in));
+		return readHead();
 	}
 
 	@Override
@@ -219,17 +211,21 @@ public class Reader implements fmi.graph.definition.Reader {
 		}
 	}
 
-	private void readHead() throws IOException {
-
+	private MetaData readHead() throws IOException {
+        MetaReader mr = new MetaReader();
+        MetaData meta = null;
 		nodes = -1;
 		nodesRead = 0;
 		edges = -1;
 		edgesRead = 0;
 
 		if (bin) {
+            meta = mr.readMetaData(bis);
+            dis = new DataInputStream(bis);
 			nodes = dis.readInt();
 			edges = dis.readInt();
 		} else {
+            meta = mr.readMetaData(br);
 			while (true) {
 				String line;
 				line = br.readLine().trim();
@@ -245,6 +241,7 @@ public class Reader implements fmi.graph.definition.Reader {
 			}
 		}
 
+        return meta;
 	}
 
 }

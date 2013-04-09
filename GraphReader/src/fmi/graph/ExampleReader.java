@@ -1,12 +1,16 @@
 package fmi.graph;
-import java.io.File;
-
-import java.io.IOException;
 
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
-import fmi.graph.standard.*;
+import fmi.graph.metaio.MetaData;
+import fmi.graph.metaio.Value;
+import fmi.graph.standard.Edge;
+import fmi.graph.standard.Node;
+import fmi.graph.standard.Reader;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
 
 
 public class ExampleReader {
@@ -20,9 +24,17 @@ public class ExampleReader {
 		int edges =0;
 		long start = System.currentTimeMillis();
 		try {
-			//r.openBin(new File("test.bin"));
-			//r.open(new File("test.txt"));
-			r.openGZip(new File("test.gz"));
+			MetaData meta = r.openBin(new File("test.bin"));
+            //MetaData meta = r.open(new File("test.txt"));
+            //MetaData meta = r.openGZip(new File("test.gz"));
+            for (Map.Entry<String, Value> entry : meta.data.entrySet()) {
+                System.out.println("Key: \""+entry.getKey()+"\" with value: \""+entry.getValue().value+'"');
+                System.out.println("Comments:");
+                for (String comment : entry.getValue().comments){
+                    System.out.println("\t"+comment);
+                }
+                System.out.println("---------------------------------------------------------------");
+            }
 			while(r.hasNextNode())
 			{
 				n = r.nextNode();

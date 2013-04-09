@@ -1,5 +1,7 @@
 package fmi.graph.metaio;
 
+import fmi.graph.tools.SaneBufferedInputStream;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -21,7 +23,6 @@ public class MetaReader {
         mcom = compattern.matcher("");
     }
 
-
     public MetaData readMetaData(BufferedReader r) throws IOException {
         if (r == null)
             return null;
@@ -36,7 +37,26 @@ public class MetaReader {
             r.mark(readaheadlimit);
             line = r.readLine();
         }
+        r.reset();
+        return meta;
+    }
 
+
+
+    public MetaData readMetaData(SaneBufferedInputStream r) throws IOException {
+        if (r == null) return null;
+        MetaData meta = new MetaData();
+        r.mark(readaheadlimit);
+        String line = r.readSaneLine();
+        while (line != null && !line.equals("")) {
+            if (!matchLine(meta, line)) {
+                r.reset();
+                break;
+            }
+            r.mark(readaheadlimit);
+            line = r.readSaneLine();
+        }
+        r.reset();
         return meta;
     }
 

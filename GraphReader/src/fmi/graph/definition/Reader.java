@@ -6,44 +6,48 @@ import java.io.InputStream;
 
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
+import fmi.graph.metaio.MetaData;
 
 
 public interface Reader {
 	
 	/**
 	 * Opens a text based graph of the format defined at: 
-	 * @param graph
-	 * @throws IOException
+	 *
+     * @param graph
+     * @throws IOException
 	 */
-	public void open(File graph) throws IOException;
+	public MetaData open(File graph) throws IOException;
 	
 	/**
 	 * Opens a text based graph of the format defined at: 
-	 * @param in
-	 * @throws IOException
+	 *
+     * @param in
+     * @throws IOException
 	 */
-	public void read(InputStream in) throws IOException;
+	public MetaData read(InputStream in) throws IOException;
 	
 	/**
 	 * Opens a binary graph of the format defined at: 
-	 * @param graph
-	 * @throws IOException
+	 *
+     * @param graph
+     * @throws IOException
 	 */
-	public void openBin(File graph) throws IOException;
+	public MetaData openBin(File graph) throws IOException;
 	
 	/**
 	 * Opens a zipped binary graph of the format defined at: 
-	 * @param graph
-	 * @throws IOException
+	 *
+     * @param graph
+     * @throws IOException
 	 */
-	public void openGZip(File graph) throws IOException;
+	public MetaData openGZip(File graph) throws IOException;
 	
 	/**
 	 * Opens a binary graph of the format defined at: 
-	 * @param graph
 	 * @throws IOException
 	 */
-	public void readBin(InputStream in) throws IOException;
+	public MetaData readBin(InputStream in) throws IOException;
 	
 	/**
 	 * Returns the node count of the selected graph
