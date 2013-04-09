@@ -18,10 +18,14 @@ public class ExampleReader {
 		Edge e;
 		int nodes=0;
 		int edges =0;
-		long start = System.currentTimeMillis();
+		long start;
 		try {
-			r.openBin(new File("test.bin"));
+			nodes=0;
+			edges =0;
+			System.out.println("Reading File");
+			start = System.currentTimeMillis();
 			//r.open(new File("test.txt"));
+			r.openBin(new File("test.bin"));
 			//r.openGZip(new File("test.gz"));
 			while(r.hasNextNode())
 			{
@@ -43,6 +47,7 @@ public class ExampleReader {
 			start = System.currentTimeMillis()-start;
 			System.out.println(start+" Millisekunden Ladezeit");
 			r.close();
+			
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} catch (NoGraphOpenException ex) {
