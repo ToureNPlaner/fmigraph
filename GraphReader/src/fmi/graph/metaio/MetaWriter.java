@@ -22,6 +22,7 @@ public class MetaWriter {
             }
             out.write(("# " + entry.getKey() + " : " + entry.getValue().value + '\n').getBytes(cset));
         }
+        out.write('\n');
     }
 
     public void writeMetaDataWriter(Writer out, MetaData data) throws IOException {
@@ -34,5 +35,6 @@ public class MetaWriter {
             }
             out.write("# " + entry.getKey() + " : " + entry.getValue().value + '\n');
         }
+        out.write('\n');
     }
 }

@@ -37,7 +37,6 @@ public class MetaReader {
             r.mark(readaheadlimit);
             line = r.readLine();
         }
-        r.reset();
         return meta;
     }
 
@@ -56,7 +55,6 @@ public class MetaReader {
             r.mark(readaheadlimit);
             line = r.readSaneLine();
         }
-        r.reset();
         return meta;
     }
 
