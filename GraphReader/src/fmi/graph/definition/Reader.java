@@ -1,12 +1,12 @@
 package fmi.graph.definition;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
 import fmi.graph.metaio.MetaData;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 
 public interface Reader {
@@ -35,14 +35,7 @@ public interface Reader {
 	 */
 	public MetaData openBin(File graph) throws IOException;
 	
-	/**
-	 * Opens a zipped binary graph of the format defined at: 
-	 *
-     * @param graph
-     * @throws IOException
-	 */
-	public MetaData openGZip(File graph) throws IOException;
-	
+
 	/**
 	 * Opens a binary graph of the format defined at: 
 	 * @throws IOException

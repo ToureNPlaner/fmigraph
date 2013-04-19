@@ -7,7 +7,6 @@ import fmi.graph.metaio.MetaReader;
 import fmi.graph.tools.SaneBufferedInputStream;
 
 import java.io.*;
-import java.util.zip.GZIPInputStream;
 
 public class Reader implements fmi.graph.definition.Reader {
 
@@ -33,13 +32,6 @@ public class Reader implements fmi.graph.definition.Reader {
 	public MetaData openBin(File graph) throws IOException {
 		bin = true;
         bis = new SaneBufferedInputStream(new FileInputStream(graph));
-		return readHead();
-	}
-	
-	@Override
-	public MetaData openGZip(File graph) throws IOException {
-		bin = true;
-        bis = new SaneBufferedInputStream(new GZIPInputStream(new FileInputStream(graph)));
 		return readHead();
 	}
 

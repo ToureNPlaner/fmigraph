@@ -22,11 +22,11 @@ public class ExampleReader {
 		Edge e;
 		int nodes=0;
 		int edges =0;
-		long start = System.currentTimeMillis();
+		long start;
 		try {
+            start = System.currentTimeMillis();
 			MetaData meta = r.openBin(new File("test.bin"));
             //MetaData meta = r.open(new File("test.txt"));
-            //MetaData meta = r.openGZip(new File("test.gz"));
             for (Map.Entry<String, Value> entry : meta.entrySet()) {
                 System.out.println("Key: \""+entry.getKey()+"\" with value: \""+entry.getValue().value+'"');
                 System.out.println("Comments:");
@@ -55,6 +55,7 @@ public class ExampleReader {
 			start = System.currentTimeMillis()-start;
 			System.out.println(start+" Millisekunden Ladezeit");
 			r.close();
+			
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} catch (NoGraphOpenException ex) {
