@@ -16,7 +16,7 @@ public class MetaWriter {
         for (String comment : data.comments){
             out.write(("# " + comment + '\n').getBytes(cset));
         }
-        for (Map.Entry<String, Value> entry : data.data.entrySet()) {
+        for (Map.Entry<String, Value> entry : data.entrySet()) {
             for (String comment : entry.getValue().comments){
                 out.write(("# " + comment + '\n').getBytes(cset));
             }
@@ -29,7 +29,7 @@ public class MetaWriter {
         for (String comment : data.comments) {
             out.write("# " + comment + '\n');
         }
-        for (Map.Entry<String, Value> entry : data.data.entrySet()) {
+        for (Map.Entry<String, Value> entry : data.entrySet()) {
             for (String comment : entry.getValue().comments) {
                 out.write("# " + comment + '\n');
             }

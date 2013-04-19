@@ -27,7 +27,7 @@ public class ExampleReader {
 			MetaData meta = r.openBin(new File("test.bin"));
             //MetaData meta = r.open(new File("test.txt"));
             //MetaData meta = r.openGZip(new File("test.gz"));
-            for (Map.Entry<String, Value> entry : meta.data.entrySet()) {
+            for (Map.Entry<String, Value> entry : meta.entrySet()) {
                 System.out.println("Key: \""+entry.getKey()+"\" with value: \""+entry.getValue().value+'"');
                 System.out.println("Comments:");
                 for (String comment : entry.getValue().comments){

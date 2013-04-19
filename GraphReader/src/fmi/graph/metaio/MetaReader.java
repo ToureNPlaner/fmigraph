@@ -62,10 +62,10 @@ public class MetaReader {
         if (mkv.reset(line).matches()) {
             String key = mkv.group(1);
             String value = mkv.group(2).trim();
-            meta.Add(key, value);
+            meta.add(key, value);
         } else if (mcom.reset(line).matches()){
             String comment = mcom.group(1).trim();
-            meta.AddComment(comment);
+            meta.addComment(comment);
         } else  {
             return false;
         }

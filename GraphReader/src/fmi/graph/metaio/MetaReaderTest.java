@@ -77,12 +77,12 @@ public class MetaReaderTest {
     }
 
     private void checkT1MetaData(MetaData m){
-        assertEquals("1360159954", m.data.get("timestamp").value);
-        assertNotNull(m.data.get("timestamp").asDate());
-        assertEquals("Comment in first line", m.data.get("timestamp").comments[0]);
-        assertEquals(2, m.data.get("version").comments.length);
-        assertEquals("First Comment for version", m.data.get("version").comments[0]);
-        assertEquals("Second Comment for version", m.data.get("version").comments[1]);
+        assertEquals("1360159954", m.get("timestamp").value);
+        assertNotNull(m.get("timestamp").asDate());
+        assertEquals("Comment in first line", m.get("timestamp").comments[0]);
+        assertEquals(2, m.get("version").comments.length);
+        assertEquals("First Comment for version", m.get("version").comments[0]);
+        assertEquals("Second Comment for version", m.get("version").comments[1]);
 
         // Test end comment is there
         assertEquals(1, m.comments.size());

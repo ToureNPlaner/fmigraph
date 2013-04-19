@@ -23,11 +23,11 @@ public class ExampleWriter {
 			w.setEdgeCount(2000);
 
             MetaData data = new MetaData();
-            data.AddComment("This is a totally awesome comment");
-            data.AddComment("and here comes another comment that tells you how great this format is!");
-            data.AddComment("We can even handle embedded : isn't that unbelievable");
-            data.Add("Timestamp", "1337");
-            data.Add("Origin", "CHConstructor");
+            data.addComment("This is a totally awesome comment");
+            data.addComment("and here comes another comment that tells you how great this format is!");
+            data.addComment("We can even handle embedded : isn't that unbelievable");
+            data.add("Timestamp", "1337");
+            data.add("Origin", "CHConstructor");
             w.writeMetaData(data);
 			
 			for(int n=0;n<1000;n++)
