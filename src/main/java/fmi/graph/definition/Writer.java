@@ -20,12 +20,17 @@ import fmi.graph.metaio.MetaData;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public interface Writer {
 
 	public void create(File graph) throws IOException;
 	
 	public void createBin(File graph) throws IOException;
+
+    public void write(OutputStream out) throws IOException;
+
+    public void writeBin(OutputStream out) throws IOException;
 	
 	public void setNodeCount(int n);
 	

@@ -50,22 +50,36 @@ public class Writer implements fmi.graph.definition.Writer {
 		nodesWritten = 0;
 		edgesWritten = 0;
 		headWritten = false;
-
 	}
 
-	@Override
-	public void createBin(File graph) throws IOException {
-		if (graph.exists())
-			graph.delete();
-		graph.createNewFile();
+    @Override
+    public void createBin(File graph) throws IOException {
+        if (graph.exists()) graph.delete();
+        graph.createNewFile();
 
+        bin = false;
+        dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(graph)));
+        nodesWritten = 0;
+        edgesWritten = 0;
+        headWritten = false;
+    }
+
+    @Override
+    public void write(OutputStream out) throws IOException {
+        bin = false;
+        bw = new BufferedWriter(new OutputStreamWriter(out));
+        nodesWritten = 0;
+        edgesWritten = 0;
+        headWritten = false;
+    }
+
+	@Override
+    public void writeBin(OutputStream out) throws IOException {
 		bin = true;
-		dos = new DataOutputStream(new BufferedOutputStream(
-				new FileOutputStream(graph)));
+		dos = new DataOutputStream(new BufferedOutputStream(out));
 		nodesWritten = 0;
 		edgesWritten = 0;
 		headWritten = false;
-
 	}
 
 	@Override
