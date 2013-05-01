@@ -15,11 +15,7 @@
  */
 package fmi.graph.metaio;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Niklas Schnelle *
@@ -32,6 +28,11 @@ public class MetaData {
     public MetaData(){
         data = new TreeMap<String, Value>();
         comments = new ArrayList<String>();
+    }
+
+    public MetaData(MetaData orig){
+        this.data = new HashMap<String, Value>(orig.data);
+        this.comments = new ArrayList<String>(orig.comments);
     }
 
     /**
