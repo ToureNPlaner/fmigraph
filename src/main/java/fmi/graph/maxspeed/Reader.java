@@ -17,6 +17,7 @@ package fmi.graph.maxspeed;
 
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
+import fmi.graph.standard.Node;
 
 import java.io.IOException;
 
