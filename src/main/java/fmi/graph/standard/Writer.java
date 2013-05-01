@@ -57,7 +57,7 @@ public class Writer implements fmi.graph.definition.Writer {
         if (graph.exists()) graph.delete();
         graph.createNewFile();
 
-        bin = false;
+        bin = true;
         dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(graph)));
         nodesWritten = 0;
         edgesWritten = 0;
@@ -119,13 +119,13 @@ public class Writer implements fmi.graph.definition.Writer {
 		} else {
 			if (!headWritten) {
 				bw.write(Integer.toString(nodes));
-				bw.newLine();
+				bw.write('\n');
 				bw.write(Integer.toString(edges));
-				bw.newLine();
+				bw.write('\n');
 				headWritten = true;
 			}
 			bw.write(n.toString());
-			bw.newLine();
+			bw.write('\n');
 		}
 		nodesWritten++;
 
@@ -139,7 +139,7 @@ public class Writer implements fmi.graph.definition.Writer {
 			e.writeBin(dos);
 		else {
 			bw.write(e.toString());
-			bw.newLine();
+			bw.write('\n');
 		}
 		edgesWritten++;
 
