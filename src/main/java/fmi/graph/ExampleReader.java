@@ -19,9 +19,9 @@ import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
 import fmi.graph.metaio.MetaData;
 import fmi.graph.metaio.Value;
-import fmi.graph.standard.Edge;
+import fmi.graph.maxspeed.Edge;
 import fmi.graph.standard.Node;
-import fmi.graph.standard.Reader;
+import fmi.graph.maxspeed.Reader;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,7 +62,7 @@ public class ExampleReader {
 			start = System.currentTimeMillis();
 			while(r.hasNextEdge())
 			{
-				e = r.nextEdge();
+				e = (fmi.graph.maxspeed.Edge) r.nextEdge();
 				//System.out.println(e);
 				edges++;
 			}
