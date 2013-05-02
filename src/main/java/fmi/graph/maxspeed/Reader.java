@@ -15,68 +15,38 @@
  */
 package fmi.graph.maxspeed;
 
-import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
-import fmi.graph.standard.Node;
 
 import java.io.IOException;
 
 public class Reader extends fmi.graph.standard.Reader {
 
-	
-	public Node nextNode() throws NoGraphOpenException, NoSuchElementException {
-		String line="";
-		String[] split;
-		
-		if(br==null)
-			throw new NoGraphOpenException();
-		
-		if(nodesRead >= nodes)
-			throw new NoSuchElementException();
-		
-		try {
-			while(true)
-			{
-				line = br.readLine().trim();
-				if(line.charAt(0)!='#')
-					break;
-			}
-			nodesRead++;
-			split = line.split(" ");
-			return new Node(Integer.parseInt(split[0]), Long.parseLong(split[1]), Double.parseDouble(split[2]), Double.parseDouble(split[3]), Integer.parseInt(split[4]));
+    @Override
+    protected Edge readEdgeString(String line) throws NoSuchElementException{
+        String[] split = line.split(" ",6);
 
-		} catch (IOException e) {
-			System.out.println(line);
-			e.printStackTrace();
-			throw new NoGraphOpenException();
-		}
-	}
-	
-	public Edge nextEdge() throws NoGraphOpenException, NoSuchElementException {
-		String line;
-		String[] split;
-		
-		if(br==null)
-			throw new NoGraphOpenException();
-		
-		if(edgesRead >= edges)
-			throw new NoSuchElementException();
-		
-		try {
-			while(true)
-			{
-				line = br.readLine().trim();
-				if(line.charAt(0)!='#')
-					break;
-			}
-			edgesRead++;
-			split = line.split(" ");
-			return new Edge(Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3]), Integer.parseInt(split[4]));
+        if(split.length==5)
+        {
+            return new fmi.graph.maxspeed.Edge(Integer.parseInt(split[0]),
+                    Integer.parseInt(split[1]), Integer.parseInt(split[2]),
+                    Integer.parseInt(split[3]), Integer.parseInt(split[4]) ,split[5]);
+        }
+        else if(split.length==4)
+        {
+            return new fmi.graph.maxspeed.Edge(Integer.parseInt(split[0]),
+                    Integer.parseInt(split[1]), Integer.parseInt(split[2]),
+                    Integer.parseInt(split[3]), Integer.parseInt(split[4]));
+        }
+        else
+        {
+            throw new NoSuchElementException("Malformed edge:"+line);
+        }
+    }
 
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new NoGraphOpenException();
-		}
-	}
+    @Override
+    protected Edge readEdgeBin() throws IOException {
+        return new fmi.graph.maxspeed.Edge(dis.readInt(), dis.readInt(), dis.readInt(),
+                dis.readInt(), dis.readInt());
+    }
 
 }
