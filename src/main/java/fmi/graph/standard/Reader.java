@@ -105,6 +105,29 @@ public class Reader implements fmi.graph.definition.Reader {
 
 	}
 
+    protected Node readNodeBin() throws IOException {
+        return new Node(dis.readInt(), dis.readLong(),
+                dis.readDouble(), dis.readDouble(), dis.readInt());
+    }
+
+    protected Node readNodeString(String line) throws NoSuchElementException {
+        String[] split = line.split(" ",6);
+        if(split.length==6)
+        {
+            return new Node(Integer.parseInt(split[0]),	Long.parseLong(split[1]), Double.parseDouble(split[2]),
+                    Double.parseDouble(split[3]), Integer.parseInt(split[4]),split[5]);
+        }
+        else if(split.length==5)
+        {
+            return new Node(Integer.parseInt(split[0]),	Long.parseLong(split[1]), Double.parseDouble(split[2]),
+                    Double.parseDouble(split[3]), Integer.parseInt(split[4]));
+        }
+        else
+        {
+            throw new NoSuchElementException("Malformed node:"+line);
+        }
+    }
+
 	@Override
 	public Node nextNode() throws NoGraphOpenException, NoSuchElementException {
 
@@ -117,14 +140,12 @@ public class Reader implements fmi.graph.definition.Reader {
 		if (bin) {
 			nodesRead++;
 			try {
-				return new Node(dis.readInt(), dis.readLong(),
-						dis.readDouble(), dis.readDouble(), dis.readInt());
+				return readNodeBin();
 			} catch (IOException e) {
 				throw new NoSuchElementException(e.getMessage());
 			}
 		} else {
-			String line = "";
-			String[] split;
+			String line;
 			try {
 				while (true) {
 					line = br.readLine().trim();
@@ -132,27 +153,39 @@ public class Reader implements fmi.graph.definition.Reader {
 						break;
 				}
 				nodesRead++;
-				split = line.split(" ",6);
-				if(split.length==6)
-				{
-					return new Node(Integer.parseInt(split[0]),	Long.parseLong(split[1]), Double.parseDouble(split[2]),
-						Double.parseDouble(split[3]), Integer.parseInt(split[4]),split[5]);
-				}
-				else if(split.length==5)
-				{
-					return new Node(Integer.parseInt(split[0]),	Long.parseLong(split[1]), Double.parseDouble(split[2]),
-							Double.parseDouble(split[3]), Integer.parseInt(split[4]));
-				}
-				else
-				{
-					throw new NoSuchElementException("Malformed node:"+line);
-				}
+                return readNodeString(line);
 
 			} catch (IOException e) {
 				throw new NoSuchElementException(e.getMessage());
 			}
 		}
 	}
+
+    protected Edge readEdgeBin() throws IOException {
+        return new Edge(dis.readInt(), dis.readInt(), dis.readInt(),
+                dis.readInt());
+    }
+
+    protected Edge readEdgeString(String line) throws NoSuchElementException {
+        String[] split = line.split(" ",5);
+
+        if(split.length==5)
+        {
+            return new Edge(Integer.parseInt(split[0]),
+                    Integer.parseInt(split[1]), Integer.parseInt(split[2]),
+                    Integer.parseInt(split[3]),split[4]);
+        }
+        else if(split.length==4)
+        {
+            return new Edge(Integer.parseInt(split[0]),
+                    Integer.parseInt(split[1]), Integer.parseInt(split[2]),
+                    Integer.parseInt(split[3]));
+        }
+        else
+        {
+            throw new NoSuchElementException("Malformed edge:"+line);
+        }
+    }
 
 	@Override
 	public Edge nextEdge() throws NoGraphOpenException, NoSuchElementException {
@@ -166,14 +199,12 @@ public class Reader implements fmi.graph.definition.Reader {
 		if (bin) {
 			try {
 				edgesRead++;
-				return new Edge(dis.readInt(), dis.readInt(), dis.readInt(),
-						dis.readInt());
+                return readEdgeBin();
 			} catch (IOException e) {
 				throw new NoSuchElementException(e.getMessage());
 			}
 		} else {
 			String line;
-			String[] split;
 
 			try {
 				while (true) {
@@ -182,25 +213,7 @@ public class Reader implements fmi.graph.definition.Reader {
 						break;
 				}
 				edgesRead++;
-				split = line.split(" ",5);
-				
-				if(split.length==5)
-				{
-					return new Edge(Integer.parseInt(split[0]),
-						Integer.parseInt(split[1]), Integer.parseInt(split[2]),
-						Integer.parseInt(split[3]),split[4]);
-				}
-				else if(split.length==4)
-				{
-					return new Edge(Integer.parseInt(split[0]),
-							Integer.parseInt(split[1]), Integer.parseInt(split[2]),
-							Integer.parseInt(split[3]));
-				}
-				else
-				{
-					throw new NoSuchElementException("Malformed edge:"+line);
-				}
-
+                return readEdgeString(line);
 			} catch (IOException e) {
 				throw new NoSuchElementException(e.getMessage());
 			}
