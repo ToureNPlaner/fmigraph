@@ -15,6 +15,9 @@
  */
 package fmi.graph.maxspeed;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 public class Edge extends fmi.graph.standard.Edge {
 
 	int maxspeed;
@@ -38,5 +41,11 @@ public class Edge extends fmi.graph.standard.Edge {
 	{
 		return super.toBaseString()+" "+maxspeed;
 	}
+
+    @Override
+    public void writeBin(DataOutputStream dos) throws IOException {
+        super.writeBin(dos);
+        dos.writeInt(maxspeed);
+    }
 
 }
