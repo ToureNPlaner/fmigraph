@@ -42,6 +42,10 @@ public class ExampleReader {
             start = System.currentTimeMillis();
 			MetaData meta = r.openBin(new File("test.bin"));
             //MetaData meta = r.open(new File("test.txt"));
+
+            System.out.println("Created at "+meta.get("Timestamp").asDate());
+            System.out.println("by "+meta.get("Producer"));
+
             for (Map.Entry<String, Value> entry : meta.entrySet()) {
                 System.out.println("Key: \""+entry.getKey()+"\" with value: \""+entry.getValue().value+'"');
                 System.out.println("Comments:");
