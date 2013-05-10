@@ -18,13 +18,11 @@ package fmi.graph;
 import fmi.graph.exceptions.InvalidFunctionException;
 import fmi.graph.maxspeed.Edge;
 import fmi.graph.metaio.MetaData;
-import fmi.graph.metaio.Value;
 import fmi.graph.standard.Node;
 import fmi.graph.standard.Writer;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 
 public class ExampleWriter {
 
@@ -43,7 +41,6 @@ public class ExampleWriter {
             data.addComment("This is a totally awesome comment");
             data.addComment("and here comes another comment that tells you how great this format is!");
             data.addComment("We can even handle embedded : isn't that unbelievable");
-            data.add("Timestamp", new Value(new Date()));
             data.add("Producer", "ExampleWriter");
             w.writeMetaData(data);
 			
