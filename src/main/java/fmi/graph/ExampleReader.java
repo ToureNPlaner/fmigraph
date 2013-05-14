@@ -57,22 +57,15 @@ public class ExampleReader {
 			while(r.hasNextNode())
 			{
 				n = r.nextNode();
-				//System.out.println(n);
+				System.out.println(n);
 				nodes++;
 			}
-			System.out.println("Nodes gelesen: "+nodes+" Nodes vorhanden: "+r.getNodeCount());
-			start = System.currentTimeMillis()-start;
-			System.out.println(start+" Millisekunden Ladezeit");
-			start = System.currentTimeMillis();
 			while(r.hasNextEdge())
 			{
 				e = (fmi.graph.maxspeed.Edge) r.nextEdge();
-				//System.out.println(e);
-				edges++;
+				System.out.println(e);
 			}
 			System.out.println("Edges gelesen: "+edges+" Edges vorhanden: "+r.getEdgeCount());
-			start = System.currentTimeMillis()-start;
-			System.out.println(start+" Millisekunden Ladezeit");
 			r.close();
 			
 		} catch (IOException ex) {
