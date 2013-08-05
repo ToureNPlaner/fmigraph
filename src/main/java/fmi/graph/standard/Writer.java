@@ -29,7 +29,7 @@ public class Writer implements fmi.graph.definition.Writer {
 
 	boolean bin;
 
-	protected int type;
+	protected String type;
 	protected int revision;
 
 	int nodes;
@@ -43,7 +43,7 @@ public class Writer implements fmi.graph.definition.Writer {
 
 	public Writer()
 	{
-		type = 1;
+		type = "standard";
 		revision = 3;
 	}
 	
@@ -108,7 +108,7 @@ public class Writer implements fmi.graph.definition.Writer {
         //Add required MetaData Fields
         data.add("Id", General.createRandomIdValue());
         data.add("Timestamp", new Value(new Date()));
-        data.add("Type", Integer.toString(type));
+        data.add("Type", type);
         data.add("Revision", Integer.toString(revision));
         
         MetaWriter w = new MetaWriter();

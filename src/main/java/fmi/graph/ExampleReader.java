@@ -19,9 +19,9 @@ import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
 import fmi.graph.metaio.MetaData;
 import fmi.graph.metaio.Value;
-import fmi.graph.maxspeed.Edge;
+import fmi.graph.standard.Edge;
 import fmi.graph.standard.Node;
-import fmi.graph.maxspeed.Reader;
+import fmi.graph.standard.Reader;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,9 +31,7 @@ import java.util.Map;
 public class ExampleReader {
 	public static void main(String[] args) {
 		Reader r = new Reader();
-		@SuppressWarnings("unused")
 		Node n;
-		@SuppressWarnings("unused")
 		Edge e;
 		int nodes=0;
 		int edges =0;
@@ -62,7 +60,7 @@ public class ExampleReader {
 			}
 			while(r.hasNextEdge())
 			{
-				e = (fmi.graph.maxspeed.Edge) r.nextEdge();
+				e = r.nextEdge();
 				System.out.println(e);
 			}
 			System.out.println("Edges gelesen: "+edges+" Edges vorhanden: "+r.getEdgeCount());

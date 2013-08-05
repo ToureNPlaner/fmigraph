@@ -16,10 +16,10 @@
 package fmi.graph;
 
 import fmi.graph.exceptions.InvalidFunctionException;
-import fmi.graph.maxspeed.Edge;
+import fmi.graph.standard.Edge;
 import fmi.graph.metaio.MetaData;
-import fmi.graph.maxspeed.Node;
-import fmi.graph.maxspeed.Writer;
+import fmi.graph.standard.Node;
+import fmi.graph.standard.Writer;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,8 +32,8 @@ public class ExampleWriter {
 		Writer w = new Writer();
 		
 		try {
-			//w.createBin(new File("test.bin"));
-            w.create(new File("test.txt"));
+			w.createBin(new File("test.bin"));
+            //w.create(new File("test.txt"));
 			w.setNodeCount(1000);
 			w.setEdgeCount(2000);
 
@@ -51,7 +51,7 @@ public class ExampleWriter {
 			
 			for(int m=0;m<2000;m++)
 			{
-				w.writeEdge(new Edge(m,m+1,(int)(Math.random()*100),(int)(Math.random()*100), (int)(Math.random()*100),"Teststring 2"));
+				w.writeEdge(new Edge(m,m+1,(int)(Math.random()*100),(int)(Math.random()*100),"Teststring 2"));
 			}
 			w.close();
 			

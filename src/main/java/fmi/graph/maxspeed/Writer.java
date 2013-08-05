@@ -9,7 +9,7 @@ public class Writer extends fmi.graph.standard.Writer {
 
 	public Writer()
 	{
-		type = 2;
+		type = "maxspeed";
 		revision = 1;
 	}
 	
