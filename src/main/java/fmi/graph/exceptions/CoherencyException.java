@@ -1,6 +1,8 @@
 package fmi.graph.exceptions;
 
-public class CoherencyException extends Exception{
+import fmi.graph.definition.GraphException;
+
+public class CoherencyException extends GraphException{
 	
 	private static final long serialVersionUID = -1511156500831967164L;
 

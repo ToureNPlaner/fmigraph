@@ -15,6 +15,7 @@
  */
 package fmi.graph;
 
+import fmi.graph.definition.GraphException;
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
 import fmi.graph.metaio.MetaData;
@@ -68,12 +69,9 @@ public class ExampleReader {
 			
 		} catch (IOException ex) {
 			ex.printStackTrace();
-		} catch (NoGraphOpenException ex) {
-			ex.printStackTrace();
-		} catch (NoSuchElementException ex) {
+		} catch (GraphException ex) {
 			ex.printStackTrace();
 		}
-		
 
 	}
 

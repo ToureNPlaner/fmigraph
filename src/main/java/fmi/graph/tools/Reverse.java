@@ -16,6 +16,7 @@
 package fmi.graph.tools;
 
 import fmi.graph.definition.Edge;
+import fmi.graph.definition.GraphException;
 import fmi.graph.definition.Node;
 import fmi.graph.definition.Reader;
 import fmi.graph.exceptions.NoGraphOpenException;
@@ -69,9 +70,7 @@ public class Reverse {
 
 		} catch (IOException ex) {
 			ex.printStackTrace();
-		} catch (NoGraphOpenException e1) {
-			e1.printStackTrace();
-		} catch (NoSuchElementException e1) {
+		} catch (GraphException e1) {
 			e1.printStackTrace();
 		}
 

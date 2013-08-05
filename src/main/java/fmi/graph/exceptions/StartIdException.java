@@ -1,6 +1,8 @@
 package fmi.graph.exceptions;
 
-public class StartIdException extends Exception{
+import fmi.graph.definition.GraphException;
+
+public class StartIdException extends GraphException{
 	
 	private static final long serialVersionUID = 5126216455688507208L;
 

@@ -15,6 +15,8 @@
  */
 package fmi.graph.standard;
 
+import fmi.graph.definition.GraphException;
+import fmi.graph.exceptions.InvalidGraphTypeException;
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
 import fmi.graph.metaio.MetaData;
@@ -25,40 +27,48 @@ import java.io.*;
 
 public class Reader implements fmi.graph.definition.Reader {
 
+	//Settings
+	
+	protected boolean order = true;
+	protected boolean coherency = true;
+	protected int startId = 0;
+	
+
+	//intern Variables
 	protected boolean bin = false;
 
 	protected int nodes;
 	protected int edges;
 	protected int nodesRead = 0;
 	protected int edgesRead = 0;
-
+	
 	protected DataInputStream dis = null;
     protected SaneBufferedInputStream bis = null;
 	protected BufferedReader br = null;
 
 	@Override
-	public MetaData open(File graph) throws IOException {
+	public MetaData open(File graph) throws IOException, GraphException {
 		bin = false;
 		br = new BufferedReader(new FileReader(graph));
 		return readHead();
 	}
 
 	@Override
-	public MetaData openBin(File graph) throws IOException {
+	public MetaData openBin(File graph) throws IOException, GraphException {
 		bin = true;
         bis = new SaneBufferedInputStream(new FileInputStream(graph));
 		return readHead();
 	}
 
 	@Override
-	public MetaData read(InputStream in) throws IOException {
+	public MetaData read(InputStream in) throws IOException, GraphException {
 		bin = false;
 		br = new BufferedReader(new InputStreamReader(in));
 		return readHead();
 	}
 
 	@Override
-	public MetaData readBin(InputStream in) throws IOException {
+	public MetaData readBin(InputStream in) throws IOException, GraphException {
 		bin = true;
 		dis = new DataInputStream(new SaneBufferedInputStream(in));
 		return readHead();
@@ -230,8 +240,18 @@ public class Reader implements fmi.graph.definition.Reader {
 			e.printStackTrace();
 		}
 	}
+	
+	protected boolean validGraphType(String type)
+	{
+		return true;
+	}
+	
+	protected boolean validGraphRevision(String type, String revision)
+	{
+		return true;
+	}
 
-	private MetaData readHead() throws IOException {
+	private MetaData readHead() throws IOException, GraphException {
         MetaReader mr = new MetaReader();
         MetaData meta = null;
 		nodes = -1;
@@ -260,7 +280,10 @@ public class Reader implements fmi.graph.definition.Reader {
 
 			}
 		}
-
+		
+		if(!validGraphType(meta.get("type").toString()))
+			throw new InvalidGraphTypeException();
+		
         return meta;
 	}
 

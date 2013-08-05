@@ -15,7 +15,9 @@
  */
 package fmi.graph.exceptions;
 
-public class InvalidGraphRevisionException extends Exception{
+import fmi.graph.definition.GraphException;
+
+public class InvalidGraphRevisionException extends GraphException{
 
 	private static final long serialVersionUID = -8114292844946875912L;
 	

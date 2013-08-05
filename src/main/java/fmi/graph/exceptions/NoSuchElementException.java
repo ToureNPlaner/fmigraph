@@ -15,7 +15,9 @@
  */
 package fmi.graph.exceptions;
 
-public class NoSuchElementException extends Exception{
+import fmi.graph.definition.GraphException;
+
+public class NoSuchElementException extends GraphException{
 
 	private static final long serialVersionUID = 2551272215746156012L;
 

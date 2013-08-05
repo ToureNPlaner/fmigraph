@@ -27,10 +27,18 @@ import java.util.Date;
 
 public class Writer implements fmi.graph.definition.Writer {
 
+	//Settings
+	
+	protected String type = "standard";
+	protected int revision = 1;
+	
+	protected boolean order = true;
+	protected boolean coherency = true;
+	protected int startId = 0;
+	
+	//Internal Variables
+	
 	boolean bin;
-
-	protected String type;
-	protected int revision;
 
 	int nodes;
 	int edges;

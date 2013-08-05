@@ -1,6 +1,8 @@
 package fmi.graph.exceptions;
 
-public class OrderException extends Exception{
+import fmi.graph.definition.GraphException;
+
+public class OrderException extends GraphException{
 
 	private static final long serialVersionUID = 6392100382816299020L;
 

@@ -15,7 +15,9 @@
  */
 package fmi.graph.exceptions;
 
-public class NoGraphOpenException extends Exception{
+import fmi.graph.definition.GraphException;
+
+public class NoGraphOpenException extends GraphException{
 
 	private static final long serialVersionUID = 6320733261034939217L;
 
