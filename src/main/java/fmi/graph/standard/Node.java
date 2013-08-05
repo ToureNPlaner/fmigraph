@@ -27,9 +27,7 @@ public class Node implements fmi.graph.definition.Node{
 	int elevation;
 	String carryover;
 	
-	
-	@SuppressWarnings("unused")
-	private Node()
+	public Node()
 	{
 		
 	}

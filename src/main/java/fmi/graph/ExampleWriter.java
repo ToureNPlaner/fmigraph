@@ -18,8 +18,8 @@ package fmi.graph;
 import fmi.graph.exceptions.InvalidFunctionException;
 import fmi.graph.maxspeed.Edge;
 import fmi.graph.metaio.MetaData;
-import fmi.graph.standard.Node;
-import fmi.graph.standard.Writer;
+import fmi.graph.maxspeed.Node;
+import fmi.graph.maxspeed.Writer;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,15 +32,15 @@ public class ExampleWriter {
 		Writer w = new Writer();
 		
 		try {
-			w.createBin(new File("test.bin"));
-            //w.create(new File("test.txt"));
+			//w.createBin(new File("test.bin"));
+            w.create(new File("test.txt"));
 			w.setNodeCount(1000);
 			w.setEdgeCount(2000);
 
             MetaData data = new MetaData();
             data.addComment("This is a totally awesome comment");
             data.addComment("and here comes another comment that tells you how great this format is!");
-            data.addComment("We can even handle embedded : isn't that unbelievable");
+            data.addComment("embedded : isn't that unbelievable");
             data.add("Producer", "ExampleWriter");
             w.writeMetaData(data);
 			

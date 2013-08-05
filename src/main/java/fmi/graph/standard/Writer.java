@@ -20,15 +20,17 @@ import fmi.graph.definition.Node;
 import fmi.graph.exceptions.InvalidFunctionException;
 import fmi.graph.metaio.MetaData;
 import fmi.graph.metaio.MetaWriter;
-
+import fmi.graph.metaio.Value;
+import fmi.graph.tools.General;
 import java.io.*;
+import java.util.Date;
 
 public class Writer implements fmi.graph.definition.Writer {
 
 	boolean bin;
 
-	int type = 1;
-	int revision = 1;
+	protected int type;
+	protected int revision;
 
 	int nodes;
 	int edges;
@@ -39,6 +41,12 @@ public class Writer implements fmi.graph.definition.Writer {
 	DataOutputStream dos;
 	BufferedWriter bw;
 
+	public Writer()
+	{
+		type = 1;
+		revision = 3;
+	}
+	
 	@Override
 	public void create(File graph) throws IOException {
 		if (graph.exists())
@@ -96,6 +104,13 @@ public class Writer implements fmi.graph.definition.Writer {
 	public void writeMetaData(MetaData data) throws IOException, InvalidFunctionException {
         if (headWritten)
             throw new InvalidFunctionException("Need to write Metadata before head/nodes/edges");
+        
+        //Add required MetaData Fields
+        data.add("Id", General.createRandomIdValue());
+        data.add("Timestamp", new Value(new Date()));
+        data.add("Type", Integer.toString(type));
+        data.add("Revision", Integer.toString(revision));
+        
         MetaWriter w = new MetaWriter();
         if (bin){
             w.writeMetaDataRaw(dos, data);

@@ -28,7 +28,6 @@ import java.util.Map;
  */
 public class MetaWriter {
     private static final Charset cset = Charset.forName("UTF-8");
-    private static final SecureRandom sr = new SecureRandom();
 
 
     /**
@@ -45,28 +44,7 @@ public class MetaWriter {
         return hexbuilder.toString();
     }
 
-    /**
-     * Creates a Value containing a 16 byte random number as hex string
-     * @return
-     */
-    private static Value createRandomIdValue(){
-        byte[] idb = new byte[16];
-        sr.nextBytes(idb);
-        return new Value(convertToHex(idb));
-    }
-
-    /**
-     * Adds alle the MetaData that is always required.
-     * At the moment Id and Timestamp are added
-     * @param data
-     */
-    private static void addRequiredMetaData(MetaData data){
-        data.add("Id", createRandomIdValue());
-        data.add("Timestamp", new Value(new Date()));
-    }
-
     public void writeMetaDataRaw(OutputStream out, MetaData data) throws IOException {
-        addRequiredMetaData(data);
         for (String comment : data.comments) {
             out.write(("# " + comment + '\n').getBytes(cset));
         }
@@ -80,7 +58,6 @@ public class MetaWriter {
     }
 
     public void writeMetaDataWriter(Writer out, MetaData data) throws IOException {
-        addRequiredMetaData(data);
         for (String comment : data.comments) {
             out.write("# " + comment + '\n');
         }
