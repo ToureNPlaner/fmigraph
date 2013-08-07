@@ -16,8 +16,6 @@
 package fmi.graph;
 
 import fmi.graph.definition.GraphException;
-import fmi.graph.exceptions.NoGraphOpenException;
-import fmi.graph.exceptions.NoSuchElementException;
 import fmi.graph.metaio.MetaData;
 import fmi.graph.metaio.Value;
 import fmi.graph.standard.Edge;
@@ -59,10 +57,12 @@ public class ExampleReader {
 				System.out.println(n);
 				nodes++;
 			}
+			System.out.println("Nodes gelesen: "+nodes+" Nodes vorhanden: "+r.getNodeCount());
 			while(r.hasNextEdge())
 			{
 				e = r.nextEdge();
 				System.out.println(e);
+				edges++;
 			}
 			System.out.println("Edges gelesen: "+edges+" Edges vorhanden: "+r.getEdgeCount());
 			r.close();

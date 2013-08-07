@@ -17,6 +17,7 @@ package fmi.graph.standard;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 
 public class Edge implements fmi.graph.definition.Edge{
@@ -103,10 +104,20 @@ public class Edge implements fmi.graph.definition.Edge{
 
 	@Override
 	public void writeBin(DataOutputStream dos) throws IOException {
+		int carrysize;
+		if(carryover==null)
+			carrysize=0;
+		else
+			carrysize=carryover.length();
+		byte[] bCarryover = carryover.getBytes(Charset.forName("UTF-8"));
+		
 		dos.writeInt(source);
 		dos.writeInt(target);
 		dos.writeInt(weight);
 		dos.writeInt(type);
+		dos.writeInt(bCarryover.length);
+		if(carrysize>0)
+			dos.write(bCarryover);
 	}
 	
 }

@@ -16,7 +16,6 @@
 package fmi.graph.definition;
 
 import fmi.graph.exceptions.NoGraphOpenException;
-import fmi.graph.exceptions.NoSuchElementException;
 import fmi.graph.standard.Node;
 import fmi.graph.metaio.MetaData;
 

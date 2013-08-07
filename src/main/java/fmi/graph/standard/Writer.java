@@ -48,12 +48,6 @@ public class Writer implements fmi.graph.definition.Writer {
 
 	DataOutputStream dos;
 	BufferedWriter bw;
-
-	public Writer()
-	{
-		type = "standard";
-		revision = 3;
-	}
 	
 	@Override
 	public void create(File graph) throws IOException {

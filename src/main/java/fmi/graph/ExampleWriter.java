@@ -34,8 +34,8 @@ public class ExampleWriter {
 		try {
 			w.createBin(new File("test.bin"));
             //w.create(new File("test.txt"));
-			w.setNodeCount(1000);
-			w.setEdgeCount(2000);
+			w.setNodeCount(10);
+			w.setEdgeCount(20);
 
             MetaData data = new MetaData();
             data.addComment("This is a totally awesome comment");
@@ -44,12 +44,12 @@ public class ExampleWriter {
             data.add("Producer", "ExampleWriter");
             w.writeMetaData(data);
 			
-			for(int n=0;n<1000;n++)
+			for(int n=0;n<10;n++)
 			{
 				w.writeNode(new Node(n, n, Math.random(), Math.random(), (int)(Math.random()*100), "Teststring 1"));
 			}
 			
-			for(int m=0;m<2000;m++)
+			for(int m=0;m<20;m++)
 			{
 				w.writeEdge(new Edge(m,m+1,(int)(Math.random()*100),(int)(Math.random()*100),"Teststring 2"));
 			}

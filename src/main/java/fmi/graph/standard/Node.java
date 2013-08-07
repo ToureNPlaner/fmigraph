@@ -17,6 +17,7 @@ package fmi.graph.standard;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 public class Node implements fmi.graph.definition.Node{
 
@@ -107,11 +108,24 @@ public class Node implements fmi.graph.definition.Node{
 
 	@Override
 	public void writeBin(DataOutputStream dos) throws IOException {
+		byte[] bCarryover = null;
+		int carrysize;
+		if(carryover == null)
+			carrysize = 0;
+		else
+		{
+			bCarryover = carryover.getBytes(Charset.forName("UTF-8"));
+			carrysize=bCarryover.length;
+		}
+		
 		dos.writeInt(id);
 		dos.writeLong(osm);
 		dos.writeDouble(lat);
 		dos.writeDouble(lon);
 		dos.writeInt(elevation);
+		dos.writeInt(carrysize);
+		if(carrysize > 0)
+			dos.write(bCarryover);
 		
 	}
 

@@ -16,7 +16,6 @@
 package fmi.graph.standard;
 
 import fmi.graph.definition.GraphException;
-import fmi.graph.exceptions.InvalidGraphTypeException;
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
 import fmi.graph.metaio.MetaData;
@@ -24,6 +23,7 @@ import fmi.graph.metaio.MetaReader;
 import fmi.graph.tools.SaneBufferedInputStream;
 
 import java.io.*;
+import java.nio.charset.Charset;
 
 public class Reader implements fmi.graph.definition.Reader {
 
@@ -116,8 +116,23 @@ public class Reader implements fmi.graph.definition.Reader {
 	}
 
     protected Node readNodeBin() throws IOException {
-        return new Node(dis.readInt(), dis.readLong(),
-                dis.readDouble(), dis.readDouble(), dis.readInt());
+        int id = dis.readInt();
+        long osmId = dis.readLong();
+        double lat = dis.readDouble();
+        double lon = dis.readDouble();
+        int elevation = dis.readInt();
+        int carryLength = dis.readInt();
+        
+        if(carryLength==0)
+        {
+        	return new Node(id, osmId, lat, lon, elevation);
+        }
+        
+        byte[] b = new byte[carryLength];
+        dis.read(b);
+    	String carryover = new String(b, Charset.forName("UTF-8"));
+    	
+    	return new Node(id, osmId, lat, lon, elevation, carryover);
     }
 
     protected Node readNodeString(String line) throws NoSuchElementException {
@@ -172,8 +187,17 @@ public class Reader implements fmi.graph.definition.Reader {
 	}
 
     protected Edge readEdgeBin() throws IOException {
-        return new Edge(dis.readInt(), dis.readInt(), dis.readInt(),
-                dis.readInt());
+    	int source = dis.readInt();
+    	int destination = dis.readInt();
+    	int weight = dis.readInt();
+    	int type = dis.readInt();
+    	int carryLength=dis.readInt();
+    	
+    	byte[] b = new byte[carryLength];
+        dis.read(b);
+    	String carryover = new String(b, Charset.forName("UTF-8"));
+    	
+        return new Edge(source, destination, weight, type, carryover);
     }
 
     protected Edge readEdgeString(String line) throws NoSuchElementException {
@@ -280,9 +304,6 @@ public class Reader implements fmi.graph.definition.Reader {
 
 			}
 		}
-		
-		if(!validGraphType(meta.get("type").toString()))
-			throw new InvalidGraphTypeException();
 		
         return meta;
 	}
