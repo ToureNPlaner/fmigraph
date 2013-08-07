@@ -39,9 +39,9 @@ public interface Writer {
 	public void writeMetaData(MetaData data) throws IOException,
 			InvalidFunctionException;
 
-	public void writeNode(Node n) throws IOException, InvalidFunctionException;
+	public void writeNode(Node n) throws IOException, GraphException;
 
-	public void writeEdge(Edge e) throws IOException, InvalidFunctionException;
+	public void writeEdge(Edge e) throws IOException, GraphException;
 
 	public void close() throws InvalidFunctionException;
 

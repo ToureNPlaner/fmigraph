@@ -36,8 +36,8 @@ public class ExampleReader {
 		long start;
 		try {
 			start = System.currentTimeMillis();
-			MetaData meta = r.openBin(new File("test.bin"));
-			// MetaData meta = r.open(new File("test.txt"));
+			//MetaData meta = r.openBin(new File("test.bin"));
+			MetaData meta = r.open(new File("test.txt"));
 
 			System.out.println("Created at " + meta.get("Timestamp").asDate());
 			System.out.println("by " + meta.get("Producer"));

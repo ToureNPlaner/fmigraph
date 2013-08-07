@@ -16,9 +16,12 @@
 package fmi.graph.standard;
 
 import fmi.graph.definition.GraphException;
+import fmi.graph.exceptions.CoherencyException;
 import fmi.graph.exceptions.MissingMetadataException;
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
+import fmi.graph.exceptions.OrderException;
+import fmi.graph.exceptions.StartIdException;
 import fmi.graph.metaio.MetaData;
 import fmi.graph.metaio.MetaReader;
 import fmi.graph.tools.SaneBufferedInputStream;
@@ -47,6 +50,9 @@ public class Reader implements fmi.graph.definition.Reader {
 	protected DataInputStream dis = null;
 	protected SaneBufferedInputStream bis = null;
 	protected BufferedReader br = null;
+	
+	private Node n;
+	private Edge e;
 
 	public Reader() {
 
@@ -162,8 +168,9 @@ public class Reader implements fmi.graph.definition.Reader {
 	}
 
 	@Override
-	public Node nextNode() throws NoGraphOpenException, NoSuchElementException {
-
+	public Node nextNode() throws NoGraphOpenException, GraphException {
+		Node n=null;
+		
 		if (br == null && dis == null)
 			throw new NoGraphOpenException();
 
@@ -173,7 +180,7 @@ public class Reader implements fmi.graph.definition.Reader {
 		if (bin) {
 			nodesRead++;
 			try {
-				return readNodeBin();
+				n = readNodeBin();
 			} catch (IOException e) {
 				throw new NoSuchElementException(e.getMessage());
 			}
@@ -186,12 +193,28 @@ public class Reader implements fmi.graph.definition.Reader {
 						break;
 				}
 				nodesRead++;
-				return readNodeString(line);
+				n = readNodeString(line);
 
 			} catch (IOException e) {
 				throw new NoSuchElementException(e.getMessage());
 			}
 		}
+		
+		if(enforceStructure)
+		{
+			if(this.n==null)
+			{
+				if(n.id!=this.startId)
+					throw new StartIdException("Excpected StartId: "+this.startId+" got: "+n.id);
+			}
+			else
+			{
+				if(this.n.id+1!=n.id)
+					throw new CoherencyException("Expected NodeId: "+(this.n.id+1)+" got: "+n.id);
+			}
+			this.n=n;
+		}
+		return n;
 	}
 
 	protected Edge readEdgeBin() throws IOException {
@@ -225,8 +248,10 @@ public class Reader implements fmi.graph.definition.Reader {
 	}
 
 	@Override
-	public Edge nextEdge() throws NoGraphOpenException, NoSuchElementException {
+	public Edge nextEdge() throws NoGraphOpenException, GraphException {
 
+		Edge e;
+		
 		if (br == null && dis == null)
 			throw new NoGraphOpenException();
 
@@ -236,9 +261,9 @@ public class Reader implements fmi.graph.definition.Reader {
 		if (bin) {
 			try {
 				edgesRead++;
-				return readEdgeBin();
-			} catch (IOException e) {
-				throw new NoSuchElementException(e.getMessage());
+				e = readEdgeBin();
+			} catch (IOException ex) {
+				throw new NoSuchElementException(ex.getMessage());
 			}
 		} else {
 			String line;
@@ -250,11 +275,30 @@ public class Reader implements fmi.graph.definition.Reader {
 						break;
 				}
 				edgesRead++;
-				return readEdgeString(line);
-			} catch (IOException e) {
-				throw new NoSuchElementException(e.getMessage());
+				e = readEdgeString(line);
+			} catch (IOException ex) {
+				throw new NoSuchElementException(ex.getMessage());
 			}
 		}
+		
+		if(enforceStructure)
+		{
+			if(e.source<startId||e.source>n.id)
+				throw new GraphException("Edge Source out of bounds: "+e.source);
+			if(e.target<startId||e.target>n.id)
+				throw new GraphException("Edge Target out of bounds: "+e.target);
+			if(this.e==null)
+				this.e=e;
+			else
+			{
+				if(this.e.source>e.source)
+					throw new OrderException("Edge not in correct order: "+ e.source+":"+e.target);
+				if((this.e.source==e.source)&&(this.e.target>e.target))
+					throw new OrderException("Edge Target not in correct order: "+ e.source+":"+e.target);
+			}
+		}
+		this.e=e;
+		return e;
 	}
 
 	public void close() {
