@@ -16,6 +16,7 @@
 package fmi.graph.standard;
 
 import fmi.graph.definition.GraphException;
+import fmi.graph.exceptions.MissingMetadataException;
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
 import fmi.graph.metaio.MetaData;
@@ -27,24 +28,34 @@ import java.nio.charset.Charset;
 
 public class Reader implements fmi.graph.definition.Reader {
 
-	//Settings
-	
+	// Settings
+
 	protected boolean order = true;
 	protected boolean coherency = true;
 	protected int startId = 0;
-	
+	protected boolean enforceStructure = true;
+	protected boolean enforceMetadata = false;
 
-	//intern Variables
+	// intern Variables
 	protected boolean bin = false;
 
 	protected int nodes;
 	protected int edges;
 	protected int nodesRead = 0;
 	protected int edgesRead = 0;
-	
+
 	protected DataInputStream dis = null;
-    protected SaneBufferedInputStream bis = null;
+	protected SaneBufferedInputStream bis = null;
 	protected BufferedReader br = null;
+
+	public Reader() {
+
+	}
+
+	public Reader(boolean enfoceStructure, boolean enforceMetadata) {
+		this.enforceMetadata = enforceMetadata;
+		this.enforceStructure = enfoceStructure;
+	}
 
 	@Override
 	public MetaData open(File graph) throws IOException, GraphException {
@@ -56,7 +67,7 @@ public class Reader implements fmi.graph.definition.Reader {
 	@Override
 	public MetaData openBin(File graph) throws IOException, GraphException {
 		bin = true;
-        bis = new SaneBufferedInputStream(new FileInputStream(graph));
+		bis = new SaneBufferedInputStream(new FileInputStream(graph));
 		return readHead();
 	}
 
@@ -115,43 +126,40 @@ public class Reader implements fmi.graph.definition.Reader {
 
 	}
 
-    protected Node readNodeBin() throws IOException {
-        int id = dis.readInt();
-        long osmId = dis.readLong();
-        double lat = dis.readDouble();
-        double lon = dis.readDouble();
-        int elevation = dis.readInt();
-        int carryLength = dis.readInt();
-        
-        if(carryLength==0)
-        {
-        	return new Node(id, osmId, lat, lon, elevation);
-        }
-        
-        byte[] b = new byte[carryLength];
-        dis.read(b);
-    	String carryover = new String(b, Charset.forName("UTF-8"));
-    	
-    	return new Node(id, osmId, lat, lon, elevation, carryover);
-    }
+	protected Node readNodeBin() throws IOException {
+		int id = dis.readInt();
+		long osmId = dis.readLong();
+		double lat = dis.readDouble();
+		double lon = dis.readDouble();
+		int elevation = dis.readInt();
+		int carryLength = dis.readInt();
 
-    protected Node readNodeString(String line) throws NoSuchElementException {
-        String[] split = line.split(" ",6);
-        if(split.length==6)
-        {
-            return new Node(Integer.parseInt(split[0]),	Long.parseLong(split[1]), Double.parseDouble(split[2]),
-                    Double.parseDouble(split[3]), Integer.parseInt(split[4]),split[5]);
-        }
-        else if(split.length==5)
-        {
-            return new Node(Integer.parseInt(split[0]),	Long.parseLong(split[1]), Double.parseDouble(split[2]),
-                    Double.parseDouble(split[3]), Integer.parseInt(split[4]));
-        }
-        else
-        {
-            throw new NoSuchElementException("Malformed node:"+line);
-        }
-    }
+		if (carryLength == 0) {
+			return new Node(id, osmId, lat, lon, elevation);
+		}
+
+		byte[] b = new byte[carryLength];
+		dis.read(b);
+		String carryover = new String(b, Charset.forName("UTF-8"));
+
+		return new Node(id, osmId, lat, lon, elevation, carryover);
+	}
+
+	protected Node readNodeString(String line) throws NoSuchElementException {
+		String[] split = line.split(" ", 6);
+		if (split.length == 6) {
+			return new Node(Integer.parseInt(split[0]),
+					Long.parseLong(split[1]), Double.parseDouble(split[2]),
+					Double.parseDouble(split[3]), Integer.parseInt(split[4]),
+					split[5]);
+		} else if (split.length == 5) {
+			return new Node(Integer.parseInt(split[0]),
+					Long.parseLong(split[1]), Double.parseDouble(split[2]),
+					Double.parseDouble(split[3]), Integer.parseInt(split[4]));
+		} else {
+			throw new NoSuchElementException("Malformed node:" + line);
+		}
+	}
 
 	@Override
 	public Node nextNode() throws NoGraphOpenException, NoSuchElementException {
@@ -178,7 +186,7 @@ public class Reader implements fmi.graph.definition.Reader {
 						break;
 				}
 				nodesRead++;
-                return readNodeString(line);
+				return readNodeString(line);
 
 			} catch (IOException e) {
 				throw new NoSuchElementException(e.getMessage());
@@ -186,40 +194,35 @@ public class Reader implements fmi.graph.definition.Reader {
 		}
 	}
 
-    protected Edge readEdgeBin() throws IOException {
-    	int source = dis.readInt();
-    	int destination = dis.readInt();
-    	int weight = dis.readInt();
-    	int type = dis.readInt();
-    	int carryLength=dis.readInt();
-    	
-    	byte[] b = new byte[carryLength];
-        dis.read(b);
-    	String carryover = new String(b, Charset.forName("UTF-8"));
-    	
-        return new Edge(source, destination, weight, type, carryover);
-    }
+	protected Edge readEdgeBin() throws IOException {
+		int source = dis.readInt();
+		int destination = dis.readInt();
+		int weight = dis.readInt();
+		int type = dis.readInt();
+		int carryLength = dis.readInt();
 
-    protected Edge readEdgeString(String line) throws NoSuchElementException {
-        String[] split = line.split(" ",5);
+		byte[] b = new byte[carryLength];
+		dis.read(b);
+		String carryover = new String(b, Charset.forName("UTF-8"));
 
-        if(split.length==5)
-        {
-            return new Edge(Integer.parseInt(split[0]),
-                    Integer.parseInt(split[1]), Integer.parseInt(split[2]),
-                    Integer.parseInt(split[3]),split[4]);
-        }
-        else if(split.length==4)
-        {
-            return new Edge(Integer.parseInt(split[0]),
-                    Integer.parseInt(split[1]), Integer.parseInt(split[2]),
-                    Integer.parseInt(split[3]));
-        }
-        else
-        {
-            throw new NoSuchElementException("Malformed edge:"+line);
-        }
-    }
+		return new Edge(source, destination, weight, type, carryover);
+	}
+
+	protected Edge readEdgeString(String line) throws NoSuchElementException {
+		String[] split = line.split(" ", 5);
+
+		if (split.length == 5) {
+			return new Edge(Integer.parseInt(split[0]),
+					Integer.parseInt(split[1]), Integer.parseInt(split[2]),
+					Integer.parseInt(split[3]), split[4]);
+		} else if (split.length == 4) {
+			return new Edge(Integer.parseInt(split[0]),
+					Integer.parseInt(split[1]), Integer.parseInt(split[2]),
+					Integer.parseInt(split[3]));
+		} else {
+			throw new NoSuchElementException("Malformed edge:" + line);
+		}
+	}
 
 	@Override
 	public Edge nextEdge() throws NoGraphOpenException, NoSuchElementException {
@@ -233,7 +236,7 @@ public class Reader implements fmi.graph.definition.Reader {
 		if (bin) {
 			try {
 				edgesRead++;
-                return readEdgeBin();
+				return readEdgeBin();
 			} catch (IOException e) {
 				throw new NoSuchElementException(e.getMessage());
 			}
@@ -247,7 +250,7 @@ public class Reader implements fmi.graph.definition.Reader {
 						break;
 				}
 				edgesRead++;
-                return readEdgeString(line);
+				return readEdgeString(line);
 			} catch (IOException e) {
 				throw new NoSuchElementException(e.getMessage());
 			}
@@ -256,7 +259,7 @@ public class Reader implements fmi.graph.definition.Reader {
 
 	public void close() {
 		try {
-			if(br!=null)
+			if (br != null)
 				br.close();
 			else
 				dis.close();
@@ -264,32 +267,30 @@ public class Reader implements fmi.graph.definition.Reader {
 			e.printStackTrace();
 		}
 	}
-	
-	protected boolean validGraphType(String type)
-	{
+
+	protected boolean validGraphType(String type) {
 		return true;
 	}
-	
-	protected boolean validGraphRevision(String type, String revision)
-	{
+
+	protected boolean validGraphRevision(String type, String revision) {
 		return true;
 	}
 
 	private MetaData readHead() throws IOException, GraphException {
-        MetaReader mr = new MetaReader();
-        MetaData meta = null;
+		MetaReader mr = new MetaReader();
+		MetaData meta = null;
 		nodes = -1;
 		nodesRead = 0;
 		edges = -1;
 		edgesRead = 0;
 
 		if (bin) {
-            meta = mr.readMetaData(bis);
-            dis = new DataInputStream(bis);
+			meta = mr.readMetaData(bis);
+			dis = new DataInputStream(bis);
 			nodes = dis.readInt();
 			edges = dis.readInt();
 		} else {
-            meta = mr.readMetaData(br);
+			meta = mr.readMetaData(br);
 			while (true) {
 				String line;
 				line = br.readLine().trim();
@@ -304,8 +305,20 @@ public class Reader implements fmi.graph.definition.Reader {
 
 			}
 		}
-		
-        return meta;
+
+		if (enforceMetadata) {
+			if (meta.get("Type") == null)
+				throw new MissingMetadataException("No Graph Type specified");
+			if (meta.get("Revision") == null)
+				throw new MissingMetadataException(
+						"No Graph Type Revision specified");
+			if (meta.get("Id") == null)
+				throw new MissingMetadataException("No Id specified");
+			if (meta.get("Timestamp") == null)
+				throw new MissingMetadataException("No Timestamp specified");
+		}
+
+		return meta;
 	}
 
 }

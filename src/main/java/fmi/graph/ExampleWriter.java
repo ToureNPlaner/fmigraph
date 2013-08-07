@@ -26,42 +26,39 @@ import java.io.IOException;
 
 public class ExampleWriter {
 
-	
 	public static void main(String[] args) {
-		
+
 		Writer w = new Writer();
-		
+
 		try {
 			w.createBin(new File("test.bin"));
-            //w.create(new File("test.txt"));
+			// w.create(new File("test.txt"));
 			w.setNodeCount(10);
 			w.setEdgeCount(20);
 
-            MetaData data = new MetaData();
-            data.addComment("This is a totally awesome comment");
-            data.addComment("and here comes another comment that tells you how great this format is!");
-            data.addComment("embedded : isn't that unbelievable");
-            data.add("Producer", "ExampleWriter");
-            w.writeMetaData(data);
-			
-			for(int n=0;n<10;n++)
-			{
-				w.writeNode(new Node(n, n, Math.random(), Math.random(), (int)(Math.random()*100), "Teststring 1"));
+			MetaData data = new MetaData();
+			data.addComment("This is a totally awesome comment");
+			data.addComment("and here comes another comment that tells you how great this format is!");
+			data.addComment("embedded : isn't that unbelievable");
+			data.add("Producer", "ExampleWriter");
+			w.writeMetaData(data);
+
+			for (int n = 0; n < 10; n++) {
+				w.writeNode(new Node(n, n, Math.random(), Math.random(),
+						(int) (Math.random() * 100), "Teststring 1"));
 			}
-			
-			for(int m=0;m<20;m++)
-			{
-				w.writeEdge(new Edge(m,m+1,(int)(Math.random()*100),(int)(Math.random()*100),"Teststring 2"));
+
+			for (int m = 0; m < 20; m++) {
+				w.writeEdge(new Edge(m, m + 1, (int) (Math.random() * 100),
+						(int) (Math.random() * 100), "Teststring 2"));
 			}
 			w.close();
-			
-			
-			
-		} catch (IOException e){
+
+		} catch (IOException e) {
 			e.printStackTrace();
-		} catch (InvalidFunctionException e){
-            e.printStackTrace();
-        }
+		} catch (InvalidFunctionException e) {
+			e.printStackTrace();
+		}
 
 	}
 

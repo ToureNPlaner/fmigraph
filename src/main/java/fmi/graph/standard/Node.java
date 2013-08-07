@@ -19,7 +19,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-public class Node implements fmi.graph.definition.Node{
+public class Node implements fmi.graph.definition.Node {
 
 	int id;
 	long osm;
@@ -27,38 +27,35 @@ public class Node implements fmi.graph.definition.Node{
 	double lon;
 	int elevation;
 	String carryover;
-	
-	public Node()
-	{
-		
+
+	public Node() {
+
 	}
-	
-	public Node(int id, long osm, double lat, double lon, int elevation)
-	{
-		this.id=id;
-		this.osm=osm;
-		this.lat=lat;
-		this.lon=lon;
+
+	public Node(int id, long osm, double lat, double lon, int elevation) {
+		this.id = id;
+		this.osm = osm;
+		this.lat = lat;
+		this.lon = lon;
 		this.elevation = elevation;
 		this.carryover = null;
 	}
-	
-	public Node(int id, long osm, double lat, double lon, int elevation, String carryover)
-	{
-		this.id=id;
-		this.osm=osm;
-		this.lat=lat;
-		this.lon=lon;
+
+	public Node(int id, long osm, double lat, double lon, int elevation,
+			String carryover) {
+		this.id = id;
+		this.osm = osm;
+		this.lat = lat;
+		this.lon = lon;
 		this.elevation = elevation;
 		this.carryover = carryover;
 	}
-	
-	
+
 	public int compareTo(fmi.graph.definition.Node o) {
-		
-		if(id<o.getId())
+
+		if (id < o.getId())
 			return -1;
-		if(id>o.getId())
+		if (id > o.getId())
 			return 1;
 		return 0;
 	}
@@ -87,21 +84,19 @@ public class Node implements fmi.graph.definition.Node{
 	public int getElevation() {
 		return elevation;
 	}
-	
-	public String getCarryover()
-	{
+
+	public String getCarryover() {
 		return carryover;
 	}
 
 	@Override
 	public String toBaseString() {
-		return id+ " "+osm+" "+lat+" "+lon+" "+elevation; 
+		return id + " " + osm + " " + lat + " " + lon + " " + elevation;
 	}
-	
-	public String toString()
-	{
-		if(carryover != null)
-			return toBaseString()+" "+carryover;
+
+	public String toString() {
+		if (carryover != null)
+			return toBaseString() + " " + carryover;
 		else
 			return toBaseString();
 	}
@@ -110,23 +105,22 @@ public class Node implements fmi.graph.definition.Node{
 	public void writeBin(DataOutputStream dos) throws IOException {
 		byte[] bCarryover = null;
 		int carrysize;
-		if(carryover == null)
+		if (carryover == null)
 			carrysize = 0;
-		else
-		{
+		else {
 			bCarryover = carryover.getBytes(Charset.forName("UTF-8"));
-			carrysize=bCarryover.length;
+			carrysize = bCarryover.length;
 		}
-		
+
 		dos.writeInt(id);
 		dos.writeLong(osm);
 		dos.writeDouble(lat);
 		dos.writeDouble(lon);
 		dos.writeInt(elevation);
 		dos.writeInt(carrysize);
-		if(carrysize > 0)
+		if (carrysize > 0)
 			dos.write(bCarryover);
-		
+
 	}
 
 }

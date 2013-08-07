@@ -17,17 +17,15 @@ package fmi.graph.exceptions;
 
 import fmi.graph.definition.GraphException;
 
-public class InvalidGraphTypeException extends GraphException{
+public class InvalidGraphTypeException extends GraphException {
 
 	private static final long serialVersionUID = -1716114785825172736L;
-	
-	public InvalidGraphTypeException()
-	{
+
+	public InvalidGraphTypeException() {
 		super();
 	}
-	
-	public InvalidGraphTypeException(String s)
-	{
+
+	public InvalidGraphTypeException(String s) {
 		super(s);
 	}
 

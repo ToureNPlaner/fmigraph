@@ -17,18 +17,16 @@ package fmi.graph.exceptions;
 
 import fmi.graph.definition.GraphException;
 
-public class InvalidFunctionException extends GraphException{
+public class InvalidFunctionException extends GraphException {
 
 	private static final long serialVersionUID = -8205521578915331918L;
 
-	public InvalidFunctionException()
-	{
+	public InvalidFunctionException() {
 		super();
 	}
-	
-	public InvalidFunctionException(String s)
-	{
+
+	public InvalidFunctionException(String s) {
 		super(s);
 	}
-	
+
 }

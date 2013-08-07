@@ -27,46 +27,51 @@ import java.util.Map;
  * @author Niklas Schnelle
  */
 public class MetaWriter {
-    private static final Charset cset = Charset.forName("UTF-8");
+	private static final Charset cset = Charset.forName("UTF-8");
 
+	/**
+	 * Converts the given byte[] to a hex string, leading zeros are NOT
+	 * discarded
+	 * 
+	 * @param data
+	 * @return
+	 */
+	private static String convertToHex(byte[] data) {
+		final StringBuilder hexbuilder = new StringBuilder(data.length * 2);
+		for (byte b : data) {
+			hexbuilder.append(Integer.toHexString((b >>> 4) & 0x0F));
+			hexbuilder.append(Integer.toHexString(b & 0x0F));
+		}
+		return hexbuilder.toString();
+	}
 
-    /**
-     * Converts the given byte[] to a hex string, leading zeros are NOT discarded
-     * @param data
-     * @return
-     */
-    private static String convertToHex(byte[] data) {
-        final StringBuilder hexbuilder = new StringBuilder(data.length * 2);
-        for (byte b : data) {
-            hexbuilder.append(Integer.toHexString((b >>> 4) & 0x0F));
-            hexbuilder.append(Integer.toHexString(b & 0x0F));
-        }
-        return hexbuilder.toString();
-    }
+	public void writeMetaDataRaw(OutputStream out, MetaData data)
+			throws IOException {
+		for (String comment : data.comments) {
+			out.write(("# " + comment + '\n').getBytes(cset));
+		}
+		for (Map.Entry<String, Value> entry : data.entrySet()) {
+			for (String comment : entry.getValue().comments) {
+				out.write(("# " + comment + '\n').getBytes(cset));
+			}
+			out.write(("# " + entry.getKey() + " : " + entry.getValue().value + '\n')
+					.getBytes(cset));
+		}
+		out.write('\n');
+	}
 
-    public void writeMetaDataRaw(OutputStream out, MetaData data) throws IOException {
-        for (String comment : data.comments) {
-            out.write(("# " + comment + '\n').getBytes(cset));
-        }
-        for (Map.Entry<String, Value> entry : data.entrySet()) {
-            for (String comment : entry.getValue().comments) {
-                out.write(("# " + comment + '\n').getBytes(cset));
-            }
-            out.write(("# " + entry.getKey() + " : " + entry.getValue().value + '\n').getBytes(cset));
-        }
-        out.write('\n');
-    }
-
-    public void writeMetaDataWriter(Writer out, MetaData data) throws IOException {
-        for (String comment : data.comments) {
-            out.write("# " + comment + '\n');
-        }
-        for (Map.Entry<String, Value> entry : data.entrySet()) {
-            for (String comment : entry.getValue().comments) {
-                out.write("# " + comment + '\n');
-            }
-            out.write("# " + entry.getKey() + " : " + entry.getValue().value + '\n');
-        }
-        out.write('\n');
-    }
+	public void writeMetaDataWriter(Writer out, MetaData data)
+			throws IOException {
+		for (String comment : data.comments) {
+			out.write("# " + comment + '\n');
+		}
+		for (Map.Entry<String, Value> entry : data.entrySet()) {
+			for (String comment : entry.getValue().comments) {
+				out.write("# " + comment + '\n');
+			}
+			out.write("# " + entry.getKey() + " : " + entry.getValue().value
+					+ '\n');
+		}
+		out.write('\n');
+	}
 }

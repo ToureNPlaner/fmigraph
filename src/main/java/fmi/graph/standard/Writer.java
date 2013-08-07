@@ -27,17 +27,17 @@ import java.util.Date;
 
 public class Writer implements fmi.graph.definition.Writer {
 
-	//Settings
-	
+	// Settings
+
 	protected String type = "standard";
 	protected int revision = 1;
-	
+
 	protected boolean order = true;
 	protected boolean coherency = true;
 	protected int startId = 0;
-	
-	//Internal Variables
-	
+
+	// Internal Variables
+
 	boolean bin;
 
 	int nodes;
@@ -48,7 +48,7 @@ public class Writer implements fmi.graph.definition.Writer {
 
 	DataOutputStream dos;
 	BufferedWriter bw;
-	
+
 	@Override
 	public void create(File graph) throws IOException {
 		if (graph.exists())
@@ -62,29 +62,31 @@ public class Writer implements fmi.graph.definition.Writer {
 		headWritten = false;
 	}
 
-    @Override
-    public void createBin(File graph) throws IOException {
-        if (graph.exists()) graph.delete();
-        graph.createNewFile();
+	@Override
+	public void createBin(File graph) throws IOException {
+		if (graph.exists())
+			graph.delete();
+		graph.createNewFile();
 
-        bin = true;
-        dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(graph)));
-        nodesWritten = 0;
-        edgesWritten = 0;
-        headWritten = false;
-    }
-
-    @Override
-    public void write(OutputStream out) throws IOException {
-        bin = false;
-        bw = new BufferedWriter(new OutputStreamWriter(out));
-        nodesWritten = 0;
-        edgesWritten = 0;
-        headWritten = false;
-    }
+		bin = true;
+		dos = new DataOutputStream(new BufferedOutputStream(
+				new FileOutputStream(graph)));
+		nodesWritten = 0;
+		edgesWritten = 0;
+		headWritten = false;
+	}
 
 	@Override
-    public void writeBin(OutputStream out) throws IOException {
+	public void write(OutputStream out) throws IOException {
+		bin = false;
+		bw = new BufferedWriter(new OutputStreamWriter(out));
+		nodesWritten = 0;
+		edgesWritten = 0;
+		headWritten = false;
+	}
+
+	@Override
+	public void writeBin(OutputStream out) throws IOException {
 		bin = true;
 		dos = new DataOutputStream(new BufferedOutputStream(out));
 		nodesWritten = 0;
@@ -103,22 +105,24 @@ public class Writer implements fmi.graph.definition.Writer {
 	}
 
 	@Override
-	public void writeMetaData(MetaData data) throws IOException, InvalidFunctionException {
-        if (headWritten)
-            throw new InvalidFunctionException("Need to write Metadata before head/nodes/edges");
-        
-        //Add required MetaData Fields
-        data.add("Id", General.createRandomIdValue());
-        data.add("Timestamp", new Value(new Date()));
-        data.add("Type", type);
-        data.add("Revision", Integer.toString(revision));
-        
-        MetaWriter w = new MetaWriter();
-        if (bin){
-            w.writeMetaDataRaw(dos, data);
-        } else {
-            w.writeMetaDataWriter(bw, data);
-        }
+	public void writeMetaData(MetaData data) throws IOException,
+			InvalidFunctionException {
+		if (headWritten)
+			throw new InvalidFunctionException(
+					"Need to write Metadata before head/nodes/edges");
+
+		// Add required MetaData Fields
+		data.add("Id", General.createRandomIdValue());
+		data.add("Timestamp", new Value(new Date()));
+		data.add("Type", type);
+		data.add("Revision", Integer.toString(revision));
+
+		MetaWriter w = new MetaWriter();
+		if (bin) {
+			w.writeMetaDataRaw(dos, data);
+		} else {
+			w.writeMetaDataWriter(bw, data);
+		}
 	}
 
 	@Override
@@ -150,7 +154,7 @@ public class Writer implements fmi.graph.definition.Writer {
 
 	@Override
 	public void writeEdge(Edge e) throws IOException, InvalidFunctionException {
-		if(nodesWritten!=nodes)
+		if (nodesWritten != nodes)
 			throw new InvalidFunctionException("To few Nodes written");
 		if (bin)
 			e.writeBin(dos);
@@ -164,7 +168,7 @@ public class Writer implements fmi.graph.definition.Writer {
 
 	@Override
 	public void close() throws InvalidFunctionException {
-		if(nodes != nodesWritten || edges != edgesWritten)
+		if (nodes != nodesWritten || edges != edgesWritten)
 			throw new InvalidFunctionException("Too few edges or nodes written");
 		if (bin)
 			try {

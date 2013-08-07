@@ -53,7 +53,8 @@ public class Reverse {
 			bw.newLine();
 			while (r.hasNextNode()) {
 				n = r.nextNode();
-				bw.write(n.getId() + " " + n.getOsmId() + " " + n.getLat() + " " + n.getLon() + " " + n.getElevation());
+				bw.write(n.getId() + " " + n.getOsmId() + " " + n.getLat()
+						+ " " + n.getLon() + " " + n.getElevation());
 				bw.newLine();
 			}
 			while (r.hasNextEdge()) {
@@ -63,7 +64,8 @@ public class Reverse {
 			while (ts.size() > 0) {
 				e = ts.first();
 				ts.remove(e);
-				bw.write(e.getTarget() + " " + e.getSource() + " " + e.getWeight() + " " + e.getType());
+				bw.write(e.getTarget() + " " + e.getSource() + " "
+						+ e.getWeight() + " " + e.getType());
 				bw.newLine();
 			}
 			bw.close();
@@ -94,12 +96,11 @@ public class Reverse {
 			return 0;
 		}
 	}
-	
-	
-	public static void main(String[] args)
-	{
+
+	public static void main(String[] args) {
 		Reverse r = new Reverse();
-		r.reverseGraph(new File("D:/graph/stuttgart-regbez.txt"), new File("D:/graph/stuttgart-regbezREV.txt"));
+		r.reverseGraph(new File("D:/graph/stuttgart-regbez.txt"), new File(
+				"D:/graph/stuttgart-regbezREV.txt"));
 	}
 
 }

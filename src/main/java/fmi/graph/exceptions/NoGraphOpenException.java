@@ -17,17 +17,15 @@ package fmi.graph.exceptions;
 
 import fmi.graph.definition.GraphException;
 
-public class NoGraphOpenException extends GraphException{
+public class NoGraphOpenException extends GraphException {
 
 	private static final long serialVersionUID = 6320733261034939217L;
 
-	public NoGraphOpenException()
-	{
+	public NoGraphOpenException() {
 		super();
 	}
-	
-	public NoGraphOpenException(String s)
-	{
+
+	public NoGraphOpenException(String s) {
 		super(s);
 	}
 

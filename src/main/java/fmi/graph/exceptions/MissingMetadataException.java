@@ -13,29 +13,20 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package fmi.graph.definition;
+package fmi.graph.exceptions;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
+import fmi.graph.definition.GraphException;
 
-public interface Node extends Comparable<Node> {
+public class MissingMetadataException extends GraphException {
 
-	public int getId();
+	private static final long serialVersionUID = -8205521578915331918L;
 
-	public long getOsmId();
+	public MissingMetadataException() {
+		super();
+	}
 
-	public double getLat();
-
-	public double getLon();
-
-	public int getElevation();
-
-	public String getCarryover();
-
-	public String toBaseString();
-
-	public String toString();
-
-	public void writeBin(DataOutputStream dos) throws IOException;
+	public MissingMetadataException(String s) {
+		super(s);
+	}
 
 }

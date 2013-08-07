@@ -23,84 +23,90 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-
 public interface Reader {
-	
-	/**
-	 * Opens a text based graph of the format defined at: 
-	 *
-     * @param graph
-     * @throws IOException
-	 */
-	public MetaData open(File graph) throws IOException,GraphException;
-	
-	/**
-	 * Opens a text based graph of the format defined at: 
-	 *
-     * @param in
-     * @throws IOException
-	 */
-	public MetaData read(InputStream in) throws IOException,GraphException;
-	
-	/**
-	 * Opens a binary graph of the format defined at: 
-	 *
-     * @param graph
-     * @throws IOException
-	 */
-	public MetaData openBin(File graph) throws IOException,GraphException;
-	
 
 	/**
-	 * Opens a binary graph of the format defined at: 
+	 * Opens a text based graph of the format defined at:
+	 * 
+	 * @param graph
 	 * @throws IOException
 	 */
-	public MetaData readBin(InputStream in) throws IOException,GraphException;
-	
+	public MetaData open(File graph) throws IOException, GraphException;
+
+	/**
+	 * Opens a text based graph of the format defined at:
+	 * 
+	 * @param in
+	 * @throws IOException
+	 */
+	public MetaData read(InputStream in) throws IOException, GraphException;
+
+	/**
+	 * Opens a binary graph of the format defined at:
+	 * 
+	 * @param graph
+	 * @throws IOException
+	 */
+	public MetaData openBin(File graph) throws IOException, GraphException;
+
+	/**
+	 * Opens a binary graph of the format defined at:
+	 * 
+	 * @throws IOException
+	 */
+	public MetaData readBin(InputStream in) throws IOException, GraphException;
+
 	/**
 	 * Returns the node count of the selected graph
+	 * 
 	 * @return
 	 * @throws NoGraphOpenException
 	 */
 	public int getNodeCount() throws IOException, NoGraphOpenException;
-	
+
 	/**
 	 * Returns the edge count of the selected graph
+	 * 
 	 * @return
 	 * @throws NoGraphOpenException
 	 */
 	public int getEdgeCount() throws NoGraphOpenException;
-	
+
 	/**
 	 * Returns true if a node can be read
+	 * 
 	 * @return
 	 * @throws NoGraphOpenException
 	 */
-	public boolean hasNextNode()  throws NoGraphOpenException;
-	
+	public boolean hasNextNode() throws NoGraphOpenException;
+
 	/**
 	 * Returns true if an edge can be read
+	 * 
 	 * @return
 	 * @throws NoGraphOpenException
 	 */
 	public boolean hasNextEdge() throws NoGraphOpenException;
-	
+
 	/**
 	 * Returns the next Node
+	 * 
 	 * @return
 	 * @throws NoGraphOpenException
 	 */
 	public Node nextNode() throws IOException, GraphException;
-	
+
 	/**
 	 * Returns the next Edge
+	 * 
 	 * @return
 	 * @throws NoGraphOpenException
 	 */
 	public Edge nextEdge() throws IOException, GraphException;
-	
+
 	/**
 	 * Closes all created readers and streams
+	 * 
 	 * @return
 	 * @throws NoGraphOpenException
 	 */

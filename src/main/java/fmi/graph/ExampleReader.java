@@ -26,47 +26,48 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
-
 public class ExampleReader {
 	public static void main(String[] args) {
 		Reader r = new Reader();
 		Node n;
 		Edge e;
-		int nodes=0;
-		int edges =0;
+		int nodes = 0;
+		int edges = 0;
 		long start;
 		try {
-            start = System.currentTimeMillis();
+			start = System.currentTimeMillis();
 			MetaData meta = r.openBin(new File("test.bin"));
-            //MetaData meta = r.open(new File("test.txt"));
+			// MetaData meta = r.open(new File("test.txt"));
 
-            System.out.println("Created at "+meta.get("Timestamp").asDate());
-            System.out.println("by "+meta.get("Producer"));
+			System.out.println("Created at " + meta.get("Timestamp").asDate());
+			System.out.println("by " + meta.get("Producer"));
 
-            for (Map.Entry<String, Value> entry : meta.entrySet()) {
-                System.out.println("Key: \""+entry.getKey()+"\" with value: \""+entry.getValue().value+'"');
-                System.out.println("Comments:");
-                for (String comment : entry.getValue().comments){
-                    System.out.println("\t"+comment);
-                }
-                System.out.println("---------------------------------------------------------------");
-            }
-			while(r.hasNextNode())
-			{
+			for (Map.Entry<String, Value> entry : meta.entrySet()) {
+				System.out.println("Key: \"" + entry.getKey()
+						+ "\" with value: \"" + entry.getValue().value + '"');
+				System.out.println("Comments:");
+				for (String comment : entry.getValue().comments) {
+					System.out.println("\t" + comment);
+				}
+				System.out
+						.println("---------------------------------------------------------------");
+			}
+			while (r.hasNextNode()) {
 				n = r.nextNode();
 				System.out.println(n);
 				nodes++;
 			}
-			System.out.println("Nodes gelesen: "+nodes+" Nodes vorhanden: "+r.getNodeCount());
-			while(r.hasNextEdge())
-			{
+			System.out.println("Nodes gelesen: " + nodes + " Nodes vorhanden: "
+					+ r.getNodeCount());
+			while (r.hasNextEdge()) {
 				e = r.nextEdge();
 				System.out.println(e);
 				edges++;
 			}
-			System.out.println("Edges gelesen: "+edges+" Edges vorhanden: "+r.getEdgeCount());
+			System.out.println("Edges gelesen: " + edges + " Edges vorhanden: "
+					+ r.getEdgeCount());
 			r.close();
-			
+
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} catch (GraphException ex) {

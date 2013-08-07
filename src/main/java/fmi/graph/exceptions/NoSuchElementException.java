@@ -17,18 +17,16 @@ package fmi.graph.exceptions;
 
 import fmi.graph.definition.GraphException;
 
-public class NoSuchElementException extends GraphException{
+public class NoSuchElementException extends GraphException {
 
 	private static final long serialVersionUID = 2551272215746156012L;
 
-	public NoSuchElementException()
-	{
+	public NoSuchElementException() {
 		super();
 	}
-	
-	public NoSuchElementException(String s)
-	{
+
+	public NoSuchElementException(String s) {
 		super(s);
 	}
-	
+
 }
