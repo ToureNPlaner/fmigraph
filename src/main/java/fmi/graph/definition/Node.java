@@ -15,27 +15,89 @@
  */
 package fmi.graph.definition;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public interface Node extends Comparable<Node> {
+public abstract class Node implements Comparable<Node> {
 
-	public int getId();
+	protected int id;
+	protected long osm;
+	protected double lat;
+	protected double lon;
+	protected int elevation;
+	protected String carryover;
 
-	public long getOsmId();
+	public Node() {
 
-	public double getLat();
+	}
 
-	public double getLon();
+	public Node(String line) {
+		parseLine(line);
+	}
 
-	public int getElevation();
+	public Node(DataInputStream dis) throws IOException {
+		readStream(dis);
+	}
 
-	public String getCarryover();
+	public Node(int id, long osm, double lat, double lon, int elevation) {
+		this.id = id;
+		this.osm = osm;
+		this.lat = lat;
+		this.lon = lon;
+		this.elevation = elevation;
+		this.carryover = null;
+	}
 
-	public String toBaseString();
+	public Node(int id, long osm, double lat, double lon, int elevation,
+			String carryover) {
+		this.id = id;
+		this.osm = osm;
+		this.lat = lat;
+		this.lon = lon;
+		this.elevation = elevation;
+		this.carryover = carryover;
+	}
 
-	public String toString();
+	public int compareTo(Node o) {
 
-	public void writeBin(DataOutputStream dos) throws IOException;
+		if (id < o.getId())
+			return -1;
+		if (id > o.getId())
+			return 1;
+		return 0;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public long getOsmId() {
+		return osm;
+	}
+
+	public double getLat() {
+		return lat;
+	}
+
+	public double getLon() {
+		return lon;
+	}
+
+	public int getElevation() {
+		return elevation;
+	}
+
+	public String getCarryover() {
+		return carryover;
+	}
+
+	public abstract String toString();
+
+	public abstract void writeBin(DataOutputStream dos) throws IOException;
+
+	protected abstract void parseLine(String line);
+
+	protected abstract void readStream(DataInputStream dis) throws IOException;
 
 }
