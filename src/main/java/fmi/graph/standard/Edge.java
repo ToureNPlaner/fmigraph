@@ -98,11 +98,14 @@ public class Edge implements fmi.graph.definition.Edge {
 	@Override
 	public void writeBin(DataOutputStream dos) throws IOException {
 		int carrysize;
-		if (carryover == null)
+        byte[] bCarryover;
+		if (carryover == null){
 			carrysize = 0;
-		else
+            bCarryover = new byte[0];
+        } else {
 			carrysize = carryover.length();
-		byte[] bCarryover = carryover.getBytes(Charset.forName("UTF-8"));
+		    bCarryover = carryover.getBytes(Charset.forName("UTF-8"));
+        }
 
 		dos.writeInt(source);
 		dos.writeInt(target);
