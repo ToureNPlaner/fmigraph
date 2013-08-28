@@ -15,101 +15,260 @@
  */
 package fmi.graph.definition;
 
+import fmi.graph.tools.SaneBufferedInputStream;
 import fmi.graph.exceptions.NoGraphOpenException;
-import fmi.graph.standard.Node;
+import fmi.graph.exceptions.NoSuchElementException;
 import fmi.graph.metaio.MetaData;
+import fmi.graph.metaio.MetaReader;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 
-public interface Reader {
+public abstract class Reader {
 
-	/**
-	 * Opens a text based graph of the format defined at:
-	 * 
-	 * @param graph
-	 * @throws IOException
-	 */
-	public MetaData open(File graph) throws IOException, GraphException;
+	
+	// Stettings
+	protected boolean order = true;
+	protected boolean coherency = true;
+	protected int startId = 0;
+	protected boolean enforceStructure = true;
+	protected boolean enforceMetadata = false;
 
-	/**
-	 * Opens a text based graph of the format defined at:
-	 * 
-	 * @param in
-	 * @throws IOException
-	 */
-	public MetaData read(InputStream in) throws IOException, GraphException;
+	// intern Variables
+	protected boolean bin = false;
 
-	/**
-	 * Opens a binary graph of the format defined at:
-	 * 
-	 * @param graph
-	 * @throws IOException
-	 */
-	public MetaData openBin(File graph) throws IOException, GraphException;
+	protected int nodes;
+	protected int edges;
+	protected int nodesRead = 0;
+	protected int edgesRead = 0;
 
-	/**
-	 * Opens a binary graph of the format defined at:
-	 * 
-	 * @throws IOException
-	 */
-	public MetaData readBin(InputStream in) throws IOException, GraphException;
+	protected DataInputStream dis = null;
+	protected SaneBufferedInputStream bis = null;
+	protected BufferedReader br = null;
+	
+	protected Node n;
+	protected Edge e;
 
-	/**
-	 * Returns the node count of the selected graph
-	 * 
-	 * @return
-	 * @throws NoGraphOpenException
-	 */
-	public int getNodeCount() throws IOException, NoGraphOpenException;
+	public Reader() {
 
-	/**
-	 * Returns the edge count of the selected graph
-	 * 
-	 * @return
-	 * @throws NoGraphOpenException
-	 */
-	public int getEdgeCount() throws NoGraphOpenException;
+	}
+	
+	public Reader(boolean enforceStructure, boolean enforceMetadata) {
+		this.enforceMetadata = enforceMetadata;
+		this.enforceStructure = enforceStructure;
+	}
+	
+	public MetaData open(File graph) throws IOException, GraphException {
+		bin = false;
+		br = new BufferedReader(new FileReader(graph));
+		return readHead();
+	}
 
-	/**
-	 * Returns true if a node can be read
-	 * 
-	 * @return
-	 * @throws NoGraphOpenException
-	 */
-	public boolean hasNextNode() throws NoGraphOpenException;
+	public MetaData openBin(File graph) throws IOException, GraphException {
+		bin = true;
+		bis = new SaneBufferedInputStream(new FileInputStream(graph));
+		return readHead();
+	}
 
-	/**
-	 * Returns true if an edge can be read
-	 * 
-	 * @return
-	 * @throws NoGraphOpenException
-	 */
-	public boolean hasNextEdge() throws NoGraphOpenException;
+	public MetaData read(InputStream in) throws IOException, GraphException {
+		bin = false;
+		br = new BufferedReader(new InputStreamReader(in));
+		return readHead();
+	}
 
-	/**
-	 * Returns the next Node
-	 * 
-	 * @return
-	 * @throws NoGraphOpenException
-	 */
-	public Node nextNode() throws IOException, GraphException;
+	public MetaData readBin(InputStream in) throws IOException, GraphException {
+		bin = true;
+		dis = new DataInputStream(new SaneBufferedInputStream(in));
+		return readHead();
+	}
 
-	/**
-	 * Returns the next Edge
-	 * 
-	 * @return
-	 * @throws NoGraphOpenException
-	 */
-	public Edge nextEdge() throws IOException, GraphException;
+	public int getNodeCount() throws NoGraphOpenException {
 
-	/**
-	 * Closes all created readers and streams
-	 * 
-	 * @return
-	 * @throws NoGraphOpenException
-	 */
-	public void close();
+		if (br == null && dis == null)
+			throw new NoGraphOpenException();
+
+		return nodes;
+	}
+
+	public int getEdgeCount() throws NoGraphOpenException {
+
+		if (br == null && dis == null)
+			throw new NoGraphOpenException();
+
+		return edges;
+	}
+
+	public boolean hasNextNode() {
+		if (br == null && dis == null)
+			return false;
+
+		if (nodesRead < nodes)
+			return true;
+		else
+			return false;
+	}
+
+	public boolean hasNextEdge() {
+		if (br == null && dis == null)
+			return false;
+
+		if (nodesRead == nodes && edgesRead < edges)
+			return true;
+		else
+			return false;
+
+	}
+
+	protected abstract Node readNodeBin() throws IOException;
+
+	protected abstract Node readNodeString(String line) throws NoSuchElementException;
+
+	public Node nextNode() throws NoGraphOpenException, GraphException {
+		Node n=null;
+		
+		if (br == null && dis == null)
+			throw new NoGraphOpenException();
+
+		if (nodesRead >= nodes)
+			throw new NoSuchElementException();
+
+		if (bin) {
+			nodesRead++;
+			try {
+				n = readNodeBin();
+			} catch (IOException e) {
+				throw new NoSuchElementException(e.getMessage());
+			}
+		} else {
+			String line;
+			try {
+				while (true) {
+					line = br.readLine().trim();
+					if (line.charAt(0) != '#')
+						break;
+				}
+				nodesRead++;
+				n = readNodeString(line);
+
+			} catch (IOException e) {
+				throw new NoSuchElementException(e.getMessage());
+			}
+		}
+		
+		if(enforceStructure)
+		{
+			validateNode(n);
+		}
+		return n;
+	}
+
+	protected abstract Edge readEdgeBin() throws IOException;
+
+	protected abstract Edge readEdgeString(String line) throws NoSuchElementException;
+
+	public Edge nextEdge() throws NoGraphOpenException, GraphException {
+
+		Edge e;
+		
+		if (br == null && dis == null)
+			throw new NoGraphOpenException();
+
+		if (edgesRead >= edges)
+			throw new NoSuchElementException();
+
+		if (bin) {
+			try {
+				edgesRead++;
+				e = readEdgeBin();
+			} catch (IOException ex) {
+				throw new NoSuchElementException(ex.getMessage());
+			}
+		} else {
+			String line;
+
+			try {
+				while (true) {
+					line = br.readLine().trim();
+					if (line.charAt(0) != '#')
+						break;
+				}
+				edgesRead++;
+				e = readEdgeString(line);
+			} catch (IOException ex) {
+				throw new NoSuchElementException(ex.getMessage());
+			}
+		}
+		
+		if(enforceStructure)
+		{
+			validateEdge(e);
+		}
+		this.e=e;
+		return e;
+	}
+
+	public void close() {
+		try {
+			if (br != null)
+				br.close();
+			else
+				dis.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	protected abstract boolean validGraphType(String type);
+
+	protected abstract boolean validGraphRevision(String type, String revision);
+	
+	protected abstract void validateNode(Node n) throws GraphException;
+	
+	protected abstract void validateEdge(Edge e) throws GraphException;
+	
+	protected abstract void validateMetaData(MetaData m) throws GraphException;
+	
+	private MetaData readHead() throws IOException, GraphException {
+		MetaReader mr = new MetaReader();
+		MetaData meta = null;
+		nodes = -1;
+		nodesRead = 0;
+		edges = -1;
+		edgesRead = 0;
+
+		if (bin) {
+			meta = mr.readMetaData(bis);
+			dis = new DataInputStream(bis);
+			nodes = dis.readInt();
+			edges = dis.readInt();
+		} else {
+			meta = mr.readMetaData(br);
+			while (true) {
+				String line;
+				line = br.readLine().trim();
+				if (line.charAt(0) == '#')
+					continue;
+				if (nodes == -1)
+					nodes = Integer.parseInt(line);
+				else if (edges == -1) {
+					edges = Integer.parseInt(line);
+					break;
+				}
+
+			}
+		}
+
+		if (enforceMetadata) {
+			validateMetaData(meta);
+		}
+
+		return meta;
+	}
 
 }

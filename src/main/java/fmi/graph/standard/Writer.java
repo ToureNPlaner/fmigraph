@@ -30,7 +30,7 @@ import fmi.graph.tools.General;
 import java.io.*;
 import java.util.Date;
 
-public class Writer implements fmi.graph.definition.Writer {
+public class Writer extends fmi.graph.definition.Writer {
 
 	// Settings
 

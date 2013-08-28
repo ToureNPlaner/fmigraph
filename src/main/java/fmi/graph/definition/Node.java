@@ -28,10 +28,6 @@ public abstract class Node implements Comparable<Node> {
 	protected int elevation;
 	protected String carryover;
 
-	public Node() {
-
-	}
-
 	public Node(String line) {
 		parseLine(line);
 	}

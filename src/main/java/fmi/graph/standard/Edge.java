@@ -15,105 +15,90 @@
  */
 package fmi.graph.standard;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
-public class Edge implements fmi.graph.definition.Edge {
+public class Edge extends fmi.graph.definition.Edge {
 
-	int source;
-	int target;
-	int weight;
-	int type;
-	String carryover;
-
-	@SuppressWarnings("unused")
-	private Edge() {
+	public Edge(String line)
+	{
+		super(line);
 	}
-
-	public Edge(int source, int target, int weight, int type) {
-		this.source = source;
-		this.target = target;
-		this.weight = weight;
-		this.type = type;
-		this.carryover = null;
+	
+	public Edge(DataInputStream dis) throws IOException
+	{
+		super(dis);
 	}
-
-	public Edge(int source, int target, int weight, int type, String carryover) {
-		this.source = source;
-		this.target = target;
-		this.weight = weight;
-		this.type = type;
-		this.carryover = carryover;
+	
+	public Edge(int source, int target, int weight, int type)
+	{
+		super(source, target, weight, type);
 	}
-
-	public int compareTo(fmi.graph.definition.Edge e) {
-		if (source < e.getSource())
-			return -1;
-		if (source > e.getSource())
-			return 1;
-		if (target < e.getTarget())
-			return -1;
-		if (target > e.getTarget())
-			return 1;
-		if (weight < e.getWeight())
-			return -1;
-		if (weight > e.getWeight())
-			return 1;
-
-		return 0;
+	
+	public Edge(int source, int target, int weight, int type, String carryover)
+	{
+		super(source, target, weight, type, carryover);
 	}
-
+	
 	@Override
-	public int getSource() {
-		return source;
-	}
-
-	@Override
-	public int getTarget() {
-		return target;
-	}
-
-	@Override
-	public int getWeight() {
-		return weight;
-	}
-
-	@Override
-	public int getType() {
-		return type;
-	}
-
-	public String toBaseString() {
-		return source + " " + target + " " + weight + " " + type;
-	}
-
 	public String toString() {
-		if (carryover != null)
-			return toBaseString() + " " + carryover;
-		else
-			return toBaseString();
+		return source+" "+target+" "+weight+" "+type+" "+carryover;
 	}
 
 	@Override
 	public void writeBin(DataOutputStream dos) throws IOException {
-		int carrysize;
-        byte[] bCarryover;
-		if (carryover == null){
-			carrysize = 0;
-            bCarryover = new byte[0];
-        } else {
-			carrysize = carryover.length();
-		    bCarryover = carryover.getBytes(Charset.forName("UTF-8"));
-        }
-
-		dos.writeInt(source);
-		dos.writeInt(target);
-		dos.writeInt(weight);
-		dos.writeInt(type);
-		dos.writeInt(bCarryover.length);
-		if (carrysize > 0)
+		dos.writeInt(this.source);
+		dos.writeInt(this.target);
+		dos.writeInt(this.weight);
+		dos.writeInt(this.type);
+		
+		int carrysize=0;
+		byte[] bCarryover=null;
+		if(carryover!=null&&carryover.length()>0)
+		{
+			bCarryover = carryover.getBytes(Charset.forName("UTF-8"));
+			carrysize = bCarryover.length;
+		}
+		dos.writeInt(carrysize);
+		
+		if(carrysize>0)
 			dos.write(bCarryover);
+		
 	}
+
+	@Override
+	protected void parseLine(String line) {
+		String[] split = line.split(" ", 5);
+		this.source = Integer.parseInt(split[0]);
+		this.target = Integer.parseInt(split[1]);
+		this.weight = Integer.parseInt(split[2]);
+		this.type = Integer.parseInt(split[3]);
+		if (split.length == 5)
+			this.carryover = split[4];
+		else
+			this.carryover = null;
+		
+	}
+
+	@Override
+	protected void readStream(DataInputStream dis) throws IOException {
+		this.source = dis.readInt();
+		this.target = dis.readInt();
+		this.weight = dis.readInt();
+		this.type = dis.readInt();
+		int carryLength = dis.readInt();
+
+		if(carryLength > 0)
+		{
+			byte[] b = new byte[carryLength];
+			dis.read(b);
+			this.carryover = new String(b, Charset.forName("UTF-8"));
+		}
+		else
+			carryover = null;
+	}
+
 
 }

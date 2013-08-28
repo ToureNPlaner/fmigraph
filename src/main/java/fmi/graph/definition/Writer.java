@@ -22,27 +22,35 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public interface Writer {
+public abstract class Writer {
+	
+	protected String type;
+	protected int revision;
 
-	public void create(File graph) throws IOException;
+	protected boolean enforceStructure;
+	
+	protected boolean order;
+	protected boolean coherency;
+	protected int startId;
 
-	public void createBin(File graph) throws IOException;
+	public abstract void create(File graph) throws IOException;
 
-	public void write(OutputStream out) throws IOException;
+	public abstract void createBin(File graph) throws IOException;
 
-	public void writeBin(OutputStream out) throws IOException;
+	public abstract void write(OutputStream out) throws IOException;
 
-	public void setNodeCount(int n);
+	public abstract void writeBin(OutputStream out) throws IOException;
 
-	public void setEdgeCount(int m);
+	public abstract void setNodeCount(int n);
 
-	public void writeMetaData(MetaData data) throws IOException,
-			InvalidFunctionException;
+	public abstract void setEdgeCount(int m);
 
-	public void writeNode(Node n) throws IOException, GraphException;
+	public abstract void writeMetaData(MetaData data) throws IOException, InvalidFunctionException;
 
-	public void writeEdge(Edge e) throws IOException, GraphException;
+	public abstract void writeNode(Node n) throws IOException, GraphException;
 
-	public void close() throws InvalidFunctionException;
+	public abstract void writeEdge(Edge e) throws IOException, GraphException;
+
+	public abstract void close() throws InvalidFunctionException;
 
 }
