@@ -35,11 +35,11 @@ import java.io.InputStreamReader;
 public abstract class Reader {
 
 	// Stettings
-	protected boolean order = true;
-	protected boolean coherency = true;
-	protected int startId = 0;
-	protected boolean enforceStructure = true;
-	protected boolean enforceMetadata = false;
+	public boolean order = true;
+	public boolean coherency = true;
+	public int startId = 0;
+	public boolean enforceStructure = true;
+	public boolean enforceMetadata = false;
 
 	// intern Variables
 	protected boolean bin = false;
