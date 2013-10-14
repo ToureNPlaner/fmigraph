@@ -169,7 +169,7 @@ public abstract class Writer {
 				dos.writeInt(edges);
 				headWritten = true;
 			}
-			n.writeBin(dos);
+			n.writeStream(dos);
 		} else {
 			if (!headWritten) {
 				bw.write(Integer.toString(nodes));
@@ -204,7 +204,7 @@ public abstract class Writer {
 		this.e = e;
 
 		if (bin)
-			e.writeBin(dos);
+			e.writeStream(dos);
 		else {
 			bw.write(e.toString());
 			bw.write('\n');

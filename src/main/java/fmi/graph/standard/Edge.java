@@ -48,7 +48,7 @@ public class Edge extends fmi.graph.definition.Edge {
 	}
 
 	@Override
-	public void writeBin(DataOutputStream dos) throws IOException {
+	public void writeStream(DataOutputStream dos) throws IOException {
 		dos.writeInt(this.source);
 		dos.writeInt(this.target);
 		dos.writeInt(this.weight);

@@ -89,7 +89,7 @@ public abstract class Node implements Comparable<Node> {
 
 	public abstract String toString();
 
-	public abstract void writeBin(DataOutputStream dos) throws IOException;
+	public abstract void writeStream(DataOutputStream dos) throws IOException;
 
 	protected abstract void parseLine(String line);
 

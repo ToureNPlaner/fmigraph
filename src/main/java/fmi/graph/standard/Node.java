@@ -78,7 +78,7 @@ public class Node extends fmi.graph.definition.Node {
 	}
 
 	@Override
-	public void writeBin(DataOutputStream dos) throws IOException {
+	public void writeStream(DataOutputStream dos) throws IOException {
 		dos.writeInt(this.id);
 		dos.writeLong(this.osm);
 		dos.writeDouble(this.lat);
