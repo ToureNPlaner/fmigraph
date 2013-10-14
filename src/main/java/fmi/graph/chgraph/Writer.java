@@ -13,16 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-package fmi.graph.maxspeed;
-
-import java.io.IOException;
-
-import fmi.graph.definition.GraphException;
+package fmi.graph.chgraph;
 
 public class Writer extends fmi.graph.definition.Writer {
 
 	public Writer() {
-		this.type = "maxspeed";
+		this.type = "chgraph";
 		this.revision = 1;
 
 		this.order = true;
@@ -36,4 +32,5 @@ public class Writer extends fmi.graph.definition.Writer {
 	public Writer(boolean enforceStructure) {
 		this.enforceStructure = enforceStructure;
 	}
+
 }

@@ -16,7 +16,7 @@
 package fmi.graph;
 
 import fmi.graph.definition.GraphException;
-import fmi.graph.standard.*;
+import fmi.graph.chgraph.*;
 import fmi.graph.metaio.MetaData;
 
 import java.io.File;
@@ -38,11 +38,11 @@ public class ExampleWriter {
 			w.writeMetaData(data);
 
 			for (int n = 0; n < 10; n++) {
-				w.writeNode(new Node(n, n, Math.random(), Math.random(), (int) (Math.random() * 100), "Teststring 1"));
+				w.writeNode(new Node(n, n, Math.random(), Math.random(), (int) (Math.random() * 100),(int) (Math.random() * 100), "Teststring 1"));
 			}
 
 			for (int m = 0; m < 9; m++) {
-				w.writeEdge(new Edge(m, m + 1, (int) (Math.random() * 100), (int) (Math.random() * 100), "Teststring 2"));
+				w.writeEdge(new Edge(m, m + 1, (int) (Math.random() * 100), (int) (Math.random() * 100),1,2,3, "Teststring 2"));
 			}
 			w.close();
 

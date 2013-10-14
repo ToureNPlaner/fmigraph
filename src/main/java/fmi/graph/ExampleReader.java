@@ -18,7 +18,7 @@ package fmi.graph;
 import fmi.graph.definition.GraphException;
 import fmi.graph.metaio.MetaData;
 import fmi.graph.metaio.Value;
-import fmi.graph.standard.*;
+import fmi.graph.chgraph.*;
 
 import java.io.File;
 import java.io.IOException;
