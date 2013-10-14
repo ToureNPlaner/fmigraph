@@ -74,7 +74,10 @@ public class Reader extends fmi.graph.definition.Reader {
 
 	@Override
 	protected boolean validGraphType(String type) {
-		return true;
+		if(bin)
+			return type.compareTo("standard")==0;
+		else
+			return true;
 	}
 
 	@Override
