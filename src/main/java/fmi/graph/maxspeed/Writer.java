@@ -8,10 +8,16 @@ import fmi.graph.metaio.MetaData;
 public class Writer extends fmi.graph.standard.Writer {
 
 	public Writer() {
+		super();
 		type = "maxspeed";
 		revision = 1;
 	}
 
+	
+	@Override
+	public prepareMetaData
+	
+	
 	public void writeMetaData(MetaData data) throws IOException,
 			InvalidFunctionException {
 

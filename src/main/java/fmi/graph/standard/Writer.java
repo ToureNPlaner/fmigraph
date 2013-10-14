@@ -15,6 +15,10 @@
  */
 package fmi.graph.standard;
 
+import java.io.IOException;
+
+import fmi.graph.definition.GraphException;
+
 
 public class Writer extends fmi.graph.definition.Writer {
 
@@ -27,13 +31,19 @@ public class Writer extends fmi.graph.definition.Writer {
 		this.coherency = true;
 		this.startId=0;
 		
-		this.enforceStructure = false;
+		this.enforceStructure = true;
 		
 	}
 	
 	public Writer(boolean enforceStructure)
 	{
 		this.enforceStructure=enforceStructure;
+	}
+	
+	
+	public void writeNode(Node n) throws IOException, GraphException
+	{
+		super.writeNode(n);
 	}
 
 }

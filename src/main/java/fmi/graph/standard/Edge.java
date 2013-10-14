@@ -44,7 +44,11 @@ public class Edge extends fmi.graph.definition.Edge {
 	
 	@Override
 	public String toString() {
-		return source+" "+target+" "+weight+" "+type+" "+carryover;
+		
+		if(carryover==null || carryover.length()==0)
+			return source+" "+target+" "+weight+" "+type;
+		else
+			return source+" "+target+" "+weight+" "+type+" "+carryover;
 	}
 
 	@Override

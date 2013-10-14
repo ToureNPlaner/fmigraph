@@ -16,7 +16,6 @@
 package fmi.graph;
 
 import fmi.graph.definition.GraphException;
-import fmi.graph.exceptions.InvalidFunctionException;
 import fmi.graph.standard.Edge;
 import fmi.graph.metaio.MetaData;
 import fmi.graph.standard.Node;
