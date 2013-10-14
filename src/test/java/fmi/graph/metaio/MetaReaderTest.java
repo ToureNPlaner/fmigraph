@@ -50,15 +50,10 @@ public class MetaReaderTest {
 
 	@Before
 	public void AddTestData() {
-		t1Normal = "# Comment in first line\n" + "# timestamp : 1360159954\n"
-				+ "# First Comment for version\n"
-				+ "# Second Comment for version\n" + "# version : 1337\n"
-				+ "# End comment\n" + "\n" + "1337\n" + "23\n";
-		t2MissingEnd = "# Comment in first line\n"
-				+ "# timestamp : 1360159954\n"
-				+ "# First Comment for version\n"
-				+ "# Second Comment for version\n" + "# version : 1337\n"
-				+ "# End comment\n" + "1337\n" + "23\n";
+		t1Normal = "# Comment in first line\n" + "# timestamp : 1360159954\n" + "# First Comment for version\n" + "# Second Comment for version\n"
+				+ "# version : 1337\n" + "# End comment\n" + "\n" + "1337\n" + "23\n";
+		t2MissingEnd = "# Comment in first line\n" + "# timestamp : 1360159954\n" + "# First Comment for version\n" + "# Second Comment for version\n"
+				+ "# version : 1337\n" + "# End comment\n" + "1337\n" + "23\n";
 		t3EmptyHeader = "1337\n" + "23\n";
 
 	}

@@ -30,7 +30,7 @@ public class ExampleWriter {
 
 		try {
 			w.createBin(new File("test.bin"));
-			//w.create(new File("test.txt"));
+			// w.create(new File("test.txt"));
 			w.setNodeCount(10);
 			w.setEdgeCount(9);
 
@@ -42,7 +42,7 @@ public class ExampleWriter {
 			}
 
 			for (int m = 0; m < 9; m++) {
-				w.writeEdge(new Edge(m, m + 1, (int) (Math.random() * 100),	(int) (Math.random() * 100),  "Teststring 2"));
+				w.writeEdge(new Edge(m, m + 1, (int) (Math.random() * 100), (int) (Math.random() * 100), "Teststring 2"));
 			}
 			w.close();
 

@@ -22,33 +22,29 @@ import java.nio.charset.Charset;
 
 public class Edge extends fmi.graph.definition.Edge {
 
-	public Edge(String line)
-	{
+	public Edge(String line) {
 		super(line);
 	}
-	
-	public Edge(DataInputStream dis) throws IOException
-	{
+
+	public Edge(DataInputStream dis) throws IOException {
 		super(dis);
 	}
-	
-	public Edge(int source, int target, int weight, int type)
-	{
+
+	public Edge(int source, int target, int weight, int type) {
 		super(source, target, weight, type);
 	}
-	
-	public Edge(int source, int target, int weight, int type, String carryover)
-	{
+
+	public Edge(int source, int target, int weight, int type, String carryover) {
 		super(source, target, weight, type, carryover);
 	}
-	
+
 	@Override
 	public String toString() {
-		
-		if(carryover==null || carryover.length()==0)
-			return source+" "+target+" "+weight+" "+type;
+
+		if (carryover == null || carryover.length() == 0)
+			return source + " " + target + " " + weight + " " + type;
 		else
-			return source+" "+target+" "+weight+" "+type+" "+carryover;
+			return source + " " + target + " " + weight + " " + type + " " + carryover;
 	}
 
 	@Override
@@ -57,19 +53,18 @@ public class Edge extends fmi.graph.definition.Edge {
 		dos.writeInt(this.target);
 		dos.writeInt(this.weight);
 		dos.writeInt(this.type);
-		
-		int carrysize=0;
-		byte[] bCarryover=null;
-		if(carryover!=null&&carryover.length()>0)
-		{
+
+		int carrysize = 0;
+		byte[] bCarryover = null;
+		if (carryover != null && carryover.length() > 0) {
 			bCarryover = carryover.getBytes(Charset.forName("UTF-8"));
 			carrysize = bCarryover.length;
 		}
 		dos.writeInt(carrysize);
-		
-		if(carrysize>0)
+
+		if (carrysize > 0)
 			dos.write(bCarryover);
-		
+
 	}
 
 	@Override
@@ -83,7 +78,7 @@ public class Edge extends fmi.graph.definition.Edge {
 			this.carryover = split[4];
 		else
 			this.carryover = null;
-		
+
 	}
 
 	@Override
@@ -94,15 +89,12 @@ public class Edge extends fmi.graph.definition.Edge {
 		this.type = dis.readInt();
 		int carryLength = dis.readInt();
 
-		if(carryLength > 0)
-		{
+		if (carryLength > 0) {
 			byte[] b = new byte[carryLength];
 			dis.read(b);
 			this.carryover = new String(b, Charset.forName("UTF-8"));
-		}
-		else
+		} else
 			carryover = null;
 	}
-
 
 }

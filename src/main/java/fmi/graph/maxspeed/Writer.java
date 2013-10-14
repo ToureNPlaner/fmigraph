@@ -19,30 +19,25 @@ import java.io.IOException;
 
 import fmi.graph.definition.GraphException;
 
-
 public class Writer extends fmi.graph.definition.Writer {
 
-	public Writer()
-	{
+	public Writer() {
 		this.type = "maxspeed";
-		this.revision=1;
-		
-		this.order=true;
+		this.revision = 1;
+
+		this.order = true;
 		this.coherency = true;
-		this.startId=0;
-		
+		this.startId = 0;
+
 		this.enforceStructure = true;
-		
+
 	}
-	
-	public Writer(boolean enforceStructure)
-	{
-		this.enforceStructure=enforceStructure;
+
+	public Writer(boolean enforceStructure) {
+		this.enforceStructure = enforceStructure;
 	}
-	
-	
-	public void writeNode(Node n) throws IOException, GraphException
-	{
+
+	public void writeNode(Node n) throws IOException, GraphException {
 		super.writeNode(n);
 	}
 

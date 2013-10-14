@@ -24,24 +24,20 @@ public class Edge extends fmi.graph.definition.Edge {
 
 	int maxspeed;
 
-	
-	public Edge(DataInputStream dis) throws IOException
-	{
+	public Edge(DataInputStream dis) throws IOException {
 		super(dis);
 	}
-	
-	public Edge(String line)
-	{
+
+	public Edge(String line) {
 		super(line);
 	}
-	
+
 	public Edge(int source, int target, int weight, int type, int maxspeed) {
 		super(source, target, weight, type);
 		this.maxspeed = maxspeed;
 	}
 
-	public Edge(int source, int target, int weight, int type, int maxspeed,
-			String carryover) {
+	public Edge(int source, int target, int weight, int type, int maxspeed, String carryover) {
 		super(source, target, weight, type, carryover);
 		this.maxspeed = maxspeed;
 	}
@@ -52,11 +48,11 @@ public class Edge extends fmi.graph.definition.Edge {
 
 	@Override
 	public String toString() {
-		
-		if(carryover==null || carryover.length()==0)
-			return source+" "+target+" "+weight+" "+type+" "+maxspeed;
+
+		if (carryover == null || carryover.length() == 0)
+			return source + " " + target + " " + weight + " " + type + " " + maxspeed;
 		else
-			return source+" "+target+" "+weight+" "+type+" "+maxspeed+" "+carryover;
+			return source + " " + target + " " + weight + " " + type + " " + maxspeed + " " + carryover;
 	}
 
 	@Override
@@ -66,19 +62,18 @@ public class Edge extends fmi.graph.definition.Edge {
 		dos.writeInt(this.weight);
 		dos.writeInt(this.type);
 		dos.writeInt(this.maxspeed);
-		
-		int carrysize=0;
-		byte[] bCarryover=null;
-		if(carryover!=null&&carryover.length()>0)
-		{
+
+		int carrysize = 0;
+		byte[] bCarryover = null;
+		if (carryover != null && carryover.length() > 0) {
 			bCarryover = carryover.getBytes(Charset.forName("UTF-8"));
 			carrysize = bCarryover.length;
 		}
 		dos.writeInt(carrysize);
-		
-		if(carrysize>0)
+
+		if (carrysize > 0)
 			dos.write(bCarryover);
-		
+
 	}
 
 	@Override
@@ -93,7 +88,7 @@ public class Edge extends fmi.graph.definition.Edge {
 			this.carryover = split[5];
 		else
 			this.carryover = null;
-		
+
 	}
 
 	@Override
@@ -105,13 +100,11 @@ public class Edge extends fmi.graph.definition.Edge {
 		this.maxspeed = dis.readInt();
 		int carryLength = dis.readInt();
 
-		if(carryLength > 0)
-		{
+		if (carryLength > 0) {
 			byte[] b = new byte[carryLength];
 			dis.read(b);
 			this.carryover = new String(b, Charset.forName("UTF-8"));
-		}
-		else
+		} else
 			carryover = null;
 	}
 

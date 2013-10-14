@@ -33,7 +33,7 @@ public class Node extends fmi.graph.definition.Node {
 	public Node(int id, long osm, double lat, double lon, int elevation) {
 		super(id, osm, lat, lon, elevation);
 	}
-	
+
 	public Node(int id, long osm, double lat, double lon, int elevation, String carryover) {
 		super(id, osm, lat, lon, elevation, carryover);
 	}
@@ -55,9 +55,9 @@ public class Node extends fmi.graph.definition.Node {
 	@Override
 	public String toString() {
 		if (carryover != null && carryover.length() > 0)
-			return id+" " +osm+" "+lat+" "+lon+" "+elevation+" "+carryover;
+			return id + " " + osm + " " + lat + " " + lon + " " + elevation + " " + carryover;
 		else
-			return id+" "+osm+" "+lat+" "+lon+" "+elevation;
+			return id + " " + osm + " " + lat + " " + lon + " " + elevation;
 	}
 
 	@Override

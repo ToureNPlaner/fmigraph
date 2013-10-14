@@ -45,8 +45,7 @@ public abstract class Node implements Comparable<Node> {
 		this.carryover = null;
 	}
 
-	public Node(int id, long osm, double lat, double lon, int elevation,
-			String carryover) {
+	public Node(int id, long osm, double lat, double lon, int elevation, String carryover) {
 		this.id = id;
 		this.osm = osm;
 		this.lat = lat;

@@ -34,7 +34,6 @@ import java.io.InputStreamReader;
 
 public abstract class Reader {
 
-	
 	// Stettings
 	protected boolean order = true;
 	protected boolean coherency = true;
@@ -53,19 +52,19 @@ public abstract class Reader {
 	protected DataInputStream dis = null;
 	protected SaneBufferedInputStream bis = null;
 	protected BufferedReader br = null;
-	
+
 	protected Node n;
 	protected Edge e;
 
 	public Reader() {
 
 	}
-	
+
 	public Reader(boolean enforceStructure, boolean enforceMetadata) {
 		this.enforceMetadata = enforceMetadata;
 		this.enforceStructure = enforceStructure;
 	}
-	
+
 	public MetaData open(File graph) throws IOException, GraphException {
 		bin = false;
 		br = new BufferedReader(new FileReader(graph));
@@ -132,8 +131,8 @@ public abstract class Reader {
 	protected abstract Node readNodeString(String line) throws NoSuchElementException;
 
 	public Node nextNode() throws NoGraphOpenException, GraphException {
-		Node n=null;
-		
+		Node n = null;
+
 		if (br == null && dis == null)
 			throw new NoGraphOpenException();
 
@@ -162,9 +161,8 @@ public abstract class Reader {
 				throw new NoSuchElementException(e.getMessage());
 			}
 		}
-		
-		if(enforceStructure)
-		{
+
+		if (enforceStructure) {
 			validateNode(n);
 		}
 		return n;
@@ -177,7 +175,7 @@ public abstract class Reader {
 	public Edge nextEdge() throws NoGraphOpenException, GraphException {
 
 		Edge e;
-		
+
 		if (br == null && dis == null)
 			throw new NoGraphOpenException();
 
@@ -206,12 +204,11 @@ public abstract class Reader {
 				throw new NoSuchElementException(ex.getMessage());
 			}
 		}
-		
-		if(enforceStructure)
-		{
+
+		if (enforceStructure) {
 			validateEdge(e);
 		}
-		this.e=e;
+		this.e = e;
 		return e;
 	}
 
@@ -229,28 +226,27 @@ public abstract class Reader {
 	protected abstract boolean validGraphType(String type);
 
 	protected abstract boolean validGraphRevision(String type, String revision);
-	
+
 	protected abstract void validateNode(Node n) throws GraphException;
-	
+
 	protected abstract void validateEdge(Edge e) throws GraphException;
-	
+
 	protected void validateMetaData(MetaData m) throws GraphException {
 		if (m.get("Type") == null)
 			throw new MissingMetadataException("No Graph Type specified");
 		if (m.get("Revision") == null)
-			throw new MissingMetadataException(
-					"No Graph Type Revision specified");
+			throw new MissingMetadataException("No Graph Type Revision specified");
 		if (m.get("Id") == null)
 			throw new MissingMetadataException("No Id specified");
 		if (m.get("Timestamp") == null)
 			throw new MissingMetadataException("No Timestamp specified");
-		if(!validGraphType(m.get("Type").toString()))
+		if (!validGraphType(m.get("Type").toString()))
 			throw new InvalidGraphTypeException("Invalid Graph Format given");
-		if(!validGraphRevision(m.get("Type").toString(), m.get("Revision").toString()))
+		if (!validGraphRevision(m.get("Type").toString(), m.get("Revision").toString()))
 			throw new InvalidGraphTypeException("Invalid Graph Format Revision given");
-		
+
 	}
-	
+
 	private MetaData readHead() throws IOException, GraphException {
 		MetaReader mr = new MetaReader();
 		MetaData meta = null;

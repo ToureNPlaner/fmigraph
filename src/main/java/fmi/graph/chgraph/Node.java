@@ -12,14 +12,12 @@ import java.io.IOException;
 public class Node extends fmi.graph.standard.Node {
 	int level;
 
-	public Node(int id, long osm, double lat, double lon, int elevation,
-			int level) {
+	public Node(int id, long osm, double lat, double lon, int elevation, int level) {
 		super(id, osm, lat, lon, elevation);
 		this.level = level;
 	}
 
-	public Node(int id, long osm, double lat, double lon, int elevation,
-			int level, String carryover) {
+	public Node(int id, long osm, double lat, double lon, int elevation, int level, String carryover) {
 		super(id, osm, lat, lon, elevation, carryover);
 		this.level = level;
 	}

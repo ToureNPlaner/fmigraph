@@ -14,17 +14,14 @@ public class Edge extends fmi.graph.standard.Edge {
 	int skippedEdgeA;
 	int skippedEdgeB;
 
-	public Edge(int source, int target, int weight, int type,
-			int euclidianDist, int skippedEdgeA, int skippedEdgeB) {
+	public Edge(int source, int target, int weight, int type, int euclidianDist, int skippedEdgeA, int skippedEdgeB) {
 		super(source, target, weight, type);
 		this.euclidianDist = euclidianDist;
 		this.skippedEdgeA = skippedEdgeA;
 		this.skippedEdgeB = skippedEdgeB;
 	}
 
-	public Edge(int source, int target, int weight, int type,
-			int euclidianDist, int skippedEdgeA, int skippedEdgeB,
-			String carryover) {
+	public Edge(int source, int target, int weight, int type, int euclidianDist, int skippedEdgeA, int skippedEdgeB, String carryover) {
 		super(source, target, weight, type, carryover);
 		this.euclidianDist = euclidianDist;
 		this.skippedEdgeA = skippedEdgeA;
@@ -44,8 +41,7 @@ public class Edge extends fmi.graph.standard.Edge {
 	}
 
 	public String toBaseString() {
-		return super.toBaseString() + " " + euclidianDist + " " + skippedEdgeA
-				+ " " + skippedEdgeB;
+		return super.toBaseString() + " " + euclidianDist + " " + skippedEdgeA + " " + skippedEdgeB;
 	}
 
 	@Override

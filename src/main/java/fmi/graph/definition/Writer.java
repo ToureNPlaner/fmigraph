@@ -68,13 +68,13 @@ public abstract class Writer {
 		nodesWritten = 0;
 		edgesWritten = 0;
 		headWritten = false;
-		
+
 		if (graph.exists())
 			graph.delete();
 		graph.createNewFile();
-		
+
 		bw = new BufferedWriter(new FileWriter(graph));
-		
+
 	}
 
 	public void createBin(File graph) throws IOException {
@@ -83,8 +83,7 @@ public abstract class Writer {
 		graph.createNewFile();
 
 		bin = true;
-		dos = new DataOutputStream(new BufferedOutputStream(
-				new FileOutputStream(graph)));
+		dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(graph)));
 		nodesWritten = 0;
 		edgesWritten = 0;
 		headWritten = false;
@@ -114,10 +113,7 @@ public abstract class Writer {
 		edges = m;
 	}
 
-	
-	
-	public MetaData prepareMetaData()
-	{
+	public MetaData prepareMetaData() {
 		MetaData data = new MetaData();
 		data.add("Id", General.createRandomIdValue());
 		data.add("Timestamp", new Value(new Date()));
@@ -125,10 +121,10 @@ public abstract class Writer {
 		data.add("Revision", Integer.toString(revision));
 		return data;
 	}
-	
-	public void writeMetaData(MetaData data) throws IOException,	InvalidFunctionException {
+
+	public void writeMetaData(MetaData data) throws IOException, InvalidFunctionException {
 		if (headWritten)
-			throw new InvalidFunctionException(	"Need to write Metadata before head/nodes/edges");
+			throw new InvalidFunctionException("Need to write Metadata before head/nodes/edges");
 
 		MetaWriter w = new MetaWriter();
 		if (bin) {
@@ -137,13 +133,13 @@ public abstract class Writer {
 			w.writeMetaDataWriter(bw, data);
 		}
 	}
-	
-	public void writeMetaData() throws IOException,	InvalidFunctionException {
+
+	public void writeMetaData() throws IOException, InvalidFunctionException {
 		if (headWritten)
-			throw new InvalidFunctionException(	"Need to write Metadata before head/nodes/edges");
+			throw new InvalidFunctionException("Need to write Metadata before head/nodes/edges");
 
 		MetaData data = prepareMetaData();
-		
+
 		MetaWriter w = new MetaWriter();
 		if (bin) {
 			w.writeMetaDataRaw(dos, data);
@@ -151,32 +147,22 @@ public abstract class Writer {
 			w.writeMetaDataWriter(bw, data);
 		}
 	}
-	
-	
-	
-	
-	
 
 	public void writeNode(Node n) throws IOException, GraphException {
 		if (edgesWritten > 0 || nodes <= 0 || edges <= 0)
 			throw new InvalidFunctionException();
 
-		if(enforceStructure)
-		{
-			if(this.n==null)
-			{
-				if(n.getId()!=startId)
-					throw new StartIdException("Expected Id: "+startId+" got: "+n.getId());
-			}
-			else
-			{
-				if(this.n.getId()+1!=n.getId())
-					throw new CoherencyException("Expected nodeId: "+(this.n.getId()+1)+" got: "+n.getId());
+		if (enforceStructure) {
+			if (this.n == null) {
+				if (n.getId() != startId)
+					throw new StartIdException("Expected Id: " + startId + " got: " + n.getId());
+			} else {
+				if (this.n.getId() + 1 != n.getId())
+					throw new CoherencyException("Expected nodeId: " + (this.n.getId() + 1) + " got: " + n.getId());
 			}
 		}
-		this.n=n;
-		
-		
+		this.n = n;
+
 		if (bin) {
 			if (!headWritten) {
 				dos.writeInt(nodes);
@@ -202,23 +188,21 @@ public abstract class Writer {
 	public void writeEdge(Edge e) throws IOException, GraphException {
 		if (nodesWritten != nodes)
 			throw new InvalidFunctionException("To few Nodes written");
-		
-		if(enforceStructure)
-		{
-			if(e.getSource()<startId||e.getSource()>n.getId())
-				throw new GraphException("Edge Source out of bounds: "+e.getSource());
-			if(e.getTarget()<startId||e.getTarget()>n.getId())
-				throw new GraphException("Edge Target out of bounds: "+e.getTarget());
-			if(this.e!=null)
-			{
-				if(this.e.getSource()>e.getSource())
-					throw new OrderException("Edge not in correct order: "+ e.getSource()+":"+e.getTarget());
-				if((this.e.getSource()==e.getSource())&&(this.e.getTarget()>e.getTarget()))
-					throw new OrderException("Edge Target not in correct order: "+ e.getSource()+":"+e.getTarget());
+
+		if (enforceStructure) {
+			if (e.getSource() < startId || e.getSource() > n.getId())
+				throw new GraphException("Edge Source out of bounds: " + e.getSource());
+			if (e.getTarget() < startId || e.getTarget() > n.getId())
+				throw new GraphException("Edge Target out of bounds: " + e.getTarget());
+			if (this.e != null) {
+				if (this.e.getSource() > e.getSource())
+					throw new OrderException("Edge not in correct order: " + e.getSource() + ":" + e.getTarget());
+				if ((this.e.getSource() == e.getSource()) && (this.e.getTarget() > e.getTarget()))
+					throw new OrderException("Edge Target not in correct order: " + e.getSource() + ":" + e.getTarget());
 			}
 		}
-		this.e=e;
-		
+		this.e = e;
+
 		if (bin)
 			e.writeBin(dos);
 		else {

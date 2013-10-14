@@ -28,8 +28,7 @@ import java.util.regex.Pattern;
 public class MetaReader {
 	protected static final int readaheadlimit = 4096;
 	protected static final Pattern compattern = Pattern.compile("^#(.+)$");
-	protected static final Pattern kvpattern = Pattern
-			.compile("^#\\s*(\\w+)\\s*:\\s*(.+)");
+	protected static final Pattern kvpattern = Pattern.compile("^#\\s*(\\w+)\\s*:\\s*(.+)");
 
 	private Matcher mkv;
 	private Matcher mcom;

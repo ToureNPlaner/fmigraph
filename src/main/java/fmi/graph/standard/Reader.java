@@ -26,32 +26,25 @@ import java.io.*;
 
 public class Reader extends fmi.graph.definition.Reader {
 
-	
-	
-	public Reader()
-	{
+	public Reader() {
 		super();
 		order = true;
-		coherency=true;
-		startId=0;
-		enforceStructure=true;
-		enforceMetadata=false;
+		coherency = true;
+		startId = 0;
+		enforceStructure = true;
+		enforceMetadata = false;
 	}
-	
-	
+
 	@Override
-	public Node nextNode() throws NoGraphOpenException, GraphException
-	{
-		return (Node)super.nextNode();
+	public Node nextNode() throws NoGraphOpenException, GraphException {
+		return (Node) super.nextNode();
 	}
-	
-	
+
 	@Override
-	public Edge nextEdge() throws NoGraphOpenException, GraphException
-	{
-		return (Edge)super.nextEdge();
+	public Edge nextEdge() throws NoGraphOpenException, GraphException {
+		return (Edge) super.nextEdge();
 	}
-	
+
 	@Override
 	protected Node readNodeBin() throws IOException {
 		return new Node(dis);
@@ -74,8 +67,8 @@ public class Reader extends fmi.graph.definition.Reader {
 
 	@Override
 	protected boolean validGraphType(String type) {
-		if(bin)
-			return type.compareTo("standard")==0;
+		if (bin)
+			return type.compareTo("standard") == 0;
 		else
 			return true;
 	}
@@ -87,39 +80,34 @@ public class Reader extends fmi.graph.definition.Reader {
 
 	@Override
 	protected void validateNode(fmi.graph.definition.Node n) throws GraphException {
-		if(this.n==null)
-		{
-			if(n.getId()!=this.startId)
-				throw new StartIdException("Excpected StartId: "+this.startId+" got: "+n.getId());
+		if (this.n == null) {
+			if (n.getId() != this.startId)
+				throw new StartIdException("Excpected StartId: " + this.startId + " got: " + n.getId());
+		} else {
+			if (this.n.getId() + 1 != n.getId())
+				throw new CoherencyException("Expected NodeId: " + (this.n.getId() + 1) + " got: " + n.getId());
 		}
-		else
-		{
-			if(this.n.getId()+1!=n.getId())
-				throw new CoherencyException("Expected NodeId: "+(this.n.getId()+1)+" got: "+n.getId());
-		}
-		this.n=n;
-		
+		this.n = n;
+
 	}
 
-	
 	@Override
 	protected void validateEdge(fmi.graph.definition.Edge e) throws GraphException {
-		
-		if(e.getSource()<startId||e.getSource()>n.getId())
-				throw new GraphException("Edge Source out of bounds: "+e.getSource());
-			if(e.getTarget()<startId||e.getTarget()>n.getId())
-				throw new GraphException("Edge Target out of bounds: "+e.getTarget());
-			if(this.e==null)
-				this.e=e;
-			else
-			{
-				if(this.e.getSource()>e.getSource())
-					throw new OrderException("Edge not in correct order: "+ e.getSource()+":"+e.getTarget());
-				if((this.e.getSource()==e.getSource())&&(this.e.getTarget()>e.getTarget()))
-					throw new OrderException("Edge Target not in correct order: "+ e.getSource()+":"+e.getTarget());
-			}
-		this.e=e;
-		
+
+		if (e.getSource() < startId || e.getSource() > n.getId())
+			throw new GraphException("Edge Source out of bounds: " + e.getSource());
+		if (e.getTarget() < startId || e.getTarget() > n.getId())
+			throw new GraphException("Edge Target out of bounds: " + e.getTarget());
+		if (this.e == null)
+			this.e = e;
+		else {
+			if (this.e.getSource() > e.getSource())
+				throw new OrderException("Edge not in correct order: " + e.getSource() + ":" + e.getTarget());
+			if ((this.e.getSource() == e.getSource()) && (this.e.getTarget() > e.getTarget()))
+				throw new OrderException("Edge Target not in correct order: " + e.getSource() + ":" + e.getTarget());
+		}
+		this.e = e;
+
 	}
 
 }

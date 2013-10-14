@@ -45,8 +45,7 @@ public class MetaWriter {
 		return hexbuilder.toString();
 	}
 
-	public void writeMetaDataRaw(OutputStream out, MetaData data)
-			throws IOException {
+	public void writeMetaDataRaw(OutputStream out, MetaData data) throws IOException {
 		for (String comment : data.comments) {
 			out.write(("# " + comment + '\n').getBytes(cset));
 		}
@@ -54,14 +53,12 @@ public class MetaWriter {
 			for (String comment : entry.getValue().comments) {
 				out.write(("# " + comment + '\n').getBytes(cset));
 			}
-			out.write(("# " + entry.getKey() + " : " + entry.getValue().value + '\n')
-					.getBytes(cset));
+			out.write(("# " + entry.getKey() + " : " + entry.getValue().value + '\n').getBytes(cset));
 		}
 		out.write('\n');
 	}
 
-	public void writeMetaDataWriter(Writer out, MetaData data)
-			throws IOException {
+	public void writeMetaDataWriter(Writer out, MetaData data) throws IOException {
 		for (String comment : data.comments) {
 			out.write("# " + comment + '\n');
 		}
@@ -69,8 +66,7 @@ public class MetaWriter {
 			for (String comment : entry.getValue().comments) {
 				out.write("# " + comment + '\n');
 			}
-			out.write("# " + entry.getKey() + " : " + entry.getValue().value
-					+ '\n');
+			out.write("# " + entry.getKey() + " : " + entry.getValue().value + '\n');
 		}
 		out.write('\n');
 	}
