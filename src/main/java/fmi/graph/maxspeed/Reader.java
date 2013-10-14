@@ -34,6 +34,15 @@ public class Reader extends fmi.graph.definition.Reader {
 		enforceStructure = true;
 		enforceMetadata = false;
 	}
+	
+	public Reader(boolean enforceStructure, boolean enforceMetadata) {
+		super();
+		order = true;
+		coherency = true;
+		startId = 0;
+		this.enforceStructure = enforceStructure;
+		this.enforceMetadata = enforceMetadata;
+	}
 
 	@Override
 	public Node nextNode() throws NoGraphOpenException, GraphException {
