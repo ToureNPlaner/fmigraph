@@ -35,5 +35,14 @@ public class Writer extends fmi.graph.definition.Writer {
 
 	public Writer(boolean enforceStructure) {
 		this.enforceStructure = enforceStructure;
+		
+		this.type = "maxspeed";
+		this.revision = 1;
+		
+		this.order = true;
+		this.coherency = true;
+		this.startId = 0;
+
+		this.enforceStructure = enforceStructure;
 	}
 }
