@@ -32,7 +32,16 @@ public class Reader extends fmi.graph.definition.Reader {
 		coherency = true;
 		startId = 0;
 		enforceStructure = true;
-		enforceMetadata = true;
+		enforceMetadata = false;
+	}
+	
+	public Reader(boolean enforceStructure, boolean enforceMetadata) {
+		super();
+		order = true;
+		coherency = true;
+		startId = 0;
+		this.enforceStructure = enforceStructure;
+		this.enforceMetadata = enforceMetadata;
 	}
 
 	@Override
