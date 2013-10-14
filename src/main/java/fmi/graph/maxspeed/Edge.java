@@ -18,11 +18,23 @@ package fmi.graph.maxspeed;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 public class Edge extends fmi.graph.definition.Edge {
 
 	int maxspeed;
 
+	
+	public Edge(DataInputStream dis) throws IOException
+	{
+		super(dis);
+	}
+	
+	public Edge(String line)
+	{
+		super(line);
+	}
+	
 	public Edge(int source, int target, int weight, int type, int maxspeed) {
 		super(source, target, weight, type);
 		this.maxspeed = maxspeed;
@@ -49,20 +61,58 @@ public class Edge extends fmi.graph.definition.Edge {
 
 	@Override
 	public void writeBin(DataOutputStream dos) throws IOException {
-		// TODO Auto-generated method stub
+		dos.writeInt(this.source);
+		dos.writeInt(this.target);
+		dos.writeInt(this.weight);
+		dos.writeInt(this.type);
+		dos.writeInt(this.maxspeed);
+		
+		int carrysize=0;
+		byte[] bCarryover=null;
+		if(carryover!=null&&carryover.length()>0)
+		{
+			bCarryover = carryover.getBytes(Charset.forName("UTF-8"));
+			carrysize = bCarryover.length;
+		}
+		dos.writeInt(carrysize);
+		
+		if(carrysize>0)
+			dos.write(bCarryover);
 		
 	}
 
 	@Override
 	protected void parseLine(String line) {
-		// TODO Auto-generated method stub
+		String[] split = line.split(" ", 6);
+		this.source = Integer.parseInt(split[0]);
+		this.target = Integer.parseInt(split[1]);
+		this.weight = Integer.parseInt(split[2]);
+		this.type = Integer.parseInt(split[3]);
+		this.maxspeed = Integer.parseInt(split[4]);
+		if (split.length == 6)
+			this.carryover = split[5];
+		else
+			this.carryover = null;
 		
 	}
 
 	@Override
 	protected void readStream(DataInputStream dis) throws IOException {
-		// TODO Auto-generated method stub
-		
+		this.source = dis.readInt();
+		this.target = dis.readInt();
+		this.weight = dis.readInt();
+		this.type = dis.readInt();
+		this.maxspeed = dis.readInt();
+		int carryLength = dis.readInt();
+
+		if(carryLength > 0)
+		{
+			byte[] b = new byte[carryLength];
+			dis.read(b);
+			this.carryover = new String(b, Charset.forName("UTF-8"));
+		}
+		else
+			carryover = null;
 	}
 
 }

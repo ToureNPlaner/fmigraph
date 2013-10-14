@@ -16,10 +16,8 @@
 package fmi.graph;
 
 import fmi.graph.definition.GraphException;
-import fmi.graph.standard.Edge;
+import fmi.graph.standard.*;
 import fmi.graph.metaio.MetaData;
-import fmi.graph.standard.Node;
-import fmi.graph.standard.Writer;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,7 +42,7 @@ public class ExampleWriter {
 			}
 
 			for (int m = 0; m < 9; m++) {
-				w.writeEdge(new Edge(m, m + 1, (int) (Math.random() * 100),	(int) (Math.random() * 100), "Teststring 2"));
+				w.writeEdge(new Edge(m, m + 1, (int) (Math.random() * 100),	(int) (Math.random() * 100),  "Teststring 2"));
 			}
 			w.close();
 

@@ -16,6 +16,8 @@
 package fmi.graph.definition;
 
 import fmi.graph.tools.SaneBufferedInputStream;
+import fmi.graph.exceptions.InvalidGraphTypeException;
+import fmi.graph.exceptions.MissingMetadataException;
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
 import fmi.graph.metaio.MetaData;
@@ -232,7 +234,22 @@ public abstract class Reader {
 	
 	protected abstract void validateEdge(Edge e) throws GraphException;
 	
-	protected abstract void validateMetaData(MetaData m) throws GraphException;
+	protected void validateMetaData(MetaData m) throws GraphException {
+		if (m.get("Type") == null)
+			throw new MissingMetadataException("No Graph Type specified");
+		if (m.get("Revision") == null)
+			throw new MissingMetadataException(
+					"No Graph Type Revision specified");
+		if (m.get("Id") == null)
+			throw new MissingMetadataException("No Id specified");
+		if (m.get("Timestamp") == null)
+			throw new MissingMetadataException("No Timestamp specified");
+		if(!validGraphType(m.get("Type").toString()))
+			throw new InvalidGraphTypeException("Invalid Graph Format given");
+		if(!validGraphRevision(m.get("Type").toString(), m.get("Revision").toString()))
+			throw new InvalidGraphTypeException("Invalid Graph Format Revision given");
+		
+	}
 	
 	private MetaData readHead() throws IOException, GraphException {
 		MetaReader mr = new MetaReader();

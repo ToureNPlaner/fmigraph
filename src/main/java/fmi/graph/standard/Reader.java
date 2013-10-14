@@ -17,17 +17,27 @@ package fmi.graph.standard;
 
 import fmi.graph.definition.GraphException;
 import fmi.graph.exceptions.CoherencyException;
-import fmi.graph.exceptions.MissingMetadataException;
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
 import fmi.graph.exceptions.OrderException;
 import fmi.graph.exceptions.StartIdException;
-import fmi.graph.metaio.MetaData;
 
 import java.io.*;
 
 public class Reader extends fmi.graph.definition.Reader {
 
+	
+	
+	public Reader()
+	{
+		super();
+		order = true;
+		coherency=true;
+		startId=0;
+		enforceStructure=true;
+		enforceMetadata=false;
+	}
+	
 	
 	@Override
 	public Node nextNode() throws NoGraphOpenException, GraphException
@@ -106,20 +116,6 @@ public class Reader extends fmi.graph.definition.Reader {
 					throw new OrderException("Edge Target not in correct order: "+ e.getSource()+":"+e.getTarget());
 			}
 		this.e=e;
-		
-	}
-
-	@Override
-	protected void validateMetaData(MetaData m) throws GraphException {
-		if (m.get("Type") == null)
-			throw new MissingMetadataException("No Graph Type specified");
-		if (m.get("Revision") == null)
-			throw new MissingMetadataException(
-					"No Graph Type Revision specified");
-		if (m.get("Id") == null)
-			throw new MissingMetadataException("No Id specified");
-		if (m.get("Timestamp") == null)
-			throw new MissingMetadataException("No Timestamp specified");
 		
 	}
 

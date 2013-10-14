@@ -18,9 +18,7 @@ package fmi.graph;
 import fmi.graph.definition.GraphException;
 import fmi.graph.metaio.MetaData;
 import fmi.graph.metaio.Value;
-import fmi.graph.standard.Edge;
-import fmi.graph.standard.Node;
-import fmi.graph.standard.Reader;
+import fmi.graph.standard.*;
 
 import java.io.File;
 import java.io.IOException;

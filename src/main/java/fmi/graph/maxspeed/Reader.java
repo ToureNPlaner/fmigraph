@@ -15,34 +15,110 @@
  */
 package fmi.graph.maxspeed;
 
-import fmi.graph.exceptions.NoSuchElementException;
-
 import java.io.IOException;
 
-public class Reader extends fmi.graph.standard.Reader {
+import fmi.graph.definition.GraphException;
+import fmi.graph.exceptions.CoherencyException;
+import fmi.graph.exceptions.NoGraphOpenException;
+import fmi.graph.exceptions.NoSuchElementException;
+import fmi.graph.exceptions.OrderException;
+import fmi.graph.exceptions.StartIdException;
+
+
+
+public class Reader extends fmi.graph.definition.Reader {
+
+	
+	
+	
+	public Reader()
+	{
+		super();
+		order = true;
+		coherency=true;
+		startId=0;
+		enforceStructure=true;
+		enforceMetadata=true;
+	}
+	
+	@Override
+	public Node nextNode() throws NoGraphOpenException, GraphException
+	{
+		return (Node)super.nextNode();
+	}
+	
+	
+	@Override
+	public Edge nextEdge() throws NoGraphOpenException, GraphException
+	{
+		return (Edge)super.nextEdge();
+	}
+	
+	@Override
+	protected Node readNodeBin() throws IOException {
+		return new Node(dis);
+	}
 
 	@Override
-	protected Edge readEdgeString(String line) throws NoSuchElementException {
-		String[] split = line.split(" ", 6);
-
-		if (split.length == 6) {
-			return new fmi.graph.maxspeed.Edge(Integer.parseInt(split[0]),
-					Integer.parseInt(split[1]), Integer.parseInt(split[2]),
-					Integer.parseInt(split[3]), Integer.parseInt(split[4]),
-					split[5]);
-		} else if (split.length == 5) {
-			return new fmi.graph.maxspeed.Edge(Integer.parseInt(split[0]),
-					Integer.parseInt(split[1]), Integer.parseInt(split[2]),
-					Integer.parseInt(split[3]), Integer.parseInt(split[4]));
-		} else {
-			throw new NoSuchElementException("Malformed edge:" + line);
-		}
+	protected Node readNodeString(String line) throws NoSuchElementException {
+		return new Node(line);
 	}
 
 	@Override
 	protected Edge readEdgeBin() throws IOException {
-		return new fmi.graph.maxspeed.Edge(dis.readInt(), dis.readInt(),
-				dis.readInt(), dis.readInt(), dis.readInt());
+		return new Edge(dis);
+	}
+
+	@Override
+	protected Edge readEdgeString(String line) throws NoSuchElementException {
+		return new Edge(line);
+	}
+
+	@Override
+	protected boolean validGraphType(String type) {
+		return type=="maxspeed";
+	}
+
+	@Override
+	protected boolean validGraphRevision(String type, String revision) {
+		return true;
+	}
+
+	@Override
+	protected void validateNode(fmi.graph.definition.Node n) throws GraphException {
+		if(this.n==null)
+		{
+			if(n.getId()!=this.startId)
+				throw new StartIdException("Excpected StartId: "+this.startId+" got: "+n.getId());
+		}
+		else
+		{
+			if(this.n.getId()+1!=n.getId())
+				throw new CoherencyException("Expected NodeId: "+(this.n.getId()+1)+" got: "+n.getId());
+		}
+		this.n=n;
+		
+	}
+
+	
+	@Override
+	protected void validateEdge(fmi.graph.definition.Edge e) throws GraphException {
+		
+		if(e.getSource()<startId||e.getSource()>n.getId())
+				throw new GraphException("Edge Source out of bounds: "+e.getSource());
+			if(e.getTarget()<startId||e.getTarget()>n.getId())
+				throw new GraphException("Edge Target out of bounds: "+e.getTarget());
+			if(this.e==null)
+				this.e=e;
+			else
+			{
+				if(this.e.getSource()>e.getSource())
+					throw new OrderException("Edge not in correct order: "+ e.getSource()+":"+e.getTarget());
+				if((this.e.getSource()==e.getSource())&&(this.e.getTarget()>e.getTarget()))
+					throw new OrderException("Edge Target not in correct order: "+ e.getSource()+":"+e.getTarget());
+			}
+		this.e=e;
+		
 	}
 
 }
