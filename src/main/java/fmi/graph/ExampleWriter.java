@@ -37,21 +37,15 @@ public class ExampleWriter {
 			w.setNodeCount(10);
 			w.setEdgeCount(9);
 
-			MetaData data = new MetaData();
-			data.addComment("This is a totally awesome comment");
-			data.addComment("and here comes another comment that tells you how great this format is!");
-			data.addComment("embedded : isn't that unbelievable");
-			data.add("Producer", "ExampleWriter");
+			MetaData data = w.prepareMetaData();
 			w.writeMetaData(data);
 
 			for (int n = 0; n < 10; n++) {
-				w.writeNode(new Node(n, n, Math.random(), Math.random(),
-						(int) (Math.random() * 100), "Teststring 1"));
+				w.writeNode(new Node(n, n, Math.random(), Math.random(), (int) (Math.random() * 100), "Teststring 1"));
 			}
 
 			for (int m = 0; m < 9; m++) {
-				w.writeEdge(new Edge(m, m + 1, (int) (Math.random() * 100),
-						(int) (Math.random() * 100), "Teststring 2"));
+				w.writeEdge(new Edge(m, m + 1, (int) (Math.random() * 100),	(int) (Math.random() * 100), "Teststring 2"));
 			}
 			w.close();
 
