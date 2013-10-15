@@ -115,6 +115,27 @@ public abstract class Writer {
 
 	public MetaData prepareMetaData() {
 		MetaData data = new MetaData();
+		return prepareMetaData(data);
+	}
+	
+	public MetaData prepareMetaData(MetaData data) {
+		if(data.get("Id")!=null)
+		{
+			data.add("OriginId", data.get("Id"));
+		}
+		if(data.get("Timestamp")!=null)
+		{
+			data.add("OriginTimestamp", data.get("Timestamp"));
+		}
+		if(data.get("Type")!=null)
+		{
+			data.add("OriginType", data.get("Type"));
+		}
+		if(data.get("Revision")!=null)
+		{
+			data.add("OriginRevision", data.get("Revision"));
+		}
+		
 		data.add("Id", General.createRandomIdValue());
 		data.add("Timestamp", new Value(new Date()));
 		data.add("Type", type);

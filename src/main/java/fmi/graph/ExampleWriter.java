@@ -29,12 +29,14 @@ public class ExampleWriter {
 		Writer w = new Writer();
 
 		try {
-			w.createBin(new File("test.bin"));
-			// w.create(new File("test.txt"));
+			//w.createBin(new File("test.bin"));
+			w.create(new File("test.txt"));
 			w.setNodeCount(10);
 			w.setEdgeCount(9);
 
-			MetaData data = w.prepareMetaData();
+			MetaData data = new MetaData();
+			w.prepareMetaData(data);
+			w.prepareMetaData(data);
 			w.writeMetaData(data);
 
 			for (int n = 0; n < 10; n++) {
