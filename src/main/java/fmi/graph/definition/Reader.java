@@ -71,7 +71,7 @@ public abstract class Reader {
 		return readHead();
 	}
 
-	public MetaData openBin(File graph) throws IOException, GraphException {
+	public MetaData  openBin(File graph) throws IOException, GraphException {
 		bin = true;
 		bis = new SaneBufferedInputStream(new FileInputStream(graph));
 		return readHead();
@@ -85,7 +85,7 @@ public abstract class Reader {
 
 	public MetaData readBin(InputStream in) throws IOException, GraphException {
 		bin = true;
-		dis = new DataInputStream(new SaneBufferedInputStream(in));
+		bis = new SaneBufferedInputStream(in);
 		return readHead();
 	}
 
