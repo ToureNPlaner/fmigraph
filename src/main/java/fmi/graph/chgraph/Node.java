@@ -42,6 +42,10 @@ public class Node extends fmi.graph.definition.Node {
 		this.level = level;
 	}
 
+	public int getLevel(){
+		return this.level;
+	}
+
 	@Override
 	protected void parseLine(String line) {
 		String[] split = line.split(" ", 6);
