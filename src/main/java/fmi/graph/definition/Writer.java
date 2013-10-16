@@ -170,7 +170,7 @@ public abstract class Writer {
 	}
 
 	public void writeNode(Node n) throws IOException, GraphException {
-		if (edgesWritten > 0 || nodes <= 0 || edges <= 0)
+		if (enforceStructure &&(edgesWritten > 0 || nodes <= 0 || edges <= 0))
 			throw new InvalidFunctionException();
 
 		if (enforceStructure) {
@@ -207,7 +207,7 @@ public abstract class Writer {
 	}
 
 	public void writeEdge(Edge e) throws IOException, GraphException {
-		if (nodesWritten != nodes)
+		if (enforceStructure &&(nodesWritten != nodes))
 			throw new InvalidFunctionException("To few Nodes written");
 
 		if (enforceStructure) {
@@ -235,7 +235,7 @@ public abstract class Writer {
 	}
 
 	public void close() throws InvalidFunctionException {
-		if (nodes != nodesWritten || edges != edgesWritten)
+		if (enforceStructure &&(nodes != nodesWritten || edges != edgesWritten))
 			throw new InvalidFunctionException("Too few edges or nodes written");
 		if (bin)
 			try {
