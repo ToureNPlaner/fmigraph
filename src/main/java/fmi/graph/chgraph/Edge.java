@@ -50,6 +50,18 @@ public class Edge extends fmi.graph.definition.Edge {
 		this.skippedEdgeB = skippedEdgeB;
 	}
 
+	public int getEuclidianDist(){
+		return euclidianDist;
+	}
+
+	public int getSkippedEdgeA(){
+		return skippedEdgeA;
+	}
+
+	public int getSkippedEdgeB(){
+		return skippedEdgeB;
+	}
+
 	@Override
 	public String toString() {
 

@@ -36,7 +36,6 @@ public class ExampleWriter {
 
 			MetaData data = new MetaData();
 			w.prepareMetaData(data);
-			w.prepareMetaData(data);
 			w.writeMetaData(data);
 
 			for (int n = 0; n < 10; n++) {
