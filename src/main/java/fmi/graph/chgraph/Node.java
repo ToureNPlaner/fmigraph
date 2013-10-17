@@ -48,7 +48,7 @@ public class Node extends fmi.graph.definition.Node {
 
 	@Override
 	protected void parseLine(String line) {
-		String[] split = line.split(" ", 6);
+		String[] split = line.split(" ", 7);
 		this.id = Integer.parseInt(split[0]);
 		this.osm = Long.parseLong(split[1]);
 		this.lat = Double.parseDouble(split[2]);

@@ -96,7 +96,7 @@ public class Edge extends fmi.graph.definition.Edge {
 
 	@Override
 	protected void parseLine(String line) {
-		String[] split = line.split(" ", 5);
+		String[] split = line.split(" ", 8);
 		this.source = Integer.parseInt(split[0]);
 		this.target = Integer.parseInt(split[1]);
 		this.weight = Integer.parseInt(split[2]);
