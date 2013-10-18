@@ -189,11 +189,28 @@ public abstract class Writer {
 			n.writeStream(dos);
 		} else {
 			if (!headWritten) {
-				bw.write(Integer.toString(nodes));
-				bw.write('\n');
-				bw.write(Integer.toString(edges));
-				bw.write('\n');
-				headWritten = true;
+				if(enforceStructure)
+				{
+					bw.write(Integer.toString(nodes));
+					bw.write('\n');
+					bw.write(Integer.toString(edges));
+					bw.write('\n');
+					headWritten = true;
+				}
+				else
+				{
+					if(nodes!=-1)
+					{
+						bw.write(Integer.toString(nodes));
+						bw.write('\n');
+					}
+					if(edges!=-1)
+					{
+						bw.write(Integer.toString(edges));
+						bw.write('\n');
+					}
+					headWritten = true;
+				}
 			}
 			bw.write(n.toString());
 			bw.write('\n');
