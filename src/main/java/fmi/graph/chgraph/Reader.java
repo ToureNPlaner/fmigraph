@@ -19,12 +19,20 @@ import fmi.graph.definition.GraphException;
 import fmi.graph.exceptions.NoGraphOpenException;
 import fmi.graph.exceptions.NoSuchElementException;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class Reader extends fmi.graph.definition.Reader {
 
-    public Reader() {
-        super();
+    public Reader(File in, boolean binary) throws IOException{
+        super(in, binary);
+
+    }
+
+    public Reader(InputStream in, boolean binary) {
+        super(in, binary);
+
     }
 
     @Override

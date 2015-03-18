@@ -15,21 +15,20 @@
  */
 package fmi.graph.definition;
 
-import fmi.graph.exceptions.CoherencyException;
 import fmi.graph.exceptions.InvalidFunctionException;
-import fmi.graph.exceptions.OrderException;
-import fmi.graph.exceptions.StartIdException;
 import fmi.graph.metaio.MetaData;
 import fmi.graph.metaio.MetaWriter;
 import fmi.graph.metaio.Value;
 import fmi.graph.tools.General;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Map;
 
 public abstract class Writer {
+    private static final Charset cset = Charset.forName("UTF-8");
 
     // Settings
     protected String type;
@@ -44,10 +43,11 @@ public abstract class Writer {
     boolean headWritten;
 
     DataOutputStream dos;
-    BufferedWriter bw;
+    OutputStreamWriter bw;
 
-    public void create(File graph) throws IOException {
-        bin = false;
+
+    public Writer(File graph, boolean binary) throws IOException {
+        this.bin = binary;
         nodesWritten = 0;
         edgesWritten = 0;
         headWritten = false;
@@ -55,36 +55,24 @@ public abstract class Writer {
         if (graph.exists())
             graph.delete();
         graph.createNewFile();
-
-        bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(graph), "UTF-8"));
+        if (bin) {
+            dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(graph)));
+        } else {
+            bw = new OutputStreamWriter(new BufferedOutputStream(new FileOutputStream(graph)), cset);
+        }
     }
 
-    public void createBin(File graph) throws IOException {
-        if (graph.exists())
-            graph.delete();
-        graph.createNewFile();
+    public Writer(OutputStream out, boolean binary) {
+        bin = binary;
 
-        bin = true;
-        dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(graph)));
         nodesWritten = 0;
         edgesWritten = 0;
         headWritten = false;
-    }
-
-    public void write(OutputStream out) throws IOException {
-        bin = false;
-        bw = new BufferedWriter(new OutputStreamWriter(out));
-        nodesWritten = 0;
-        edgesWritten = 0;
-        headWritten = false;
-    }
-
-    public void writeBin(OutputStream out) throws IOException {
-        bin = true;
-        dos = new DataOutputStream(new BufferedOutputStream(out));
-        nodesWritten = 0;
-        edgesWritten = 0;
-        headWritten = false;
+        if(bin){
+            dos = new DataOutputStream(out);
+        } else {
+            bw = new OutputStreamWriter(out, cset);
+        }
     }
 
     public void setNodeCount(int n) {

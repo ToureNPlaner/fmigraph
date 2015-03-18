@@ -19,8 +19,6 @@ import fmi.graph.definition.Edge;
 import fmi.graph.definition.GraphException;
 import fmi.graph.definition.Node;
 import fmi.graph.definition.Reader;
-import fmi.graph.exceptions.NoGraphOpenException;
-import fmi.graph.exceptions.NoSuchElementException;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -32,7 +30,7 @@ import java.util.TreeSet;
 public class Reverse {
 
 	TreeSet<Edge> ts;
-	Reader r = new fmi.graph.standard.Reader();
+	Reader r;
 
 	public void reverseGraph(File input, File output) {
 		ts = new TreeSet<Edge>(new ReverseEdgeComparator());
@@ -40,7 +38,7 @@ public class Reverse {
 		Edge e;
 
 		try {
-			r.open(input);
+			r = new fmi.graph.standard.Reader(input, false);
 
 			if (output.exists())
 				output.delete();

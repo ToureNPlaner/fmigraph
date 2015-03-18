@@ -38,31 +38,22 @@ public abstract class Reader {
     protected SaneBufferedInputStream bis = null;
     protected BufferedReader br = null;
 
-    public Reader() {
+    public Reader(File graph, boolean binary) throws IOException {
+        bin = binary;
+        if(bin) {
+            bis = new SaneBufferedInputStream(new FileInputStream(graph));
+        } else {
+            br = new BufferedReader(new FileReader(graph));
+        }
     }
 
-    public MetaData open(File graph) throws IOException, GraphException {
-        bin = false;
-        br = new BufferedReader(new FileReader(graph));
-        return readHead();
-    }
-
-    public MetaData openBin(File graph) throws IOException, GraphException {
-        bin = true;
-        bis = new SaneBufferedInputStream(new FileInputStream(graph));
-        return readHead();
-    }
-
-    public MetaData read(InputStream in) throws IOException, GraphException {
-        bin = false;
-        br = new BufferedReader(new InputStreamReader(in));
-        return readHead();
-    }
-
-    public MetaData readBin(InputStream in) throws IOException, GraphException {
-        bin = true;
-        bis = new SaneBufferedInputStream(in);
-        return readHead();
+    public Reader(InputStream in, boolean binary) {
+        bin = binary;
+        if(bin) {
+            bis = new SaneBufferedInputStream(in);
+        } else {
+            br = new BufferedReader(new InputStreamReader(in));
+        }
     }
 
     public int getNodeCount() throws NoGraphOpenException {
@@ -201,7 +192,7 @@ public abstract class Reader {
             throw new MissingMetadataException("No Timestamp specified");
     }
 
-    private MetaData readHead() throws IOException, GraphException {
+    public MetaData readMetaData() throws IOException, GraphException {
         MetaReader mr = new MetaReader();
         MetaData meta = null;
         nodes = -1;

@@ -15,9 +15,20 @@
  */
 package fmi.graph.maxspeed;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+
 public class Writer extends fmi.graph.definition.Writer {
 
-    public Writer() {
+    public Writer(OutputStream out, boolean binary) {
+        super(out, binary);
+        this.type = "maxspeed";
+        this.revision = 1;
+    }
+
+    public Writer(File out, boolean binary) throws IOException{
+        super(out, binary);
         this.type = "maxspeed";
         this.revision = 1;
     }

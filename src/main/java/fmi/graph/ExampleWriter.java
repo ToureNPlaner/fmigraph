@@ -26,11 +26,11 @@ public class ExampleWriter {
 
     public static void main(String[] args) {
 
-        Writer w = new Writer();
+        Writer w;
 
         try {
             //w.createBin(new File("test.bin"));
-            w.create(new File("test.txt"));
+            w = new Writer(new File("test.txt"), false);
             w.setNodeCount(10);
             w.setEdgeCount(9);
 

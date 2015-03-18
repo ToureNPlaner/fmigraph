@@ -26,7 +26,6 @@ import java.util.Map;
 
 public class ExampleReader {
     public static void main(String[] args) {
-        Reader r = new Reader();
         Node n;
         Edge e;
         int nodes = 0;
@@ -34,7 +33,8 @@ public class ExampleReader {
         long start;
         try {
             start = System.currentTimeMillis();
-            MetaData meta = r.openBin(new File("test.bin"));
+            Reader r = new Reader(new File("test.bin"), true);
+            MetaData meta = r.readMetaData();
             // MetaData meta = r.open(new File("test.txt"));
 
             System.out.println("Created at " + meta.get("Timestamp").asDate());
