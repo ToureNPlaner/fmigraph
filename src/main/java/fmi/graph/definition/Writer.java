@@ -15,7 +15,10 @@
  */
 package fmi.graph.definition;
 
+import fmi.graph.exceptions.CoherencyException;
 import fmi.graph.exceptions.InvalidFunctionException;
+import fmi.graph.exceptions.OrderException;
+import fmi.graph.exceptions.StartIdException;
 import fmi.graph.metaio.MetaData;
 import fmi.graph.metaio.MetaWriter;
 import fmi.graph.metaio.Value;
