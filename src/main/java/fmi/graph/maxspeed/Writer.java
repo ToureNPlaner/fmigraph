@@ -15,34 +15,11 @@
  */
 package fmi.graph.maxspeed;
 
-import java.io.IOException;
-
-import fmi.graph.definition.GraphException;
-
 public class Writer extends fmi.graph.definition.Writer {
 
-	public Writer() {
-		this.type = "maxspeed";
-		this.revision = 1;
+    public Writer() {
+        this.type = "maxspeed";
+        this.revision = 1;
+    }
 
-		this.order = true;
-		this.coherency = true;
-		this.startId = 0;
-
-		this.enforceStructure = true;
-
-	}
-
-	public Writer(boolean enforceStructure) {
-		this.enforceStructure = enforceStructure;
-		
-		this.type = "maxspeed";
-		this.revision = 1;
-		
-		this.order = true;
-		this.coherency = true;
-		this.startId = 0;
-
-		this.enforceStructure = enforceStructure;
-	}
 }

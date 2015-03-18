@@ -30,11 +30,6 @@ public class MetaData {
 		comments = new ArrayList<String>();
 	}
 
-	public MetaData(MetaData orig) {
-		this.data = new HashMap<String, Value>(orig.data);
-		this.comments = new ArrayList<String>(orig.comments);
-	}
-
 	/**
 	 * add a comment to this MetaData object without immediately associating a
 	 * key, value pair with it. Comments added without an associated key will be

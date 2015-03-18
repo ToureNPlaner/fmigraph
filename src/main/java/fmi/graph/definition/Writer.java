@@ -15,238 +15,175 @@
  */
 package fmi.graph.definition;
 
-import fmi.graph.exceptions.CoherencyException;
 import fmi.graph.exceptions.InvalidFunctionException;
-import fmi.graph.exceptions.OrderException;
-import fmi.graph.exceptions.StartIdException;
 import fmi.graph.metaio.MetaData;
 import fmi.graph.metaio.MetaWriter;
 import fmi.graph.metaio.Value;
 import fmi.graph.tools.General;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.Map;
 
 public abstract class Writer {
 
-	// Settings
-	protected String type;
-	protected int revision;
+    // Settings
+    protected String type;
+    protected int revision;
 
-	protected boolean enforceStructure;
+    boolean bin;
 
-	protected boolean order;
-	protected boolean coherency;
-	protected int startId;
+    int nodes;
+    int edges;
+    int nodesWritten;
+    int edgesWritten;
+    boolean headWritten;
 
-	// Internal Variables
+    DataOutputStream dos;
+    BufferedWriter bw;
 
-	boolean bin;
+    public void create(File graph) throws IOException {
+        bin = false;
+        nodesWritten = 0;
+        edgesWritten = 0;
+        headWritten = false;
 
-	int nodes;
-	int edges;
-	int nodesWritten;
-	int edgesWritten;
-	boolean headWritten;
+        if (graph.exists())
+            graph.delete();
+        graph.createNewFile();
 
-	Node n;
-	Edge e;
+        bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(graph), "UTF-8"));
+    }
 
-	DataOutputStream dos;
-	BufferedWriter bw;
+    public void createBin(File graph) throws IOException {
+        if (graph.exists())
+            graph.delete();
+        graph.createNewFile();
 
-	public void create(File graph) throws IOException {
-		bin = false;
-		nodesWritten = 0;
-		edgesWritten = 0;
-		headWritten = false;
+        bin = true;
+        dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(graph)));
+        nodesWritten = 0;
+        edgesWritten = 0;
+        headWritten = false;
+    }
 
-		if (graph.exists())
-			graph.delete();
-		graph.createNewFile();
+    public void write(OutputStream out) throws IOException {
+        bin = false;
+        bw = new BufferedWriter(new OutputStreamWriter(out));
+        nodesWritten = 0;
+        edgesWritten = 0;
+        headWritten = false;
+    }
 
-		bw = new BufferedWriter(new FileWriter(graph));
+    public void writeBin(OutputStream out) throws IOException {
+        bin = true;
+        dos = new DataOutputStream(new BufferedOutputStream(out));
+        nodesWritten = 0;
+        edgesWritten = 0;
+        headWritten = false;
+    }
 
-	}
+    public void setNodeCount(int n) {
+        nodes = n;
+    }
 
-	public void createBin(File graph) throws IOException {
-		if (graph.exists())
-			graph.delete();
-		graph.createNewFile();
+    public void setEdgeCount(int m) {
+        edges = m;
+    }
 
-		bin = true;
-		dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(graph)));
-		nodesWritten = 0;
-		edgesWritten = 0;
-		headWritten = false;
-	}
+    public MetaData prepareMetaData() {
+        MetaData data = new MetaData();
+        return prepareMetaData(data);
+    }
 
-	public void write(OutputStream out) throws IOException {
-		bin = false;
-		bw = new BufferedWriter(new OutputStreamWriter(out));
-		nodesWritten = 0;
-		edgesWritten = 0;
-		headWritten = false;
-	}
+    public MetaData prepareMetaData(MetaData origin) {
+        Iterator<Map.Entry<String, Value>> it = origin.entrySet().iterator();
+        MetaData data = new MetaData();
+        while (it.hasNext()) {
+            Map.Entry<String, Value> e;
+            e = it.next();
+            String key = "Origin" + e.getKey();
+            Value value = e.getValue();
+            data.add(key, value);
+            it.remove();
+        }
 
-	public void writeBin(OutputStream out) throws IOException {
-		bin = true;
-		dos = new DataOutputStream(new BufferedOutputStream(out));
-		nodesWritten = 0;
-		edgesWritten = 0;
-		headWritten = false;
-	}
+        data.add("Id", General.createRandomIdValue());
+        data.add("Timestamp", new Value(new Date()));
+        data.add("Type", type);
+        data.add("Revision", Integer.toString(revision));
+        return data;
+    }
 
-	public void setNodeCount(int n) {
-		nodes = n;
-	}
+    public void writeMetaData(MetaData data) throws IOException, InvalidFunctionException {
+        if (headWritten)
+            throw new InvalidFunctionException("Need to write Metadata before head/nodes/edges");
 
-	public void setEdgeCount(int m) {
-		edges = m;
-	}
+        MetaWriter w = new MetaWriter();
+        if (bin) {
+            w.writeMetaDataRaw(dos, data);
+        } else {
+            w.writeMetaDataWriter(bw, data);
+        }
+    }
 
-	public MetaData prepareMetaData() {
-		MetaData data = new MetaData();
-		return prepareMetaData(data);
-	}
+    public void writeMetaData() throws IOException, InvalidFunctionException {
+        if (headWritten)
+            throw new InvalidFunctionException("Need to write Metadata before head/nodes/edges");
 
-	public MetaData prepareMetaData(MetaData data) {
-		if (data.get("Id") != null) {
-			data.add("OriginId", data.get("Id"));
-		}
-		if (data.get("Timestamp") != null) {
-			data.add("OriginTimestamp", data.get("Timestamp"));
-		}
-		if (data.get("Type") != null) {
-			data.add("OriginType", data.get("Type"));
-		}
-		if (data.get("Revision") != null) {
-			data.add("OriginRevision", data.get("Revision"));
-		}
+        MetaData data = prepareMetaData();
 
-		data.add("Id", General.createRandomIdValue());
-		data.add("Timestamp", new Value(new Date()));
-		data.add("Type", type);
-		data.add("Revision", Integer.toString(revision));
-		return data;
-	}
+        MetaWriter w = new MetaWriter();
+        if (bin) {
+            w.writeMetaDataRaw(dos, data);
+        } else {
+            w.writeMetaDataWriter(bw, data);
+        }
+    }
 
-	public void writeMetaData(MetaData data) throws IOException, InvalidFunctionException {
-		if (headWritten)
-			throw new InvalidFunctionException("Need to write Metadata before head/nodes/edges");
+    public void writeNode(Node n) throws IOException, GraphException {
+        if (bin) {
+            if (!headWritten) {
+                dos.writeInt(nodes);
+                dos.writeInt(edges);
+                headWritten = true;
+            }
+            n.writeStream(dos);
+        } else {
+            if (!headWritten) {
+                bw.write(Integer.toString(nodes));
+                bw.write('\n');
+                bw.write(Integer.toString(edges));
+                bw.write('\n');
+                headWritten = true;
+            }
+            bw.write(n.toString());
+            bw.write('\n');
+        }
+        nodesWritten++;
 
-		MetaWriter w = new MetaWriter();
-		if (bin) {
-			w.writeMetaDataRaw(dos, data);
-		} else {
-			w.writeMetaDataWriter(bw, data);
-		}
-	}
+    }
 
-	public void writeMetaData() throws IOException, InvalidFunctionException {
-		if (headWritten)
-			throw new InvalidFunctionException("Need to write Metadata before head/nodes/edges");
+    public void writeEdge(Edge e) throws IOException, GraphException {
 
-		MetaData data = prepareMetaData();
+        if (bin)
+            e.writeStream(dos);
+        else {
+            bw.write(e.toString());
+            bw.write('\n');
+        }
+        edgesWritten++;
 
-		MetaWriter w = new MetaWriter();
-		if (bin) {
-			w.writeMetaDataRaw(dos, data);
-		} else {
-			w.writeMetaDataWriter(bw, data);
-		}
-	}
+    }
 
-	public void writeNode(Node n) throws IOException, GraphException {
-		if (enforceStructure &&(edgesWritten > 0 || nodes <= 0 || edges <= 0))
-			throw new InvalidFunctionException();
+    public void close() throws InvalidFunctionException, IOException {
+        if (bin)
+            dos.close();
+        else {
+            bw.close();
+        }
 
-		if (enforceStructure) {
-			if (this.n == null) {
-				if (n.getId() != startId)
-					throw new StartIdException("Expected Id: " + startId + " got: " + n.getId());
-			} else {
-				if (this.n.getId() + 1 != n.getId())
-					throw new CoherencyException("Expected nodeId: " + (this.n.getId() + 1) + " got: " + n.getId());
-			}
-		}
-		this.n = n;
-
-		if (bin) {
-			if (!headWritten) {
-				dos.writeInt(nodes);
-				dos.writeInt(edges);
-				headWritten = true;
-			}
-			n.writeStream(dos);
-		} else {
-			if (!headWritten) {
-				bw.write(Integer.toString(nodes));
-				bw.write('\n');
-				bw.write(Integer.toString(edges));
-				bw.write('\n');
-				headWritten = true;
-			}
-			bw.write(n.toString());
-			bw.write('\n');
-		}
-		nodesWritten++;
-
-	}
-
-	public void writeEdge(Edge e) throws IOException, GraphException {
-		if (enforceStructure &&(nodesWritten != nodes))
-			throw new InvalidFunctionException("To few Nodes written");
-
-		if (enforceStructure) {
-			if (e.getSource() < startId || e.getSource() > n.getId())
-				throw new GraphException("Edge Source out of bounds: " + e.getSource());
-			if (e.getTarget() < startId || e.getTarget() > n.getId())
-				throw new GraphException("Edge Target out of bounds: " + e.getTarget());
-			if (this.e != null) {
-				if (this.e.getSource() > e.getSource())
-					throw new OrderException("Edge not in correct order: " + e.getSource() + ":" + e.getTarget());
-				if ((this.e.getSource() == e.getSource()) && (this.e.getTarget() > e.getTarget()))
-					throw new OrderException("Edge Target not in correct order: " + e.getSource() + ":" + e.getTarget());
-			}
-		}
-		this.e = e;
-
-		if (bin)
-			e.writeStream(dos);
-		else {
-			bw.write(e.toString());
-			bw.write('\n');
-		}
-		edgesWritten++;
-
-	}
-
-	public void close() throws InvalidFunctionException {
-		if (enforceStructure &&(nodes != nodesWritten || edges != edgesWritten))
-			throw new InvalidFunctionException("Too few edges or nodes written");
-		if (bin)
-			try {
-				dos.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		else {
-			try {
-				bw.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-	}
+    }
 
 }

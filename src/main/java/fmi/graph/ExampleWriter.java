@@ -24,35 +24,35 @@ import java.io.IOException;
 
 public class ExampleWriter {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		Writer w = new Writer();
+        Writer w = new Writer();
 
-		try {
-			//w.createBin(new File("test.bin"));
-			w.create(new File("test.txt"));
-			w.setNodeCount(10);
-			w.setEdgeCount(9);
+        try {
+            //w.createBin(new File("test.bin"));
+            w.create(new File("test.txt"));
+            w.setNodeCount(10);
+            w.setEdgeCount(9);
 
-			MetaData data = new MetaData();
-			w.prepareMetaData(data);
-			w.writeMetaData(data);
+            MetaData data = new MetaData();
+            w.prepareMetaData(data);
+            w.writeMetaData(data);
 
-			for (int n = 0; n < 10; n++) {
-				w.writeNode(new Node(n, n, Math.random(), Math.random(), (int) (Math.random() * 100),(int) (Math.random() * 100), "Teststring 1"));
-			}
+            for (int n = 0; n < 10; n++) {
+                w.writeNode(new Node(n, n, Math.random(), Math.random(), (int) (Math.random() * 100), (int) (Math.random() * 100), "Teststring 1"));
+            }
 
-			for (int m = 0; m < 9; m++) {
-				w.writeEdge(new Edge(m, m + 1, (int) (Math.random() * 100), (int) (Math.random() * 100),1,2,3, "Teststring 2"));
-			}
-			w.close();
+            for (int m = 0; m < 9; m++) {
+                w.writeEdge(new Edge(m, m + 1, (int) (Math.random() * 100), (int) (Math.random() * 100), 1, 2, 3, "Teststring 2"));
+            }
+            w.close();
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (GraphException e) {
-			e.printStackTrace();
-		}
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (GraphException e) {
+            e.printStackTrace();
+        }
 
-	}
+    }
 
 }

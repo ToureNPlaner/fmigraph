@@ -19,8 +19,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.nio.charset.Charset;
-import java.security.SecureRandom;
-import java.util.Date;
 import java.util.Map;
 
 /**
